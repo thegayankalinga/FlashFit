@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using FlashFitClassLibrary.Models;
 
 namespace FlashFitWinFormUI;
 
@@ -34,6 +35,10 @@ public partial class MainForm : Form
 
         //set the initial selection to dashbord button in the navigation panel.
         moveHighlighter(dashboardButton, navigationPanel);
+        UserProfileModel loggedInUser = Program.getLoggedInUser();
+        userNameLabel.Text = loggedInUser.Name;
+        userEmailLabel.Text = loggedInUser.Email;
+
         dashboardButton.Select();
         dashboardCustomControl1.BringToFront();
     }
@@ -89,6 +94,8 @@ public partial class MainForm : Form
     {
         //change the panel focus to this button
         moveHighlighter(profileButton, navigationPanel);
+        profileUserControlForm1.BringToFront();
+        mainFormPanelHeaderLabel.Text = "User Profile";
     }
 
 

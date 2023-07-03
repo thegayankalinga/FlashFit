@@ -28,31 +28,235 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            userProfileSaveButton = new Button();
+            maleRadioButton = new RadioButton();
+            femaleRadioButton = new RadioButton();
+            fullNameText = new TextBox();
+            emailText = new TextBox();
+            wieghtNumeric = new NumericUpDown();
+            heightNumeric = new NumericUpDown();
+            fullNameLabel = new Label();
+            emailLabel = new Label();
+            genderGroupBox = new GroupBox();
+            weightLabel = new Label();
+            heightLabel = new Label();
+            listView1 = new ListView();
+            columnHeader1 = new ColumnHeader();
+            columnHeader2 = new ColumnHeader();
+            columnHeader3 = new ColumnHeader();
+            ((System.ComponentModel.ISupportInitialize)wieghtNumeric).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)heightNumeric).BeginInit();
+            genderGroupBox.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // userProfileSaveButton
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(278, 188);
-            label1.Name = "label1";
-            label1.Size = new Size(98, 15);
-            label1.TabIndex = 0;
-            label1.Text = "User Profile Form";
+            userProfileSaveButton.BackColor = Color.FromArgb(46, 51, 73);
+            userProfileSaveButton.FlatStyle = FlatStyle.Flat;
+            userProfileSaveButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            userProfileSaveButton.ForeColor = SystemColors.ButtonHighlight;
+            userProfileSaveButton.Location = new Point(167, 447);
+            userProfileSaveButton.Margin = new Padding(4);
+            userProfileSaveButton.Name = "userProfileSaveButton";
+            userProfileSaveButton.Size = new Size(154, 48);
+            userProfileSaveButton.TabIndex = 1;
+            userProfileSaveButton.Text = "Update";
+            userProfileSaveButton.UseVisualStyleBackColor = false;
+            userProfileSaveButton.Click += userProfileSaveButton_Click;
+            // 
+            // maleRadioButton
+            // 
+            maleRadioButton.AutoSize = true;
+            maleRadioButton.Location = new Point(8, 31);
+            maleRadioButton.Margin = new Padding(4);
+            maleRadioButton.Name = "maleRadioButton";
+            maleRadioButton.Size = new Size(62, 25);
+            maleRadioButton.TabIndex = 2;
+            maleRadioButton.TabStop = true;
+            maleRadioButton.Text = "Male";
+            maleRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // femaleRadioButton
+            // 
+            femaleRadioButton.AutoSize = true;
+            femaleRadioButton.Location = new Point(108, 31);
+            femaleRadioButton.Margin = new Padding(4);
+            femaleRadioButton.Name = "femaleRadioButton";
+            femaleRadioButton.Size = new Size(78, 25);
+            femaleRadioButton.TabIndex = 3;
+            femaleRadioButton.TabStop = true;
+            femaleRadioButton.Text = "Female";
+            femaleRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // fullNameText
+            // 
+            fullNameText.Location = new Point(167, 45);
+            fullNameText.Margin = new Padding(4);
+            fullNameText.Name = "fullNameText";
+            fullNameText.Size = new Size(358, 29);
+            fullNameText.TabIndex = 4;
+            // 
+            // emailText
+            // 
+            emailText.Enabled = false;
+            emailText.Location = new Point(167, 98);
+            emailText.Margin = new Padding(4);
+            emailText.Name = "emailText";
+            emailText.Size = new Size(358, 29);
+            emailText.TabIndex = 5;
+            // 
+            // wieghtNumeric
+            // 
+            wieghtNumeric.Location = new Point(167, 274);
+            wieghtNumeric.Margin = new Padding(4);
+            wieghtNumeric.Maximum = new decimal(new int[] { 700, 0, 0, 0 });
+            wieghtNumeric.Name = "wieghtNumeric";
+            wieghtNumeric.Size = new Size(154, 29);
+            wieghtNumeric.TabIndex = 6;
+            wieghtNumeric.TextAlign = HorizontalAlignment.Right;
+            wieghtNumeric.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            // 
+            // heightNumeric
+            // 
+            heightNumeric.Location = new Point(167, 329);
+            heightNumeric.Margin = new Padding(4);
+            heightNumeric.Maximum = new decimal(new int[] { 300, 0, 0, 0 });
+            heightNumeric.Name = "heightNumeric";
+            heightNumeric.Size = new Size(154, 29);
+            heightNumeric.TabIndex = 7;
+            heightNumeric.TextAlign = HorizontalAlignment.Right;
+            heightNumeric.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            // 
+            // fullNameLabel
+            // 
+            fullNameLabel.AutoSize = true;
+            fullNameLabel.ForeColor = SystemColors.ButtonFace;
+            fullNameLabel.Location = new Point(40, 49);
+            fullNameLabel.Margin = new Padding(4, 0, 4, 0);
+            fullNameLabel.Name = "fullNameLabel";
+            fullNameLabel.Size = new Size(81, 21);
+            fullNameLabel.TabIndex = 8;
+            fullNameLabel.Text = "Full Name";
+            // 
+            // emailLabel
+            // 
+            emailLabel.AutoSize = true;
+            emailLabel.ForeColor = SystemColors.ButtonFace;
+            emailLabel.Location = new Point(40, 104);
+            emailLabel.Margin = new Padding(4, 0, 4, 0);
+            emailLabel.Name = "emailLabel";
+            emailLabel.Size = new Size(48, 21);
+            emailLabel.TabIndex = 9;
+            emailLabel.Text = "Email";
+            // 
+            // genderGroupBox
+            // 
+            genderGroupBox.Controls.Add(maleRadioButton);
+            genderGroupBox.Controls.Add(femaleRadioButton);
+            genderGroupBox.ForeColor = SystemColors.ButtonFace;
+            genderGroupBox.Location = new Point(167, 155);
+            genderGroupBox.Margin = new Padding(4);
+            genderGroupBox.Name = "genderGroupBox";
+            genderGroupBox.Padding = new Padding(4);
+            genderGroupBox.Size = new Size(197, 90);
+            genderGroupBox.TabIndex = 10;
+            genderGroupBox.TabStop = false;
+            genderGroupBox.Text = "Gender";
+            // 
+            // weightLabel
+            // 
+            weightLabel.AutoSize = true;
+            weightLabel.ForeColor = SystemColors.ButtonFace;
+            weightLabel.Location = new Point(40, 277);
+            weightLabel.Margin = new Padding(4, 0, 4, 0);
+            weightLabel.Name = "weightLabel";
+            weightLabel.Size = new Size(92, 21);
+            weightLabel.TabIndex = 9;
+            weightLabel.Text = "Weight (KG)";
+            // 
+            // heightLabel
+            // 
+            heightLabel.AutoSize = true;
+            heightLabel.ForeColor = SystemColors.ButtonFace;
+            heightLabel.Location = new Point(40, 339);
+            heightLabel.Margin = new Padding(4, 0, 4, 0);
+            heightLabel.Name = "heightLabel";
+            heightLabel.Size = new Size(94, 21);
+            heightLabel.TabIndex = 9;
+            heightLabel.Text = "Height (CM)";
+            // 
+            // listView1
+            // 
+            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
+            listView1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            listView1.GridLines = true;
+            listView1.Location = new Point(415, 180);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(393, 315);
+            listView1.TabIndex = 11;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
+            // 
+            // columnHeader1
+            // 
+            columnHeader1.Text = "Name";
+            columnHeader1.Width = 200;
+            // 
+            // columnHeader2
+            // 
+            columnHeader2.Text = "Email";
+            columnHeader2.Width = 100;
+            // 
+            // columnHeader3
+            // 
+            columnHeader3.Text = "Weight";
+            columnHeader3.Width = 50;
             // 
             // ProfileUserControlForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label1);
+            AutoScroll = true;
+            BackColor = Color.FromArgb(46, 51, 73);
+            Controls.Add(listView1);
+            Controls.Add(genderGroupBox);
+            Controls.Add(heightLabel);
+            Controls.Add(weightLabel);
+            Controls.Add(emailLabel);
+            Controls.Add(fullNameLabel);
+            Controls.Add(heightNumeric);
+            Controls.Add(wieghtNumeric);
+            Controls.Add(emailText);
+            Controls.Add(fullNameText);
+            Controls.Add(userProfileSaveButton);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            Margin = new Padding(4);
             Name = "ProfileUserControlForm";
-            Size = new Size(768, 542);
+            Size = new Size(970, 528);
+            ((System.ComponentModel.ISupportInitialize)wieghtNumeric).EndInit();
+            ((System.ComponentModel.ISupportInitialize)heightNumeric).EndInit();
+            genderGroupBox.ResumeLayout(false);
+            genderGroupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
+        private Button userProfileSaveButton;
+        private RadioButton maleRadioButton;
+        private RadioButton femaleRadioButton;
+        private TextBox fullNameText;
+        private TextBox emailText;
+        private NumericUpDown wieghtNumeric;
+        private NumericUpDown heightNumeric;
+        private Label fullNameLabel;
+        private Label emailLabel;
+        private GroupBox genderGroupBox;
+        private Label weightLabel;
+        private Label heightLabel;
+        private ListView listView1;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
     }
 }

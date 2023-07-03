@@ -12,8 +12,8 @@ namespace FlashFitClassLibrary.Models
         public string Email { get; set; }
         public string Name { get; set; }
         public GenderTypeEnum Gender { get; set; }
-        public double WeightInKiloGrams { get; set; }
-        public double HeightInCentiMeter { get; set; }
+        public decimal WeightInKiloGrams { get; set; }
+        public decimal HeightInCentiMeter { get; set; }
 
 
     }
