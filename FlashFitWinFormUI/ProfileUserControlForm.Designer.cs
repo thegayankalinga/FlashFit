@@ -190,9 +190,9 @@
             listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
             listView1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.GridLines = true;
-            listView1.Location = new Point(415, 180);
+            listView1.Location = new Point(394, 165);
             listView1.Name = "listView1";
-            listView1.Size = new Size(393, 315);
+            listView1.Size = new Size(393, 262);
             listView1.TabIndex = 11;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;

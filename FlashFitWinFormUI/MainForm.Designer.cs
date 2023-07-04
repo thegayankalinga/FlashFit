@@ -73,7 +73,7 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(186, 577);
+            panel1.Size = new Size(186, 662);
             panel1.TabIndex = 0;
             // 
             // logoutButton
@@ -85,7 +85,7 @@
             logoutButton.ForeColor = Color.FromArgb(0, 126, 249);
             logoutButton.Image = Properties.Resources.log_out;
             logoutButton.ImageAlign = ContentAlignment.MiddleRight;
-            logoutButton.Location = new Point(0, 535);
+            logoutButton.Location = new Point(0, 620);
             logoutButton.Margin = new Padding(10, 3, 10, 3);
             logoutButton.Name = "logoutButton";
             logoutButton.Padding = new Padding(10, 0, 10, 0);
@@ -291,7 +291,7 @@
             dashboardCustomControl1.Location = new Point(183, 35);
             dashboardCustomControl1.Margin = new Padding(4);
             dashboardCustomControl1.Name = "dashboardCustomControl1";
-            dashboardCustomControl1.Size = new Size(768, 542);
+            dashboardCustomControl1.Size = new Size(1029, 627);
             dashboardCustomControl1.TabIndex = 2;
             // 
             // panel3
@@ -301,7 +301,7 @@
             panel3.Controls.Add(closeMainFormButton);
             panel3.Location = new Point(183, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(768, 36);
+            panel3.Size = new Size(1029, 36);
             panel3.TabIndex = 3;
             // 
             // mainFormPanelHeaderLabel
@@ -321,7 +321,7 @@
             closeMainFormButton.FlatAppearance.BorderSize = 0;
             closeMainFormButton.FlatStyle = FlatStyle.Flat;
             closeMainFormButton.Image = Properties.Resources.close__2_;
-            closeMainFormButton.Location = new Point(725, 0);
+            closeMainFormButton.Location = new Point(986, 0);
             closeMainFormButton.Name = "closeMainFormButton";
             closeMainFormButton.Size = new Size(43, 36);
             closeMainFormButton.TabIndex = 0;
@@ -333,7 +333,7 @@
             workoutUserControlForm1.Location = new Point(183, 35);
             workoutUserControlForm1.Margin = new Padding(4);
             workoutUserControlForm1.Name = "workoutUserControlForm1";
-            workoutUserControlForm1.Size = new Size(768, 542);
+            workoutUserControlForm1.Size = new Size(1029, 623);
             workoutUserControlForm1.TabIndex = 4;
             // 
             // cheatmealUserControlForm1
@@ -349,7 +349,7 @@
             reportUserControlForm1.Location = new Point(183, 35);
             reportUserControlForm1.Margin = new Padding(4);
             reportUserControlForm1.Name = "reportUserControlForm1";
-            reportUserControlForm1.Size = new Size(768, 542);
+            reportUserControlForm1.Size = new Size(1029, 627);
             reportUserControlForm1.TabIndex = 6;
             // 
             // predictionUserControlForm1
@@ -357,7 +357,7 @@
             predictionUserControlForm1.Location = new Point(183, 35);
             predictionUserControlForm1.Margin = new Padding(4);
             predictionUserControlForm1.Name = "predictionUserControlForm1";
-            predictionUserControlForm1.Size = new Size(764, 542);
+            predictionUserControlForm1.Size = new Size(1029, 627);
             predictionUserControlForm1.TabIndex = 7;
             // 
             // profileUserControlForm1
@@ -366,9 +366,9 @@
             profileUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
             profileUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             profileUserControlForm1.Location = new Point(183, 35);
-            profileUserControlForm1.Margin = new Padding(4, 4, 4, 4);
+            profileUserControlForm1.Margin = new Padding(4);
             profileUserControlForm1.Name = "profileUserControlForm1";
-            profileUserControlForm1.Size = new Size(768, 542);
+            profileUserControlForm1.Size = new Size(1029, 627);
             profileUserControlForm1.TabIndex = 1;
             // 
             // MainForm
@@ -376,7 +376,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
-            ClientSize = new Size(951, 577);
+            ClientSize = new Size(1215, 662);
             Controls.Add(profileUserControlForm1);
             Controls.Add(predictionUserControlForm1);
             Controls.Add(reportUserControlForm1);
