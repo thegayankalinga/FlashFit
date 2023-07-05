@@ -1,6 +1,11 @@
 using FlashFitClassLibrary;
+using FlashFitClassLibrary.Connector;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Services;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace FlashFitWinFormUI;
 
@@ -27,13 +32,14 @@ public static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
 
-
-
-        
-
         ApplicationConfiguration.Initialize();
+
+        //TODO: To remove with microservice implementation 
         TemporaryDataStore.userProfiles.Add(getLoggedInUser());
+        JsonDeserializer.loadWorkoutModelsFromJson();
         Application.Run(new MainForm());
         
     }
+
+
 }

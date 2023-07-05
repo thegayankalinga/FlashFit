@@ -1,0 +1,59 @@
+
+  [
+    {
+      "WorkoutID": 1,
+      "WorkoutName": "Stretching",
+      "WorkoutType": "FLEXIBILITY",
+      "CaloryBurnRate": 100
+    },
+    {
+      "WorkoutID": 2,
+      "WorkoutName": "Walking",
+      "WorkoutType": "AEROBICS",
+      "CaloryBurnRate": 100
+    },
+    {
+      "WorkoutID": 4,
+      "WorkoutName": "Jump Rope",
+      "WorkoutType": "AEROBICS",
+      "CaloryBurnRate": 50
+    },
+    {
+      "WorkoutID": 5,
+      "WorkoutName": "Swimming",
+      "WorkoutType": "AEROBICS",
+      "CaloryBurnRate": 100
+    },
+    {
+      "WorkoutID": 6,
+      "WorkoutName": "Weightlifting",
+      "WorkoutType": "STRENGTH",
+      "CaloryBurnRate": 200
+    },
+    {
+      "WorkoutID": 7,
+      "WorkoutName": "Squat",
+      "WorkoutType": "STRENGTH",
+      "CaloryBurnRate": 75
+    },
+    {
+      "WorkoutID": 8,
+      "WorkoutName": "Plank",
+      "WorkoutType": "STRENGTH",
+      "CaloryBurnRate": 75
+    },
+    {
+      "WorkoutID": 9,
+      "WorkoutName": "Push up",
+      "WorkoutType": "HIGHINTENSITY",
+      "CaloryBurnRate": 300
+    },
+    {
+      "WorkoutID": 10,
+      "WorkoutName": "Climbing",
+      "WorkoutType": "HIGHINTENSITY",
+      "CaloryBurnRate": 400
+
+    }
+  ]
+

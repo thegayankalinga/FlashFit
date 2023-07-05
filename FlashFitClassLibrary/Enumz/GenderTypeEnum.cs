@@ -1,8 +1,7 @@
-﻿namespace FlashFitClassLibrary.Enumz
+﻿namespace FlashFitClassLibrary.Enumz;
+
+public enum GenderTypeEnum
 {
-    public enum GenderTypeEnum
-    {
-        MALE,
-        FEMALE
-    }
+    MALE,
+    FEMALE
 }
