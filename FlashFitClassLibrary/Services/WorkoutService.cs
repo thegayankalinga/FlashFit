@@ -1,4 +1,4 @@
-﻿using FlashFitClassLibrary.Models;
+﻿    using FlashFitClassLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +31,7 @@ namespace FlashFitClassLibrary.Services
             return TemporaryDataStore.workoutModels;
         }
 
+        //Get by ID
         public WorkoutModel getWorkoutById(int id)
         {
             WorkoutModel? resultOfFind = TemporaryDataStore.workoutModels.Find(x => x.WorkoutID == id);

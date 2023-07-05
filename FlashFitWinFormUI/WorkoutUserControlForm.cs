@@ -10,47 +10,115 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using FlashFitClassLibrary.Services;
+using Microsoft.VisualBasic;
 
-namespace FlashFitWinFormUI
+namespace FlashFitWinFormUI;
+
+public partial class WorkoutUserControlForm : UserControl
 {
-    public partial class WorkoutUserControlForm : UserControl
+    WorkoutService workoutService = new WorkoutService();
+
+
+
+    public WorkoutUserControlForm()
     {
-        public WorkoutUserControlForm()
+        InitializeComponent();
+        TemporaryDataStore.WorkoutRecordIDCounter = TemporaryDataStore.workoutRecords.Count;
+        selectWorkoutComboBox.Items.AddRange(generateComboBoxValues().ToArray());
+        workedoutDateTimePicker.Value = DateTime.Now;
+    }
+
+
+
+    private void addWorkoutFormButton_Click(object sender, EventArgs e)
+    {
+        AddWorkoutForm addWorkoutForm = new AddWorkoutForm();
+        addWorkoutForm.ShowDialog();
+    }
+
+
+    private void saveWorkoutRecordButton_Click(object sender, EventArgs e)
+    {
+        WorkoutRecordModel workoutRecordModel = new WorkoutRecordModel();
+        WorkoutModel? workoutModel = new WorkoutModel();
+        int workoutID;
+
+        if (selectWorkoutComboBox.SelectedItem != null)
         {
-            InitializeComponent();
+            workoutID = int.Parse(selectWorkoutComboBox.SelectedItem.ToString().Substring(0, 1));
+            workoutModel = workoutService.getWorkoutById(workoutID);
+        }
+        else
+        {
+            MessageBox.Show("Pls select the Workout");
+            selectWorkoutComboBox.Focus();
+            return;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        if (workoutModel != null)
         {
+            workoutRecordModel.WorkoutRecordId = TemporaryDataStore.workoutRecords.Count + 1;
+            workoutRecordModel.Workout = workoutModel;
+            workoutRecordModel.UserEmail = Program.getLoggedInUser().Email;
+            workoutRecordModel.WorkedoutDateTime = workedoutDateTimePicker.Value;
+            workoutRecordModel.WeightAtCompletion = weightAtWorkoutNumeric.Value;
 
+            TemporaryDataStore.workoutRecords.Add(workoutRecordModel);
+            MessageBox.Show($"Your workout marked successfully");
+            setupListView();
+            return;
+        }
+        else
+        {
+            MessageBox.Show("Something went wrong");
+            return;
         }
 
-        private void addWorkoutFormButton_Click(object sender, EventArgs e)
+
+
+
+
+
+
+    }
+
+    private List<string> generateComboBoxValues()
+    {
+        List<string> comboBoxLoadList = new List<string>();
+
+        TemporaryDataStore.workoutModels.ForEach(model =>
         {
-            AddWorkoutForm addWorkoutForm = new AddWorkoutForm();
-            addWorkoutForm.ShowDialog();
-        }
+            string combinedValue = $"{model.WorkoutID} - {model.WorkoutName}";
+            comboBoxLoadList.Add(combinedValue);
+        });
+        return comboBoxLoadList;
+    }
 
-        private void WorkoutUserControlForm_Enter(object sender, EventArgs e)
+    private void setupListView()
+    {
+        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords;
+
+        string[] item = new string[5];
+        ListViewItem listItem;
+        workoutRecordListView.Items.Clear();
+
+        foreach (var i in list)
         {
-            List<WorkoutModel> list = TemporaryDataStore.workoutModels;
-
-            //HashSet<UserProfileModel> userList = TemporaryDataStore.userProfiles;
-            string[] item = new string[4];
-            ListViewItem listItem;
-            listView1.Items.Clear();
-
-            foreach (var i in list)
-            {
-                item[0] = i.WorkoutID.ToString();
-                item[1] = i.WorkoutName;
-                item[2] = i.WorkoutType.ToString();
-                item[3] = i.CaloryBurnRate.ToString();
+            item[0] = i.WorkoutRecordId.ToString();
+            item[1] = i.Workout.WorkoutName;
+            item[2] = i.WorkedoutDateTime.ToString("yyyy-mmm-dd");
+            item[3] = i.Workout.CaloryBurnRate.ToString();
+            item[4] = i.WeightAtCompletion.ToString();
 
 
-                listItem = new ListViewItem(item);
-                listView1.Items.Add(listItem);
-            }
+            listItem = new ListViewItem(item);
+            workoutRecordListView.Items.Add(listItem);
         }
+    }
+
+    private void WorkoutUserControlForm_Load(object sender, EventArgs e)
+    {
+        setupListView();
     }
 }

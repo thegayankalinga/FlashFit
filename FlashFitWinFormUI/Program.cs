@@ -37,6 +37,9 @@ public static class Program
         //TODO: To remove with microservice implementation 
         TemporaryDataStore.userProfiles.Add(getLoggedInUser());
         JsonDeserializer.loadWorkoutModelsFromJson();
+        JsonDeserializer.loadWorkoutRecordFromJson();
+
+
         Application.Run(new MainForm());
         
     }

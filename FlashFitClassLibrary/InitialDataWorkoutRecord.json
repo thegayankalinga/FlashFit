@@ -1,0 +1,30 @@
+
+  [
+    {
+      "WorkoutRecordId": 1,
+      "Workout": {
+        "WorkoutID": 1,
+        "WorkoutName": "Stretching",
+        "WorkoutType": "FLEXIBILITY",
+        "CaloryBurnRate": 100
+      },
+      "UserEmail": "bg15407@gmail.com",
+      "WorkedoutDateTime": "2023-04-23T18:25:43.511Z",
+      "WeightAtCompletion": 63
+    },
+
+    {
+      "WorkoutRecordId": 2,
+      "Workout": {
+        "WorkoutID": 4,
+        "WorkoutName": "Jump Rope",
+        "WorkoutType": "AEROBICS",
+        "CaloryBurnRate": 50
+      },
+      "UserEmail": "bg15407@gmail.com",
+      "WorkedoutDateTime": "2023-06-23T18:25:43.511Z",
+      "WeightAtCompletion": 64
+    }
+
+  ]
+

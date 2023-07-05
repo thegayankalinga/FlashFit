@@ -28,90 +28,220 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             addWorkoutFormButton = new Button();
-            listView1 = new ListView();
+            workoutRecordListView = new ListView();
             id = new ColumnHeader();
             name = new ColumnHeader();
-            type = new ColumnHeader();
+            date = new ColumnHeader();
             calories = new ColumnHeader();
+            weight = new ColumnHeader();
+            saveWorkoutRecordButton = new Button();
+            weightAtWorkoutLabel = new Label();
+            selectWorkoutComboBox = new ComboBox();
+            selectWorkoutLabel = new Label();
+            selectWorkoutDateTimePicker = new Label();
+            workedoutDateTimePicker = new DateTimePicker();
+            weightAtWorkoutNumeric = new NumericUpDown();
+            workoutRecordEditButton = new Button();
+            workoutRecordDeleteButton = new Button();
+            workoutRecordGroupBox = new GroupBox();
+            ((System.ComponentModel.ISupportInitialize)weightAtWorkoutNumeric).BeginInit();
+            workoutRecordGroupBox.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.ForeColor = SystemColors.HighlightText;
-            label1.Location = new Point(23, 20);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(203, 21);
-            label1.TabIndex = 0;
-            label1.Text = "Workout User Control Form";
-            label1.Click += label1_Click;
             // 
             // addWorkoutFormButton
             // 
             addWorkoutFormButton.FlatStyle = FlatStyle.Flat;
-            addWorkoutFormButton.Location = new Point(23, 75);
+            addWorkoutFormButton.Location = new Point(23, 467);
             addWorkoutFormButton.Name = "addWorkoutFormButton";
-            addWorkoutFormButton.Size = new Size(114, 47);
+            addWorkoutFormButton.Size = new Size(159, 36);
             addWorkoutFormButton.TabIndex = 1;
-            addWorkoutFormButton.Text = "Add Workout";
+            addWorkoutFormButton.Text = "Add New Workout";
             addWorkoutFormButton.UseVisualStyleBackColor = true;
             addWorkoutFormButton.Click += addWorkoutFormButton_Click;
             // 
-            // listView1
+            // workoutRecordListView
             // 
-            listView1.Columns.AddRange(new ColumnHeader[] { id, name, type, calories });
-            listView1.Location = new Point(563, 54);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(357, 399);
-            listView1.TabIndex = 2;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            workoutRecordListView.BackColor = Color.FromArgb(46, 51, 73);
+            workoutRecordListView.Columns.AddRange(new ColumnHeader[] { id, name, date, calories, weight });
+            workoutRecordListView.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            workoutRecordListView.ForeColor = SystemColors.Window;
+            workoutRecordListView.FullRowSelect = true;
+            workoutRecordListView.Location = new Point(591, 21);
+            workoutRecordListView.Name = "workoutRecordListView";
+            workoutRecordListView.Size = new Size(410, 421);
+            workoutRecordListView.TabIndex = 2;
+            workoutRecordListView.UseCompatibleStateImageBehavior = false;
+            workoutRecordListView.View = View.Details;
             // 
             // id
             // 
+            id.Text = "ID";
             id.Width = 50;
             // 
             // name
             // 
+            name.Text = "Workout";
             name.Width = 100;
             // 
-            // type
+            // date
             // 
-            type.Width = 100;
+            date.Text = "Date";
+            date.Width = 100;
             // 
             // calories
             // 
+            calories.Text = "Calorie";
             calories.Width = 100;
+            // 
+            // weight
+            // 
+            weight.Text = "Weight";
+            // 
+            // saveWorkoutRecordButton
+            // 
+            saveWorkoutRecordButton.FlatStyle = FlatStyle.Flat;
+            saveWorkoutRecordButton.Location = new Point(192, 286);
+            saveWorkoutRecordButton.Name = "saveWorkoutRecordButton";
+            saveWorkoutRecordButton.Size = new Size(143, 36);
+            saveWorkoutRecordButton.TabIndex = 3;
+            saveWorkoutRecordButton.Text = "Save";
+            saveWorkoutRecordButton.UseVisualStyleBackColor = true;
+            saveWorkoutRecordButton.Click += saveWorkoutRecordButton_Click;
+            // 
+            // weightAtWorkoutLabel
+            // 
+            weightAtWorkoutLabel.AutoSize = true;
+            weightAtWorkoutLabel.Location = new Point(22, 174);
+            weightAtWorkoutLabel.Name = "weightAtWorkoutLabel";
+            weightAtWorkoutLabel.Size = new Size(161, 21);
+            weightAtWorkoutLabel.TabIndex = 4;
+            weightAtWorkoutLabel.Text = "Weight After Workout";
+            // 
+            // selectWorkoutComboBox
+            // 
+            selectWorkoutComboBox.FormattingEnabled = true;
+            selectWorkoutComboBox.Location = new Point(192, 46);
+            selectWorkoutComboBox.Name = "selectWorkoutComboBox";
+            selectWorkoutComboBox.Size = new Size(249, 29);
+            selectWorkoutComboBox.TabIndex = 5;
+            // 
+            // selectWorkoutLabel
+            // 
+            selectWorkoutLabel.AutoSize = true;
+            selectWorkoutLabel.Location = new Point(22, 49);
+            selectWorkoutLabel.Name = "selectWorkoutLabel";
+            selectWorkoutLabel.Size = new Size(115, 21);
+            selectWorkoutLabel.TabIndex = 4;
+            selectWorkoutLabel.Text = "Select Workout";
+            // 
+            // selectWorkoutDateTimePicker
+            // 
+            selectWorkoutDateTimePicker.AutoSize = true;
+            selectWorkoutDateTimePicker.Location = new Point(22, 111);
+            selectWorkoutDateTimePicker.Name = "selectWorkoutDateTimePicker";
+            selectWorkoutDateTimePicker.Size = new Size(87, 21);
+            selectWorkoutDateTimePicker.TabIndex = 4;
+            selectWorkoutDateTimePicker.Text = "Select Date";
+            // 
+            // workedoutDateTimePicker
+            // 
+            workedoutDateTimePicker.Checked = false;
+            workedoutDateTimePicker.CustomFormat = "yyyy-MMM-dd hh:MM tt";
+            workedoutDateTimePicker.Format = DateTimePickerFormat.Custom;
+            workedoutDateTimePicker.Location = new Point(192, 105);
+            workedoutDateTimePicker.MinDate = new DateTime(2000, 1, 1, 0, 0, 0, 0);
+            workedoutDateTimePicker.Name = "workedoutDateTimePicker";
+            workedoutDateTimePicker.Size = new Size(249, 29);
+            workedoutDateTimePicker.TabIndex = 6;
+            // 
+            // weightAtWorkoutNumeric
+            // 
+            weightAtWorkoutNumeric.Location = new Point(192, 172);
+            weightAtWorkoutNumeric.Name = "weightAtWorkoutNumeric";
+            weightAtWorkoutNumeric.Size = new Size(120, 29);
+            weightAtWorkoutNumeric.TabIndex = 7;
+            // 
+            // workoutRecordEditButton
+            // 
+            workoutRecordEditButton.FlatStyle = FlatStyle.Flat;
+            workoutRecordEditButton.Location = new Point(591, 467);
+            workoutRecordEditButton.Name = "workoutRecordEditButton";
+            workoutRecordEditButton.Size = new Size(143, 36);
+            workoutRecordEditButton.TabIndex = 3;
+            workoutRecordEditButton.Text = "Edit";
+            workoutRecordEditButton.UseVisualStyleBackColor = true;
+            workoutRecordEditButton.Click += saveWorkoutRecordButton_Click;
+            // 
+            // workoutRecordDeleteButton
+            // 
+            workoutRecordDeleteButton.FlatStyle = FlatStyle.Flat;
+            workoutRecordDeleteButton.Location = new Point(773, 467);
+            workoutRecordDeleteButton.Name = "workoutRecordDeleteButton";
+            workoutRecordDeleteButton.Size = new Size(143, 36);
+            workoutRecordDeleteButton.TabIndex = 3;
+            workoutRecordDeleteButton.Text = "Delete";
+            workoutRecordDeleteButton.UseVisualStyleBackColor = true;
+            workoutRecordDeleteButton.Click += saveWorkoutRecordButton_Click;
+            // 
+            // workoutRecordGroupBox
+            // 
+            workoutRecordGroupBox.Controls.Add(weightAtWorkoutNumeric);
+            workoutRecordGroupBox.Controls.Add(selectWorkoutLabel);
+            workoutRecordGroupBox.Controls.Add(workedoutDateTimePicker);
+            workoutRecordGroupBox.Controls.Add(selectWorkoutDateTimePicker);
+            workoutRecordGroupBox.Controls.Add(selectWorkoutComboBox);
+            workoutRecordGroupBox.Controls.Add(weightAtWorkoutLabel);
+            workoutRecordGroupBox.Controls.Add(saveWorkoutRecordButton);
+            workoutRecordGroupBox.ForeColor = SystemColors.ControlLightLight;
+            workoutRecordGroupBox.Location = new Point(23, 21);
+            workoutRecordGroupBox.Name = "workoutRecordGroupBox";
+            workoutRecordGroupBox.Size = new Size(478, 363);
+            workoutRecordGroupBox.TabIndex = 8;
+            workoutRecordGroupBox.TabStop = false;
+            workoutRecordGroupBox.Text = "Workout Record";
             // 
             // WorkoutUserControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
-            Controls.Add(listView1);
+            Controls.Add(workoutRecordDeleteButton);
+            Controls.Add(workoutRecordEditButton);
+            Controls.Add(workoutRecordListView);
             Controls.Add(addWorkoutFormButton);
-            Controls.Add(label1);
+            Controls.Add(workoutRecordGroupBox);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             ForeColor = SystemColors.HighlightText;
             Margin = new Padding(4);
             Name = "WorkoutUserControlForm";
-            Size = new Size(970, 528);
-            Enter += WorkoutUserControlForm_Enter;
+            Size = new Size(1042, 528);
+            Load += WorkoutUserControlForm_Load;
+            ((System.ComponentModel.ISupportInitialize)weightAtWorkoutNumeric).EndInit();
+            workoutRecordGroupBox.ResumeLayout(false);
+            workoutRecordGroupBox.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
-        #endregion
 
-        private Label label1;
+
+        #endregion
         private Button addWorkoutFormButton;
-        private ListView listView1;
+        private ListView workoutRecordListView;
         private ColumnHeader id;
         private ColumnHeader name;
-        private ColumnHeader type;
+        private ColumnHeader date;
         private ColumnHeader calories;
+        private Button saveWorkoutRecordButton;
+        private Label weightAtWorkoutLabel;
+        private ComboBox selectWorkoutComboBox;
+        private Label selectWorkoutLabel;
+        private Label selectWorkoutDateTimePicker;
+        private DateTimePicker workedoutDateTimePicker;
+        private NumericUpDown weightAtWorkoutNumeric;
+        private ColumnHeader weight;
+        private Button workoutRecordEditButton;
+        private Button workoutRecordDeleteButton;
+        private GroupBox workoutRecordGroupBox;
     }
 }

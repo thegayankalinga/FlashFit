@@ -4,7 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace FlashFitClassLibrary;
 
-[JsonConverter(typeof(StringEnumConverter))]
+//[JsonConverter(typeof(StringEnumConverter))]
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum WorkoutTypeEnum
 {
     [EnumMember(Value = "STRENGTH")]
