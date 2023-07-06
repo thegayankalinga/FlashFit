@@ -1,0 +1,35 @@
+[
+  {
+    "CheatmealRecordID": 1,
+    "Cheatmeal": {
+      "CheatmealId": 1,
+      "CheatmealName": "Pizza",
+      "CheatCalorieGain": 200
+    },
+    "UserEmail": "bg15407@gmail.com",
+    "CheatmealAddedDateTime": "2023-04-23T18:25:43.511Z",
+    "WeightAtMealRecordTime": 70
+  },
+  {
+    "CheatmealRecordID": 2,
+    "Cheatmeal": {
+      "CheatmealId": 3,
+      "CheatmealName": "Burger",
+      "CheatCalorieGain": 150
+    },
+    "UserEmail": "bg15407@gmail.com",
+    "CheatmealAddedDateTime": "2023-05-23T18:25:43.511Z",
+    "WeightAtMealRecordTime": 71
+  },
+  {
+    "CheatmealRecordID": 3,
+    "Cheatmeal": {
+      "CheatmealId": 5,
+      "CheatmealName": "Chocolate",
+      "CheatCalorieGain": 175
+    },
+    "UserEmail": "bg15407@gmail.com",
+    "CheatmealAddedDateTime": "2023-06-23T18:25:43.511Z",
+    "WeightAtMealRecordTime": 72
+  }
+]

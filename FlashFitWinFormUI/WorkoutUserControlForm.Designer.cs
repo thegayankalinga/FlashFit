@@ -45,6 +45,7 @@
             workoutRecordEditButton = new Button();
             workoutRecordDeleteButton = new Button();
             workoutRecordGroupBox = new GroupBox();
+            hiddenRecordIDText = new TextBox();
             ((System.ComponentModel.ISupportInitialize)weightAtWorkoutNumeric).BeginInit();
             workoutRecordGroupBox.SuspendLayout();
             SuspendLayout();
@@ -171,7 +172,7 @@
             workoutRecordEditButton.TabIndex = 3;
             workoutRecordEditButton.Text = "Edit";
             workoutRecordEditButton.UseVisualStyleBackColor = true;
-            workoutRecordEditButton.Click += saveWorkoutRecordButton_Click;
+            workoutRecordEditButton.Click += workoutRecordEditButton_Click;
             // 
             // workoutRecordDeleteButton
             // 
@@ -182,10 +183,11 @@
             workoutRecordDeleteButton.TabIndex = 3;
             workoutRecordDeleteButton.Text = "Delete";
             workoutRecordDeleteButton.UseVisualStyleBackColor = true;
-            workoutRecordDeleteButton.Click += saveWorkoutRecordButton_Click;
+            workoutRecordDeleteButton.Click += workoutRecordDeleteButton_Click;
             // 
             // workoutRecordGroupBox
             // 
+            workoutRecordGroupBox.Controls.Add(hiddenRecordIDText);
             workoutRecordGroupBox.Controls.Add(weightAtWorkoutNumeric);
             workoutRecordGroupBox.Controls.Add(selectWorkoutLabel);
             workoutRecordGroupBox.Controls.Add(workedoutDateTimePicker);
@@ -200,6 +202,13 @@
             workoutRecordGroupBox.TabIndex = 8;
             workoutRecordGroupBox.TabStop = false;
             workoutRecordGroupBox.Text = "Workout Record";
+            // 
+            // hiddenRecordIDText
+            // 
+            hiddenRecordIDText.Location = new Point(194, 222);
+            hiddenRecordIDText.Name = "hiddenRecordIDText";
+            hiddenRecordIDText.Size = new Size(62, 29);
+            hiddenRecordIDText.TabIndex = 8;
             // 
             // WorkoutUserControlForm
             // 
@@ -243,5 +252,6 @@
         private Button workoutRecordEditButton;
         private Button workoutRecordDeleteButton;
         private GroupBox workoutRecordGroupBox;
+        private TextBox hiddenRecordIDText;
     }
 }

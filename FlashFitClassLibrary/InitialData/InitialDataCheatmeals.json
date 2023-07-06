@@ -1,0 +1,29 @@
+[
+  {
+    "CheatmealId": 1,
+    "CheatmealName": "Pizza",
+    "CheatCalorieGain": 200
+  },
+  {
+    "CheatmealId": 2,
+    "CheatmealName": "Noodles",
+    "CheatCalorieGain": 50
+  },
+  {
+    "CheatmealId": 3,
+    "CheatmealName": "Burger",
+    "CheatCalorieGain": 150
+  },
+  {
+    "CheatmealId": 4,
+    "CheatmealName": "Tacos",
+    "CheatCalorieGain": 250
+  },
+  {
+    "CheatmealId": 5,
+    "CheatmealName": "Chocolate",
+    "CheatCalorieGain": 175
+  }
+
+
+]

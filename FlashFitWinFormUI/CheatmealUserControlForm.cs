@@ -16,5 +16,11 @@ namespace FlashFitWinFormUI
         {
             InitializeComponent();
         }
+
+        private void addCheatMealButton_Click(object sender, EventArgs e)
+        {
+            AddCheatmealForm addCheatmealForm = new AddCheatmealForm();
+            addCheatmealForm.ShowDialog();
+        }
     }
 }

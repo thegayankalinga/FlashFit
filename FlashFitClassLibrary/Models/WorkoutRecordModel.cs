@@ -17,5 +17,19 @@ namespace FlashFitClassLibrary.Models
         public DateTime WorkedoutDateTime { get; set; }
         public decimal WeightAtCompletion { get; set; }
 
+        [JsonConstructor]
+        public WorkoutRecordModel()
+        {
+        }
+
+        [JsonConstructor]
+        public WorkoutRecordModel(int workoutRecordId, WorkoutModel workout, string userEmail, DateTime workedoutDateTime, decimal weightAtCompletion)
+        {
+            WorkoutRecordId = workoutRecordId;
+            Workout = workout;
+            UserEmail = userEmail;
+            WorkedoutDateTime = workedoutDateTime;
+            WeightAtCompletion = weightAtCompletion;
+        }
     }
 }

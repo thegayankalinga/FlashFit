@@ -34,10 +34,13 @@ public static class Program
 
         ApplicationConfiguration.Initialize();
 
-        //TODO: To remove with microservice implementation 
+        //TODO: To remove with microservice implementation
+        //Loading initial Data
         TemporaryDataStore.userProfiles.Add(getLoggedInUser());
         JsonDeserializer.loadWorkoutModelsFromJson();
         JsonDeserializer.loadWorkoutRecordFromJson();
+        JsonDeserializer.loadCheatmealModelsFromJson();
+        JsonDeserializer.loadCheatmealRecordFromJson();
 
 
         Application.Run(new MainForm());

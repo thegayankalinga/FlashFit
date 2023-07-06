@@ -72,7 +72,7 @@ public partial class AddWorkoutForm : Form
             return;
         }
 
-        //TODO: Get the main form to focus
+       
 
     }
 
@@ -145,6 +145,10 @@ public partial class AddWorkoutForm : Form
                 workoutTypeComboBox.SelectedItem = workoutModel.WorkoutType;
                 caloriesBurnRateNumeric.Value = workoutModel.CaloryBurnRate;
                 editButtonClicked = true;
+            }
+            else
+            {
+                MessageBox.Show("Something weng wrong");
             }
         }
         else
