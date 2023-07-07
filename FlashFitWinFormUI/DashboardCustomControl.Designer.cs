@@ -34,19 +34,25 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(166, 140);
+            label1.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.ForeColor = SystemColors.Info;
+            label1.Location = new Point(342, 253);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(96, 15);
+            label1.Size = new Size(262, 37);
             label1.TabIndex = 0;
-            label1.Text = "Dashboard Panel";
+            label1.Text = "Welcome to Flash Fit";
             // 
             // DashboardCustomControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(46, 51, 73);
             Controls.Add(label1);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            Margin = new Padding(4);
             Name = "DashboardCustomControl";
-            Size = new Size(768, 552);
+            Size = new Size(1042, 528);
             ResumeLayout(false);
             PerformLayout();
         }
