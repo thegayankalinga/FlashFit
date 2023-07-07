@@ -14,5 +14,7 @@ public class UserProfileModel
     public GenderTypeEnum Gender { get; set; }
     public decimal WeightInKiloGrams { get; set; }
     public decimal HeightInCentiMeter { get; set; }
+    public decimal BodyMassIndex { get; set; }
+    public HealthStatusEnum HealthStatusEnum { get; set; }
 
 }

@@ -107,10 +107,10 @@ public class JsonDeserializer
         string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialData\InitialDataCheatmealRecords.json";
         using (StreamReader reader = new StreamReader(filePath))
         {
-            var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            
             string json = reader.ReadToEnd();
             //incoming = JsonConvert.DeserializeObject<List<WorkoutRecordModel>>(json);
-            incoming = System.Text.Json.JsonSerializer.Deserialize<List<CheatmealRecordModel>>(json, options);
+            incoming = System.Text.Json.JsonSerializer.Deserialize<List<CheatmealRecordModel>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         }
 

@@ -94,7 +94,9 @@ public partial class MainForm : Form
     {
         //change the panel focus to this button
         moveHighlighter(profileButton, navigationPanel);
-        profileUserControlForm1.BringToFront();
+        MessageBox.Show("Checkback later");
+        //profileUserControlForm1.BringToFront();
+
         mainFormPanelHeaderLabel.Text = "User Profile";
     }
 

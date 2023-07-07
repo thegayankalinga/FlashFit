@@ -205,10 +205,12 @@
             // 
             // hiddenRecordIDText
             // 
+            hiddenRecordIDText.Enabled = false;
             hiddenRecordIDText.Location = new Point(194, 222);
             hiddenRecordIDText.Name = "hiddenRecordIDText";
             hiddenRecordIDText.Size = new Size(62, 29);
             hiddenRecordIDText.TabIndex = 8;
+            hiddenRecordIDText.Visible = false;
             // 
             // WorkoutUserControlForm
             // 

@@ -23,6 +23,23 @@ public class WorkoutRecordService
     //Get
     public List<WorkoutRecordModel> getWorkoutRecords() { return TemporaryDataStore.workoutRecords;}
 
+    //Get by email 
+    public List<WorkoutRecordModel> getWorkoutRecordsByEmail(string email)
+    {
+        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords.FindAll(x => x.UserEmail == email);
+
+        return list;
+    }
+
+    //get by email & date range
+    public List<WorkoutRecordModel> getWorkoutRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
+    {
+        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords.Where(x => x.UserEmail == email &&  x.WorkedoutDateTime <= to && x.WorkedoutDateTime >= from).ToList();
+        
+        return list;
+    }
+
+
     //Get by ID
     public WorkoutRecordModel getWorkoutRecordById(int id)
     {

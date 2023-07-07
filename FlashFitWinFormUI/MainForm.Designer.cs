@@ -50,9 +50,8 @@
             closeMainFormButton = new Button();
             workoutUserControlForm1 = new WorkoutUserControlForm();
             cheatmealUserControlForm1 = new CheatmealUserControlForm();
-            reportUserControlForm1 = new ReportUserControlForm();
             predictionUserControlForm1 = new PredictionUserControlForm();
-            profileUserControlForm1 = new ProfileUserControlForm();
+            reportUserControlForm1 = new ReportUserControlForm();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -330,7 +329,10 @@
             // 
             // workoutUserControlForm1
             // 
-            workoutUserControlForm1.Location = new Point(183, 35);
+            workoutUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
+            workoutUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            workoutUserControlForm1.ForeColor = SystemColors.HighlightText;
+            workoutUserControlForm1.Location = new Point(183, 39);
             workoutUserControlForm1.Margin = new Padding(4);
             workoutUserControlForm1.Name = "workoutUserControlForm1";
             workoutUserControlForm1.Size = new Size(1029, 623);
@@ -338,38 +340,31 @@
             // 
             // cheatmealUserControlForm1
             // 
-            cheatmealUserControlForm1.Location = new Point(183, 35);
+            cheatmealUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
+            cheatmealUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            cheatmealUserControlForm1.Location = new Point(183, 39);
             cheatmealUserControlForm1.Margin = new Padding(4);
             cheatmealUserControlForm1.Name = "cheatmealUserControlForm1";
-            cheatmealUserControlForm1.Size = new Size(768, 542);
+            cheatmealUserControlForm1.Size = new Size(1029, 623);
             cheatmealUserControlForm1.TabIndex = 5;
-            // 
-            // reportUserControlForm1
-            // 
-            reportUserControlForm1.Location = new Point(183, 35);
-            reportUserControlForm1.Margin = new Padding(4);
-            reportUserControlForm1.Name = "reportUserControlForm1";
-            reportUserControlForm1.Size = new Size(1029, 627);
-            reportUserControlForm1.TabIndex = 6;
             // 
             // predictionUserControlForm1
             // 
+            predictionUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
+            predictionUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             predictionUserControlForm1.Location = new Point(183, 35);
             predictionUserControlForm1.Margin = new Padding(4);
             predictionUserControlForm1.Name = "predictionUserControlForm1";
             predictionUserControlForm1.Size = new Size(1029, 627);
             predictionUserControlForm1.TabIndex = 7;
             // 
-            // profileUserControlForm1
+            // reportUserControlForm1
             // 
-            profileUserControlForm1.AutoScroll = true;
-            profileUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
-            profileUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            profileUserControlForm1.Location = new Point(183, 35);
-            profileUserControlForm1.Margin = new Padding(4);
-            profileUserControlForm1.Name = "profileUserControlForm1";
-            profileUserControlForm1.Size = new Size(1029, 627);
-            profileUserControlForm1.TabIndex = 1;
+            reportUserControlForm1.Location = new Point(183, 35);
+            reportUserControlForm1.Margin = new Padding(4, 4, 4, 4);
+            reportUserControlForm1.Name = "reportUserControlForm1";
+            reportUserControlForm1.Size = new Size(1029, 627);
+            reportUserControlForm1.TabIndex = 8;
             // 
             // MainForm
             // 
@@ -377,15 +372,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(1215, 662);
-            Controls.Add(profileUserControlForm1);
-            Controls.Add(predictionUserControlForm1);
             Controls.Add(reportUserControlForm1);
             Controls.Add(cheatmealUserControlForm1);
             Controls.Add(workoutUserControlForm1);
             Controls.Add(panel3);
-            Controls.Add(dashboardCustomControl1);
             Controls.Add(navigationPanel);
             Controls.Add(panel1);
+            Controls.Add(dashboardCustomControl1);
+            Controls.Add(predictionUserControlForm1);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -422,10 +416,11 @@
         private Button closeMainFormButton;
         private WorkoutUserControlForm workoutUserControlForm1;
         private CheatmealUserControlForm cheatmealUserControlForm1;
-        private ReportUserControlForm reportUserControlForm1;
+
         private PredictionUserControlForm predictionUserControlForm1;
         private ProfileUserControlForm profileUserControlForm1;
         private Label userEmailLabel;
         private Label mainFormPanelHeaderLabel;
+        private ReportUserControlForm reportUserControlForm1;
     }
 }

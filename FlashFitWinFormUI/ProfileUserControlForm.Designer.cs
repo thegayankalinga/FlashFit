@@ -40,10 +40,6 @@
             genderGroupBox = new GroupBox();
             weightLabel = new Label();
             heightLabel = new Label();
-            listView1 = new ListView();
-            columnHeader1 = new ColumnHeader();
-            columnHeader2 = new ColumnHeader();
-            columnHeader3 = new ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)wieghtNumeric).BeginInit();
             ((System.ComponentModel.ISupportInitialize)heightNumeric).BeginInit();
             genderGroupBox.SuspendLayout();
@@ -185,40 +181,12 @@
             heightLabel.TabIndex = 9;
             heightLabel.Text = "Height (CM)";
             // 
-            // listView1
-            // 
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
-            listView1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            listView1.GridLines = true;
-            listView1.Location = new Point(394, 165);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(393, 262);
-            listView1.TabIndex = 11;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
-            // 
-            // columnHeader1
-            // 
-            columnHeader1.Text = "Name";
-            columnHeader1.Width = 200;
-            // 
-            // columnHeader2
-            // 
-            columnHeader2.Text = "Email";
-            columnHeader2.Width = 100;
-            // 
-            // columnHeader3
-            // 
-            columnHeader3.Text = "Weight";
-            columnHeader3.Width = 50;
-            // 
             // ProfileUserControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             BackColor = Color.FromArgb(46, 51, 73);
-            Controls.Add(listView1);
             Controls.Add(genderGroupBox);
             Controls.Add(heightLabel);
             Controls.Add(weightLabel);
@@ -254,9 +222,5 @@
         private GroupBox genderGroupBox;
         private Label weightLabel;
         private Label heightLabel;
-        private ListView listView1;
-        private ColumnHeader columnHeader1;
-        private ColumnHeader columnHeader2;
-        private ColumnHeader columnHeader3;
     }
 }

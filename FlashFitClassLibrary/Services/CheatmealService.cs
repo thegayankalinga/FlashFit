@@ -63,4 +63,17 @@ public class CheatmealService
     {
         return TemporaryDataStore.cheatmealModels.Remove(getCheatmealById(id));
     }
+
+    public List<CheatmealRecordModel> getCheatmealRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
+    {
+        List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail == email && x.CheatmealAddedDateTime <= to && x.CheatmealAddedDateTime >= from).ToList();
+
+        return list;
+    }
+    
+    public List<CheatmealRecordModel> GetCheatmealRecordModelsByEmail(string email)
+    {
+        List<CheatmealRecordModel> lsit = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail.Contains(email)).ToList();
+        return lsit;
+    }
 }

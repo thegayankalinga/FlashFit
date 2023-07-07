@@ -16,13 +16,21 @@ namespace FlashFitWinFormUI;
 public partial class ProfileUserControlForm : UserControl
 {
 
-    public UserService userService;
+    public UserService userService = new UserService();
     public ProfileUserControlForm()
     {
         InitializeComponent();
+        setUserDataAtLoad();
+    }
+
+    private void setUserDataAtLoad()
+    {
         fullNameText.Text = Program.getLoggedInUser().Name;
         emailText.Text = Program.getLoggedInUser().Email;
-        if (Program.getLoggedInUser().Gender == FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE)
+
+        UserProfileModel model = userService.getUserByEmail(Program.getLoggedInUser().Email);
+
+        if (model.Gender == FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE)
         {
             maleRadioButton.Checked = true;
 
@@ -32,8 +40,8 @@ public partial class ProfileUserControlForm : UserControl
             femaleRadioButton.Checked = true;
 
         }
-        heightNumeric.Value = Program.getLoggedInUser().HeightInCentiMeter;
-        wieghtNumeric.Value = Program.getLoggedInUser().WeightInKiloGrams;
+        heightNumeric.Value = model.HeightInCentiMeter;
+        wieghtNumeric.Value = model.WeightInKiloGrams;
     }
 
     private void userProfileSaveButton_Click(object sender, EventArgs e)
@@ -63,42 +71,35 @@ public partial class ProfileUserControlForm : UserControl
             MessageBox.Show($"User {model.Name} updated successfully");
         }
 
-        //foreach (UserProfileModel user in TemporaryDataStore.userProfiles)
-        //{
-        //    if (user.Email.Equals(model.Email))
-        //    {
-        //        user.Name = fullNameText.Text;
-        //        user.Gender = maleRadioButton.Checked ? FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE : FlashFitClassLibrary.Enumz.GenderTypeEnum.FEMALE;
-        //        user.WeightInKiloGrams = wieghtNumeric.Value;
-        //        user.HeightInCentiMeter = heightNumeric.Value;
-
-        //        break;
-        //    }
-
-        //}
+        //loadListView();
 
 
-        HashSet<UserProfileModel> userList = TemporaryDataStore.userProfiles;
-        string[] item = new string[3];
-        ListViewItem listItem;
-        listView1.Items.Clear();
-
-        foreach (var i in userList)
-        {
-
-            item[0] = i.Name;
-            item[1] = i.Email;
-            item[2] = i.WeightInKiloGrams.ToString();
-
-
-            listItem = new ListViewItem(item);
-            listView1.Items.Add(listItem);
-        }
 
     }
 
+    //private void loadListView()
+    //{
+    //    HashSet<UserProfileModel> userList = TemporaryDataStore.userProfiles;
+    //    string[] item = new string[3];
+    //    ListViewItem listItem;
+    //    listView1.Items.Clear();
+
+    //    foreach (var i in userList)
+    //    {
+
+    //        item[0] = i.Name;
+    //        item[1] = i.Email;
+    //        item[2] = i.WeightInKiloGrams.ToString();
+
+
+    //        listItem = new ListViewItem(item);
+    //        listView1.Items.Add(listItem);
+    //    }
+    //}
+
     private void loadFormDataFromLoggedInuser()
     {
-
+        //loadListView();
+        setUserDataAtLoad();
     }
 }
