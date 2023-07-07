@@ -28,117 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBox1 = new ComboBox();
-            listView1 = new ListView();
-            label1 = new Label();
-            dateTimePicker1 = new DateTimePicker();
-            label2 = new Label();
-            label3 = new Label();
-            dateTimePicker2 = new DateTimePicker();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
+            reportTypeComboBox = new ComboBox();
+            reportListView = new ListView();
             date = new ColumnHeader();
             Name = new ColumnHeader();
             weight = new ColumnHeader();
+            label1 = new Label();
+            fromDatePicker = new DateTimePicker();
+            label2 = new Label();
+            label3 = new Label();
+            toDatePicker = new DateTimePicker();
+            namePlac = new Label();
+            weightPcl = new Label();
+            bmiPlc = new Label();
+            healthStatusPlc = new Label();
+            groupBox1 = new GroupBox();
+            getAllRecordButton = new Button();
+            filterByDateButton = new Button();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
-            // comboBox1
+            // reportTypeComboBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(162, 41);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(203, 29);
-            comboBox1.TabIndex = 0;
+            reportTypeComboBox.FormattingEnabled = true;
+            reportTypeComboBox.Items.AddRange(new object[] { "Cheatmeal", "Workout" });
+            reportTypeComboBox.Location = new Point(138, 28);
+            reportTypeComboBox.Name = "reportTypeComboBox";
+            reportTypeComboBox.Size = new Size(203, 29);
+            reportTypeComboBox.TabIndex = 0;
             // 
-            // listView1
+            // reportListView
             // 
-            listView1.BackColor = Color.FromArgb(46, 51, 73);
-            listView1.Columns.AddRange(new ColumnHeader[] { date, Name, weight });
-            listView1.Location = new Point(570, 38);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(417, 438);
-            listView1.TabIndex = 1;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(40, 44);
-            label1.Name = "label1";
-            label1.Size = new Size(93, 21);
-            label1.TabIndex = 2;
-            label1.Text = "Report Type";
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new Point(165, 97);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(272, 29);
-            dateTimePicker1.TabIndex = 3;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(40, 103);
-            label2.Name = "label2";
-            label2.Size = new Size(83, 21);
-            label2.TabIndex = 2;
-            label2.Text = "From Date";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(40, 162);
-            label3.Name = "label3";
-            label3.Size = new Size(61, 21);
-            label3.TabIndex = 2;
-            label3.Text = "To Date";
-            // 
-            // dateTimePicker2
-            // 
-            dateTimePicker2.Location = new Point(165, 154);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(272, 29);
-            dateTimePicker2.TabIndex = 3;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(40, 270);
-            label4.Name = "label4";
-            label4.Size = new Size(52, 21);
-            label4.TabIndex = 2;
-            label4.Text = "label1";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(40, 329);
-            label5.Name = "label5";
-            label5.Size = new Size(52, 21);
-            label5.TabIndex = 2;
-            label5.Text = "label1";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(40, 388);
-            label6.Name = "label6";
-            label6.Size = new Size(52, 21);
-            label6.TabIndex = 2;
-            label6.Text = "label1";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(40, 433);
-            label7.Name = "label7";
-            label7.Size = new Size(52, 21);
-            label7.TabIndex = 2;
-            label7.Text = "label1";
+            reportListView.BackColor = Color.FromArgb(46, 51, 73);
+            reportListView.Columns.AddRange(new ColumnHeader[] { date, Name, weight });
+            reportListView.ForeColor = SystemColors.Window;
+            reportListView.Location = new Point(570, 38);
+            reportListView.Name = "reportListView";
+            reportListView.Size = new Size(417, 463);
+            reportListView.TabIndex = 1;
+            reportListView.UseCompatibleStateImageBehavior = false;
+            reportListView.View = View.Details;
             // 
             // date
             // 
@@ -156,45 +88,195 @@
             weight.TextAlign = HorizontalAlignment.Right;
             weight.Width = 100;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 36);
+            label1.Name = "label1";
+            label1.Size = new Size(93, 21);
+            label1.TabIndex = 2;
+            label1.Text = "Report Type";
+            // 
+            // fromDatePicker
+            // 
+            fromDatePicker.Location = new Point(138, 134);
+            fromDatePicker.Name = "fromDatePicker";
+            fromDatePicker.Size = new Size(272, 29);
+            fromDatePicker.TabIndex = 3;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(6, 140);
+            label2.Name = "label2";
+            label2.Size = new Size(83, 21);
+            label2.TabIndex = 2;
+            label2.Text = "From Date";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(6, 196);
+            label3.Name = "label3";
+            label3.Size = new Size(61, 21);
+            label3.TabIndex = 2;
+            label3.Text = "To Date";
+            // 
+            // toDatePicker
+            // 
+            toDatePicker.Location = new Point(138, 190);
+            toDatePicker.Name = "toDatePicker";
+            toDatePicker.Size = new Size(272, 29);
+            toDatePicker.TabIndex = 3;
+            // 
+            // namePlac
+            // 
+            namePlac.AutoSize = true;
+            namePlac.Location = new Point(27, 14);
+            namePlac.Name = "namePlac";
+            namePlac.Size = new Size(52, 21);
+            namePlac.TabIndex = 2;
+            namePlac.Text = "label1";
+            // 
+            // weightPcl
+            // 
+            weightPcl.AutoSize = true;
+            weightPcl.Location = new Point(138, 332);
+            weightPcl.Name = "weightPcl";
+            weightPcl.Size = new Size(52, 21);
+            weightPcl.TabIndex = 2;
+            weightPcl.Text = "label1";
+            // 
+            // bmiPlc
+            // 
+            bmiPlc.AutoSize = true;
+            bmiPlc.Location = new Point(138, 371);
+            bmiPlc.Name = "bmiPlc";
+            bmiPlc.Size = new Size(52, 21);
+            bmiPlc.TabIndex = 2;
+            bmiPlc.Text = "label1";
+            // 
+            // healthStatusPlc
+            // 
+            healthStatusPlc.AutoSize = true;
+            healthStatusPlc.Location = new Point(138, 416);
+            healthStatusPlc.Name = "healthStatusPlc";
+            healthStatusPlc.Size = new Size(52, 21);
+            healthStatusPlc.TabIndex = 2;
+            healthStatusPlc.Text = "label1";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(getAllRecordButton);
+            groupBox1.Controls.Add(filterByDateButton);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(toDatePicker);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(fromDatePicker);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Controls.Add(healthStatusPlc);
+            groupBox1.Controls.Add(reportTypeComboBox);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(weightPcl);
+            groupBox1.Controls.Add(bmiPlc);
+            groupBox1.ForeColor = SystemColors.Control;
+            groupBox1.Location = new Point(27, 38);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(459, 463);
+            groupBox1.TabIndex = 4;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Filter";
+            // 
+            // getAllRecordButton
+            // 
+            getAllRecordButton.FlatStyle = FlatStyle.Flat;
+            getAllRecordButton.Location = new Point(138, 74);
+            getAllRecordButton.Name = "getAllRecordButton";
+            getAllRecordButton.Size = new Size(136, 39);
+            getAllRecordButton.TabIndex = 5;
+            getAllRecordButton.Text = "Get All";
+            getAllRecordButton.UseVisualStyleBackColor = true;
+            getAllRecordButton.Click += getAllRecordButton_Click;
+            // 
+            // filterByDateButton
+            // 
+            filterByDateButton.FlatStyle = FlatStyle.Flat;
+            filterByDateButton.Location = new Point(138, 246);
+            filterByDateButton.Name = "filterByDateButton";
+            filterByDateButton.Size = new Size(136, 39);
+            filterByDateButton.TabIndex = 5;
+            filterByDateButton.Text = "Filter By Date";
+            filterByDateButton.UseVisualStyleBackColor = true;
+            filterByDateButton.Click += filterByDateButton_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(15, 371);
+            label4.Name = "label4";
+            label4.Size = new Size(37, 21);
+            label4.TabIndex = 2;
+            label4.Text = "BMI";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(15, 332);
+            label5.Name = "label5";
+            label5.Size = new Size(99, 21);
+            label5.TabIndex = 2;
+            label5.Text = "Weight in KG";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(15, 416);
+            label6.Name = "label6";
+            label6.Size = new Size(109, 21);
+            label6.TabIndex = 2;
+            label6.Text = "Overall Health";
+            // 
             // ReportUserControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
-            Controls.Add(dateTimePicker2);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(label3);
-            Controls.Add(dateTimePicker1);
-            Controls.Add(label5);
-            Controls.Add(label2);
-            Controls.Add(label4);
-            Controls.Add(label1);
-            Controls.Add(listView1);
-            Controls.Add(comboBox1);
+            Controls.Add(reportListView);
+            Controls.Add(groupBox1);
+            Controls.Add(namePlac);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Margin = new Padding(4, 4, 4, 4);
-            Name = "ReportUserControlForm";
+            Margin = new Padding(4);
+            Name = new ColumnHeader("ReportUserControlForm");
             Size = new Size(1042, 528);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private ComboBox comboBox1;
-        private ListView listView1;
+        private ComboBox reportTypeComboBox;
+        private ListView reportListView;
         private ColumnHeader date;
         private ColumnHeader Name;
         private ColumnHeader weight;
         private Label label1;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker fromDatePicker;
         private Label label2;
         private Label label3;
-        private DateTimePicker dateTimePicker2;
-        private Label label4;
-        private Label label5;
+        private DateTimePicker toDatePicker;
+        private Label namePlac;
+        private Label weightPcl;
+        private Label bmiPlc;
+        private Label healthStatusPlc;
+        private GroupBox groupBox1;
+        private Button filterByDateButton;
+        private Button getAllRecordButton;
         private Label label6;
-        private Label label7;
+        private Label label5;
+        private Label label4;
     }
 }

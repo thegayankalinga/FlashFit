@@ -39,6 +39,14 @@ public class CheatmealRecoredService
         }
     }
 
+    //get by email & date range
+    public List<CheatmealRecordModel> getCheatmealRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
+    {
+        List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail == email && x.CheatmealAddedDateTime <= to && x.CheatmealAddedDateTime >= from).ToList();
+
+        return list;
+    }
+
     //update
     public bool updateCheatmealRecord(CheatmealRecordModel cheatmealRecord)
     {
