@@ -133,6 +133,16 @@ namespace FlashFitWinFormUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FlashFitLogo {
+            get {
+                object obj = ResourceManager.GetObject("FlashFitLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap home {
             get {
                 object obj = ResourceManager.GetObject("home", resourceCulture);
@@ -186,6 +196,16 @@ namespace FlashFitWinFormUI.Properties {
         internal static System.Drawing.Bitmap log_out {
             get {
                 object obj = ResourceManager.GetObject("log-out", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stinger_Fit_1 {
+            get {
+                object obj = ResourceManager.GetObject("Stinger Fit 1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

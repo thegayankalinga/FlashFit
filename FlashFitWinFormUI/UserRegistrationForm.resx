@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
+  <!-- 
     Microsoft ResX Schema 
-
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
     <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing"">Blue</data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAMMOAADDDgAAAAAAAAAA
-        AAD78f3/+/H9//vx/f/78f3/+/H9//rw/P/u5u//7eXs/+/m6P/r4eb/9Orz//vx/f/78f3/+/H9//vx
-        /f/78f3/+/H9//vx/f/78f3/+/H9//vy///56/D/78u2/86ltP+5qO7/6d71//vx+f/78f3/+/H9//vx
-        /f/78f3/+/H9//vx/f/78f3/+/H+//vx/P/y2Lj/56ZH/+aBC//aaA//XiWv/11G/v/Mv/3//fP9//vx
-        /f/78f3/+/H9//vx/f/78f3/+/H+//nv9P/nzYT/2aIR/9uQAP/ghgD/6HwA/4Y4dv8cAP7/PCn9/7Ss
-        /f/78f3/+/H9//vx/f/78f3/+/H+//rw9//i0nj/z68E/9OlAP/XnAD/25IA/+OIAP+SRmP/Iw/9/ycr
-        /v88S/7/trj9//zy/f/78f3/+/H9//zy///o36j/yr0H/8u1AP/PrQD/06QA/9aaAP/flgT/n3CR/ykr
-        //8xTP//MFP//0ls/v/M0P3//fP9//vx/f/06vr/x8VW/8vGFv/i1Xj/5dWS/9/Gav/jv1r/8NKb/8q/
-        8/81Q///Mlb//zRf//8yZv//Yo3+/+fl/f/98v3/5Nn2/66vSv/l44z/7Ob//42m//+Gqf//4uP8//3z
-        ///y6f7/a3f9/y5Z//81af//NXD+/zZ3//+UtP3/+vH9/+XZ/v+DeJv/xcGl/5Of//9Ab/7/Q4H//6/H
-        /f/+8/3//fP9/9jU/f9gf/3/NG/+/zR2//8xef//Z5n+//Ls/f/68P3/k4P4/z087P88Vv3/Pm7//1SL
-        /v/P2P3//fP9//vx/f/98/3/5+P9/6W5/f91oP7/b57+/7rK/f/78f3//PL9/+/k/f+Vk/7/Ynb+/3OS
-        /v/Ayfv/+u78//vq+f/75vf/++v6//zv/P/98/3/+O/9//fu/f/88v3/+/H9//vx/f/88v3/+/H9//Do
-        /f/06vz//sHh//y73//8q9b//ZnM//y73//8y+j/+/D9//vx/f/78f3/+/H9//vx/f/78f3/+/H9//vx
-        /f/88v3/++/8//yq1f/+dLb//YS9//2Gv//8kMT//J/O//vo+P/78f3/+/H9//vx/f/78f3/+/H9//vx
-        /f/78f3/+/H9//vx/v/50Nv/9aSq//ansP/0m53/85iX//ayu//76vf/+/H9//vx/f/78f3/+/H9//vx
-        /f/78f3/+/H9//vx/f/78f7/+unw//fb2v/55Oj/99jW//fZ1//55Oj/+/D7//vx/f/78f3/+/H9//vx
-        /f/78f3/+/H9//vx/f/78f3/+/H9//vx/v/78v//+/L+//vy///78v//+/L+//vx/f/78f3/+/H9//vx
-        /f/78f3/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAA==
-</value>
-  </data>
 </root>

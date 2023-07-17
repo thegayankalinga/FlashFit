@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace FlashFitWinFormUI
 {
-    public partial class UserLoginForm : Form
+    public partial class UserRegistrationForm : Form
     {
-        public UserLoginForm()
+        public UserRegistrationForm()
         {
             InitializeComponent();
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            MessageBox.Show("Register Form");
         }
     }
 }

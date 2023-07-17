@@ -44,7 +44,7 @@ public static class Program
         JsonDeserializer.loadCheatmealRecordFromJson();
 
 
-        Application.Run(new MainForm());
+        Application.Run(new UserLoginForm());
         
     }
 
