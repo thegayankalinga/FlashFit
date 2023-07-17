@@ -1,4 +1,5 @@
-﻿using FlashFitClassLibrary.Models;
+﻿using FlashFitClassLibrary.InitialData;
+using FlashFitClassLibrary.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ public class JsonDeserializer
     public static void loadWorkoutModelsFromJson()
     {
         var incoming = new List<WorkoutModel>();
-        string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialDataWorkoutModels.json";
+        string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialData\InitialDataWorkoutModels.json";
         using (StreamReader reader = new StreamReader(filePath))
         {
             string json = reader.ReadToEnd();
@@ -63,7 +64,7 @@ public class JsonDeserializer
     public static void loadWorkoutRecordFromJson()
     {
         var incoming = new List<WorkoutRecordModel>();
-        string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialDataWorkoutRecord.json";
+        string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialData\InitialDataWorkoutRecord.json";
         using (StreamReader reader = new StreamReader(filePath))
         {
             string json = reader.ReadToEnd();

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashFitClassLibrary;
+namespace FlashFitClassLibrary.InitialData;
 
 public static class TemporaryDataStore
 {
     //public static List<UserProfileModel> userProfiles = new(); 
-    public static int WorkoutIDCounter =0;
+    public static int WorkoutIDCounter = 0;
     public static int WorkoutRecordIDCounter = 0;
     public static int CheatmealIDCounter = 0;
     public static int CheatmealRecordIdCounter = 0;

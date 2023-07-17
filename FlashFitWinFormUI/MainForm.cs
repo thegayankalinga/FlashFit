@@ -80,6 +80,17 @@ public partial class MainForm : Form
         dashboardCustomControl1.BringToFront();
     }
 
+    private void profileButton_Click(object sender, EventArgs e)
+    {       
+        //MessageBox.Show("Checkback later");
+        //profileUserControlForm1.BringToFront();
+        //change the panel focus to this button
+        moveHighlighter(profileButton, navigationPanel);
+       
+        profileUserControlForm1.BringToFront();
+        //mainFormPanelHeaderLabel.Text = "User Profile";
+    }
+
     public void moveHighlighter(Button btn, Panel panel)
     {
         panel.Height = btn.Height;
@@ -89,17 +100,6 @@ public partial class MainForm : Form
 
 
     }
-
-    private void profileButton_Click(object sender, EventArgs e)
-    {
-        //change the panel focus to this button
-        moveHighlighter(profileButton, navigationPanel);
-        MessageBox.Show("Checkback later");
-        //profileUserControlForm1.BringToFront();
-
-        mainFormPanelHeaderLabel.Text = "User Profile";
-    }
-
 
     /// <summary>
     /// When leaving set the original color back for all buttons. 

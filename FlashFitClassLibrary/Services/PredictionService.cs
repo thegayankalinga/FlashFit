@@ -45,7 +45,7 @@ public class PredictionService
         if(weightsForGivenPeriod.Count > 0) {
             decimal diff = weightsForGivenPeriod.Max() - weightsForGivenPeriod.Min();
 
-            noOfDays = weightsForGivenPeriod.Count;
+            //noOfDays = weightsForGivenPeriod.Count;
 
             averageWeight = diff / noOfDaysPredictionIsRequiredFor;
             

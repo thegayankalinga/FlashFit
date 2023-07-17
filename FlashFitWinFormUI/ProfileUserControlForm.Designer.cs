@@ -201,6 +201,7 @@
             Margin = new Padding(4);
             Name = "ProfileUserControlForm";
             Size = new Size(970, 528);
+            Load += ProfileUserControlForm_Load;
             ((System.ComponentModel.ISupportInitialize)wieghtNumeric).EndInit();
             ((System.ComponentModel.ISupportInitialize)heightNumeric).EndInit();
             genderGroupBox.ResumeLayout(false);
