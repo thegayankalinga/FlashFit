@@ -20,7 +20,6 @@ namespace FlashFitUserManagementService
         public string PasswordHash { get; set; }
         public string Name { get; set; }
 
-
         [EnumDataType(typeof(GenderTypeEnum))]
         [Column(TypeName = "nvarchar(128)")]
         public GenderTypeEnum Gender { get; set; }

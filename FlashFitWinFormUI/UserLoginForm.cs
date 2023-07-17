@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace FlashFitWinFormUI
 {
+
     public partial class UserLoginForm : Form
     {
         public UserLoginForm()
@@ -19,7 +20,9 @@ namespace FlashFitWinFormUI
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show("Register Form");
+            Form registerForm = new UserRegistrationForm();
+            this.Hide();
+            registerForm.ShowDialog();
         }
     }
 }

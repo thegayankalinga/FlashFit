@@ -83,9 +83,9 @@
             pictureBox1.Enabled = false;
             pictureBox1.Image = Properties.Resources.Stinger_Fit_1;
             pictureBox1.InitialImage = Properties.Resources.Stinger_Fit_1;
-            pictureBox1.Location = new Point(350, 0);
+            pictureBox1.Location = new Point(383, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(423, 459);
+            pictureBox1.Size = new Size(390, 459);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -154,6 +154,7 @@
             Controls.Add(loginHeaderLabel);
             Controls.Add(pictureBox1);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             Name = "UserLoginForm";

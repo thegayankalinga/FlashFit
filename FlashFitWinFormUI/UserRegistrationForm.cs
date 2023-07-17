@@ -16,5 +16,14 @@ namespace FlashFitWinFormUI
         {
             InitializeComponent();
         }
+
+        private void loginLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            UserLoginForm loginForm = new UserLoginForm();
+            this.Hide();
+            loginForm.Show();
+            this.Close();
+
+        }
     }
 }
