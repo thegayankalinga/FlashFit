@@ -1,5 +1,6 @@
 ﻿using FlashFitClassLibrary.Enumz;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +62,11 @@ public class PredictionService
         
     }
 
-    public HealthStatusEnum getCurrentHealthStatus(string userEmail, decimal val)
+    public async Task<HealthStatusEnum> getCurrentHealthStatus(string userEmail)
     {
-        UserService userService = new UserService();
-        UserProfileModel userProfile = userService.getUserByEmail(userEmail);
-        double bmi = (double)val;
+        UserService _userService = new UserService();
+        UserResource userProfile = await _userService.getUserByEmail(userEmail);
+        double bmi = (double)userProfile.BodyMassIndex;
 
         if(bmi <= 18.5)
         {

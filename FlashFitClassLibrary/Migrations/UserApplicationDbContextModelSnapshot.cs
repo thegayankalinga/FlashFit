@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations
 {
     [DbContext(typeof(UserApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class UserApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace FlashFitClassLibrary.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Gender")

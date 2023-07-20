@@ -1,5 +1,8 @@
 ﻿using FlashFitClassLibrary.InitialData;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
+using FlashFitUIClassLibrary.HttpApiProcessor;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -13,116 +16,118 @@ namespace FlashFitClassLibrary.Services;
 public class UserService
 
 {
-    
-    
+
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST");
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT");
+
+
     //TODO: Registration 
 
     //TODO: Login 
 
     //Create User 
-    public bool createUser(UserProfileModel user)
+    public async Task<UserResource> createUser(RegisterResource user)
     {
-        bool result = TemporaryDataStore.userProfiles.Add(user);
-        return result;
-    }
-
-    public UserProfileModel updateUser(UserProfileModel updatedUser)
-    {
-        //TODO: Add exception handling 
-        UserProfileModel user = TemporaryDataStore.userProfiles.Single(x => x.Email == updatedUser.Email);
         
-        if(user != null)
+        var data = RestService.For<IUserDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.RegisterUser(user);
+
+        if(response.IsSuccessStatusCode)
         {
-            user.Name = updatedUser.Name;
-            user.Gender = updatedUser.Gender;
-            user.WeightInKiloGrams = updatedUser.WeightInKiloGrams;
-            user.HeightInCentiMeter = updatedUser.HeightInCentiMeter;
-            user.BodyMassIndex = updatedUser.BodyMassIndex;
-            return user;
+            return response.Content;
         }
         else
         {
-            return new UserProfileModel();
-
-        }
-
-       
-    }
-
-    public List<UserProfileModel> getUsers()
-    {
-        HashSet<UserProfileModel> original =  TemporaryDataStore.userProfiles;
-        List<UserProfileModel> listOfUsers = new List<UserProfileModel> ();
-        foreach(UserProfileModel user in original)
-        {
-            listOfUsers.Add(user);
-        }
-        return listOfUsers;
-    }
-
-    public UserProfileModel getUserByEmail(string email)
-    {
-        UserProfileModel userProfile = TemporaryDataStore.userProfiles.Single(x => x.Email == email);
-        if(userProfile != null)
-        {
-            return userProfile;
-        }
-        else
-        {
-            return new UserProfileModel();
-        }
-    }
-
-    //Update the Weight of the User
-    public bool updateUserWeight(decimal updatedUserWeight, string userEmail)
-    {
-        //TODO: Add exception handling 
-        UserProfileModel user = TemporaryDataStore.userProfiles.Single(x => x.Email == userEmail);
-        if (user != null)
-        {
-            user.WeightInKiloGrams = updatedUserWeight;
-            return true;
-        }
-        else
-        {
-            return false;
+            UserResource? nullUser = null;
+            return nullUser;
         }
         
     }
 
-    public decimal calculateAndUpdateBMI(string userEmail)
+    public async Task<UserResource> updateUser(UserResource updatedUser)
     {
-        UserProfileModel userProfile = TemporaryDataStore.userProfiles.Single( x =>  x.Email == userEmail);
-        decimal bmi;
+        var data = RestService.For<IUserDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.UpdateUser(updatedUser);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return response.Content;
+        }
+        else
+        {
+            UserResource? nullUser = null;
+            return nullUser;
+        }
+    }
+
+    public async Task<UserResource> getUserByEmail(string email)
+    {
+        var data = RestService.For<IUserDataProcessor>($"https://{_host}:{_port}");
+
+        var response = await data.GetUser(email);
+ 
+        if (response.IsSuccessStatusCode)
+        {
+            return response.Content;
+        }
+        else
+        {
+            UserResource? nullUser = null;
+            return nullUser;
+        }
        
-        decimal height = userProfile.HeightInCentiMeter;
-        decimal weight = userProfile.WeightInKiloGrams;
-
-        height = height / 100;
-        height = (height * height);
-
-        bmi = weight / height;
-
-        userProfile.BodyMassIndex = bmi;
-        updateUser(userProfile);
-
-        return bmi;
     }
 
-    public decimal calculateAndUpdateBMI(string userEmail, decimal predictedWeight)
-    {
-        UserProfileModel userProfile = TemporaryDataStore.userProfiles.Single(x => x.Email == userEmail);
-        decimal bmi;
+    ////Update the Weight of the User
+    //public bool updateUserWeight(decimal updatedUserWeight, string userEmail)
+    //{
+    //    //TODO: Add exception handling 
+    //    UserProfileModel user = TemporaryDataStore.userProfiles.Single(x => x.Email == userEmail);
+    //    if (user != null)
+    //    {
+    //        user.WeightInKiloGrams = updatedUserWeight;
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
 
-        decimal height = userProfile.HeightInCentiMeter;
-        decimal weight = predictedWeight;
+    //}
 
-        height = height / 100;
-        height = (height * height);
+    //public decimal calculateAndUpdateBMI(string userEmail)
+    //{
+    //    UserProfileModel userProfile = TemporaryDataStore.userProfiles.Single( x =>  x.Email == userEmail);
+    //    decimal bmi;
 
-        bmi = weight / height;
+    //    decimal height = userProfile.HeightInCentiMeter;
+    //    decimal weight = userProfile.WeightInKiloGrams;
 
-        return bmi;
-    }
+    //    height = height / 100;
+    //    height = (height * height);
+
+    //    bmi = weight / height;
+
+    //    userProfile.BodyMassIndex = bmi;
+    //    updateUser(userProfile);
+
+    //    return bmi;
+    //}
+
+    //public decimal calculateAndUpdateBMI(string userEmail, decimal predictedWeight)
+    //{
+    //    UserProfileModel userProfile = TemporaryDataStore.userProfiles.Single(x => x.Email == userEmail);
+    //    decimal bmi;
+
+    //    decimal height = userProfile.HeightInCentiMeter;
+    //    decimal weight = predictedWeight;
+
+    //    height = height / 100;
+    //    height = (height * height);
+
+    //    bmi = weight / height;
+
+    //    return bmi;
+    //}
 
 }

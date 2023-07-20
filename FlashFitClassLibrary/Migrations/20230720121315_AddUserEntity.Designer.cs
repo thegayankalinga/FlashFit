@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations
 {
     [DbContext(typeof(UserApplicationDbContext))]
-    [Migration("20230716145308_AddUsersEntity")]
-    partial class AddUsersEntity
+    [Migration("20230720121315_AddUserEntity")]
+    partial class AddUserEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,27 +30,30 @@ namespace FlashFitClassLibrary.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("BodyMassIndex")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("HealthStatusEnum")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("HealthStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(129)");
 
                     b.Property<decimal>("HeightInCentiMeter")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -64,9 +67,6 @@ namespace FlashFitClassLibrary.Migrations
 
                     b.Property<decimal>("WeightInKiloGrams")
                         .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime>("birthDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Email");
 

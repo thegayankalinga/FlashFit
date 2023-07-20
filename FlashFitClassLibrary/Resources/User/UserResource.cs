@@ -11,6 +11,7 @@ namespace FlashFitClassLibrary.Resources.User
         decimal HeightInCentiMeter,
         decimal BodyMassIndex,
         HealthStatusEnum HeathStatus
-        );
-
+        )
+    {
+    }
 }

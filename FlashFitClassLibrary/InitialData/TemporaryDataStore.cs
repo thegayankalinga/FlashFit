@@ -1,4 +1,5 @@
 ﻿using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ public static class TemporaryDataStore
     public static int CheatmealRecordIdCounter = 0;
 
 
-    public static HashSet<UserProfileModel> userProfiles = new HashSet<UserProfileModel>();
+    public static HashSet<UserResource> userProfiles = new HashSet<UserResource>();
     public static List<WorkoutModel> workoutModels = new List<WorkoutModel>();
     public static List<WorkoutRecordModel> workoutRecords = new List<WorkoutRecordModel>();
     public static List<CheatmealModel> cheatmealModels = new List<CheatmealModel>();

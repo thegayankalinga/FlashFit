@@ -11,10 +11,7 @@ namespace FlashFitClassLibrary.Resources.User
         decimal WeightInKiloGrams,
         decimal HeightInCentiMeter,
         decimal BodyMassIndex,
-        HealthStatusEnum HeathStatus,
-        DateTime DateCreated
-
-
+        HealthStatusEnum HeathStatus
         )
     {
 

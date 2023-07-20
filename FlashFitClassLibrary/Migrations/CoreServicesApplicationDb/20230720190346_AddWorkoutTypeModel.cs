@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace FlashFitClassLibrary.Migrations
+namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 {
     /// <inheritdoc />
-    public partial class UpdatedUserModelEntity : Migration
+    public partial class AddWorkoutTypeModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
