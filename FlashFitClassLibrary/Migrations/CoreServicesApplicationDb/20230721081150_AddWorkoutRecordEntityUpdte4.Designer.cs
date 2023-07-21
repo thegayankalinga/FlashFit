@@ -4,6 +4,7 @@ using FlashFitClassLibrary.InitialData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 {
     [DbContext(typeof(CoreServicesApplicationDbContext))]
-    partial class CoreServicesApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230721081150_AddWorkoutRecordEntityUpdte4")]
+    partial class AddWorkoutRecordEntityUpdte4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,12 +63,6 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<DateTime>("CheatmealAddedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CheatmealId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CheatmealRecordedDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CheatmealUpdatedDateTime")
                         .HasColumnType("datetime2");
 
@@ -76,9 +73,12 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<decimal>("WeightAtMealRecordTime")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int>("fk_cheatmealtypeid")
+                        .HasColumnType("int");
+
                     b.HasKey("CheatmealRecordID");
 
-                    b.HasIndex("CheatmealId");
+                    b.HasIndex("fk_cheatmealtypeid");
 
                     b.ToTable("CheatmealRecord");
                 });
@@ -124,7 +124,7 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("WeightAtCompletion")
                         .HasColumnType("decimal(18,4)");
@@ -143,16 +143,66 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 
                     b.HasKey("WorkoutRecordId");
 
+                    b.HasIndex("UserEmail");
+
                     b.HasIndex("WorkoutTypeId");
 
                     b.ToTable("WorkoutRecord");
+                });
+
+            modelBuilder.Entity("FlashFitUserManagementService.UserModel", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("BodyMassIndex")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("HealthStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(129)");
+
+                    b.Property<decimal>("HeightInCentiMeter")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("WeightInKiloGrams")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("FlashFitClassLibrary.Models.CheatmealRecordModel", b =>
                 {
                     b.HasOne("FlashFitClassLibrary.Models.CheatmealModel", "Cheatmeal")
                         .WithMany()
-                        .HasForeignKey("CheatmealId")
+                        .HasForeignKey("fk_cheatmealtypeid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -161,11 +211,19 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 
             modelBuilder.Entity("FlashFitClassLibrary.Models.WorkoutRecordModel", b =>
                 {
+                    b.HasOne("FlashFitUserManagementService.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FlashFitClassLibrary.Models.WorkoutModel", "WorkoutModel")
                         .WithMany()
                         .HasForeignKey("WorkoutTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("WorkoutModel");
                 });

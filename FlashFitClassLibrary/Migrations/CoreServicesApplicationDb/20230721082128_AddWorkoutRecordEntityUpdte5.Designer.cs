@@ -4,6 +4,7 @@ using FlashFitClassLibrary.InitialData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 {
     [DbContext(typeof(CoreServicesApplicationDbContext))]
-    partial class CoreServicesApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230721082128_AddWorkoutRecordEntityUpdte5")]
+    partial class AddWorkoutRecordEntityUpdte5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,12 +63,6 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<DateTime>("CheatmealAddedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CheatmealId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CheatmealRecordedDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CheatmealUpdatedDateTime")
                         .HasColumnType("datetime2");
 
@@ -76,9 +73,12 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<decimal>("WeightAtMealRecordTime")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int>("fk_cheatmealtypeid")
+                        .HasColumnType("int");
+
                     b.HasKey("CheatmealRecordID");
 
-                    b.HasIndex("CheatmealId");
+                    b.HasIndex("fk_cheatmealtypeid");
 
                     b.ToTable("CheatmealRecord");
                 });
@@ -152,7 +152,7 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                 {
                     b.HasOne("FlashFitClassLibrary.Models.CheatmealModel", "Cheatmeal")
                         .WithMany()
-                        .HasForeignKey("CheatmealId")
+                        .HasForeignKey("fk_cheatmealtypeid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

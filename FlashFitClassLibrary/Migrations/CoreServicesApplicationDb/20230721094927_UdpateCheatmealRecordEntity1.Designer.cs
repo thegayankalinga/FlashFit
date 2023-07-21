@@ -4,6 +4,7 @@ using FlashFitClassLibrary.InitialData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 {
     [DbContext(typeof(CoreServicesApplicationDbContext))]
-    partial class CoreServicesApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230721094927_UdpateCheatmealRecordEntity1")]
+    partial class UdpateCheatmealRecordEntity1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,6 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 
                     b.Property<int>("CheatmealId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("CheatmealRecordedDateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CheatmealUpdatedDateTime")
                         .HasColumnType("datetime2");

@@ -4,6 +4,7 @@ using FlashFitClassLibrary.InitialData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
 {
     [DbContext(typeof(CoreServicesApplicationDbContext))]
-    partial class CoreServicesApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230720204249_AddCheatmealRecordEntity3")]
+    partial class AddCheatmealRecordEntity3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,12 +63,6 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<DateTime>("CheatmealAddedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CheatmealId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CheatmealRecordedDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CheatmealUpdatedDateTime")
                         .HasColumnType("datetime2");
 
@@ -76,9 +73,12 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.Property<decimal>("WeightAtMealRecordTime")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int>("fk_cheatmealtypeid")
+                        .HasColumnType("int");
+
                     b.HasKey("CheatmealRecordID");
 
-                    b.HasIndex("CheatmealId");
+                    b.HasIndex("fk_cheatmealtypeid");
 
                     b.ToTable("CheatmealRecord");
                 });
@@ -114,60 +114,15 @@ namespace FlashFitClassLibrary.Migrations.CoreServicesApplicationDb
                     b.ToTable("WorkoutType");
                 });
 
-            modelBuilder.Entity("FlashFitClassLibrary.Models.WorkoutRecordModel", b =>
-                {
-                    b.Property<int>("WorkoutRecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkoutRecordId"));
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("WeightAtCompletion")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime>("WorkedoutDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("WorkoutRecordAddedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("WorkoutRecordUpdatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("WorkoutTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("WorkoutRecordId");
-
-                    b.HasIndex("WorkoutTypeId");
-
-                    b.ToTable("WorkoutRecord");
-                });
-
             modelBuilder.Entity("FlashFitClassLibrary.Models.CheatmealRecordModel", b =>
                 {
                     b.HasOne("FlashFitClassLibrary.Models.CheatmealModel", "Cheatmeal")
                         .WithMany()
-                        .HasForeignKey("CheatmealId")
+                        .HasForeignKey("fk_cheatmealtypeid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cheatmeal");
-                });
-
-            modelBuilder.Entity("FlashFitClassLibrary.Models.WorkoutRecordModel", b =>
-                {
-                    b.HasOne("FlashFitClassLibrary.Models.WorkoutModel", "WorkoutModel")
-                        .WithMany()
-                        .HasForeignKey("WorkoutTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WorkoutModel");
                 });
 #pragma warning restore 612, 618
         }

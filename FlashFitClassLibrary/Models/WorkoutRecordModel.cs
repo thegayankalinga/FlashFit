@@ -1,35 +1,33 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlashFitUserManagementService;
 
-namespace FlashFitClassLibrary.Models
+namespace FlashFitClassLibrary.Models;
+
+public class WorkoutRecordModel
 {
-    public class WorkoutRecordModel
-    {
-        public int WorkoutRecordId { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int WorkoutRecordId { get; set; }
 
-        [JsonConverter(typeof(WorkoutModel))]
-        public WorkoutModel Workout { get; set; }
-        public string UserEmail { get; set; }
-        public DateTime WorkedoutDateTime { get; set; }
-        public decimal WeightAtCompletion { get; set; }
+    [ForeignKey(nameof(WorkoutModel))]
+    public int WorkoutTypeId { get; set; }
+    public WorkoutModel WorkoutModel { get; init; }
 
-        [JsonConstructor]
-        public WorkoutRecordModel()
-        {
-        }
+    [ForeignKey("FK_WorkouRecord_UserEmail")]
+    public string UserEmail { get; set; }
 
-        [JsonConstructor]
-        public WorkoutRecordModel(int workoutRecordId, WorkoutModel workout, string userEmail, DateTime workedoutDateTime, decimal weightAtCompletion)
-        {
-            WorkoutRecordId = workoutRecordId;
-            Workout = workout;
-            UserEmail = userEmail;
-            WorkedoutDateTime = workedoutDateTime;
-            WeightAtCompletion = weightAtCompletion;
-        }
-    }
+    public DateTime WorkedoutDateTime { get; set; }
+
+    [Column(TypeName = "decimal(18,4)")]
+    public decimal WeightAtCompletion { get; set; }
+    public DateTime WorkoutRecordAddedDateTime { get; set; }
+    public DateTime? WorkoutRecordUpdatedDateTime { get; set; }
+
 }

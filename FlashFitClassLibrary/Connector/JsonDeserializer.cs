@@ -82,17 +82,17 @@ public class JsonDeserializer
                 WorkoutModel workoutModel = new WorkoutModel();
 
                 
-                    workoutModel.WorkoutID = model.Workout.WorkoutID;
-                    workoutModel.WorkoutName = model.Workout.WorkoutName;
-                    workoutModel.WorkoutType = model.Workout.WorkoutType;
-                    workoutModel.CaloryBurnRate = model.Workout.CaloryBurnRate;
+                    //workoutModel.WorkoutID = model.Workout.WorkoutID;
+                    //workoutModel.WorkoutName = model.Workout.WorkoutName;
+                    //workoutModel.WorkoutType = model.Workout.WorkoutType;
+                    //workoutModel.CaloryBurnRate = model.Workout.CaloryBurnRate;
               
                
-                    workoutRecord.WorkoutRecordId = model.WorkoutRecordId;
-                    workoutRecord.Workout = workoutModel;
-                    workoutRecord.UserEmail = model.UserEmail;
-                    workoutRecord.WorkedoutDateTime = model.WorkedoutDateTime;
-                    workoutRecord.WeightAtCompletion = model.WeightAtCompletion;
+                    //workoutRecord.WorkoutRecordId = model.WorkoutRecordId;
+                    //workoutRecord.Workout = workoutModel;
+                    //workoutRecord.UserEmail = model.UserEmail;
+                    //workoutRecord.WorkedoutDateTime = model.WorkedoutDateTime;
+                    //workoutRecord.WeightAtCompletion = model.WeightAtCompletion;
          
                 TemporaryDataStore.workoutRecords.Add(workoutRecord);
 
