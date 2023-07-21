@@ -1,6 +1,8 @@
 ﻿
+using FlashFitClassLibrary.Enumz;
 using FlashFitClassLibrary.InitialData;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
 using FlashFitClassLibrary.Services;
 
 
@@ -9,40 +11,39 @@ namespace FlashFitWinFormUI;
 public partial class ProfileUserControlForm : UserControl
 {
 
-    UserService userService = new UserService();
+    readonly UserService _userService = new UserService();
     public ProfileUserControlForm()
     {
         InitializeComponent();
 
     }
 
-   
-
-    private void userProfileSaveButton_Click(object sender, EventArgs e)
+    private async void userProfileSaveButton_Click(object sender, EventArgs e)
     {
 
-        UserProfileModel model = new UserProfileModel();
+
         //UserProfileModel user = TemporaryDataStore.userProfiles.Find(x => x.Email == emailText.Text);
 
-        model.Name = fullNameText.Text;
-        model.Email = emailText.Text;
-        model.Gender = maleRadioButton.Checked ? FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE : FlashFitClassLibrary.Enumz.GenderTypeEnum.FEMALE;
-        model.WeightInKiloGrams = wieghtNumeric.Value;
-        model.HeightInCentiMeter = heightNumeric.Value;
+        string name = fullNameText.Text;
+        string email = emailText.Text;
+        DateTime brithDate = birthDatePicker.Value;
+        GenderTypeEnum gender = maleRadioButton.Checked ? GenderTypeEnum.MALE : GenderTypeEnum.FEMALE;
+        decimal weight = wieghtNumeric.Value;
+        decimal height = heightNumeric.Value;
+        decimal bmi = 0; //TODO: Update the BMI
+        HealthStatusEnum healthStatus = HealthStatusEnum.None; //TODO: Update the Health Status
 
-        //TODO: check if the user is found or not if found update else add
-        Console.WriteLine(TemporaryDataStore.userProfiles);
-        Console.WriteLine();
+        UserResource modelToBeUpdated = new(email, name, gender, brithDate, weight, height, bmi, healthStatus);
 
-        
-        UserProfileModel updatedValue = userService.updateUser(model);
+
+        UserResource updatedValue = await _userService.updateUser(modelToBeUpdated);
         if (updatedValue == null)
         {
             MessageBox.Show("User not found to update");
         }
         else
         {
-            MessageBox.Show($"User {model.Name} updated successfully");
+            MessageBox.Show($"User {modelToBeUpdated.Name} updated successfully");
         }
 
         //loadListView();
@@ -56,12 +57,12 @@ public partial class ProfileUserControlForm : UserControl
         setUserDataAtLoad();
     }
 
-    private void setUserDataAtLoad()
+    private async void setUserDataAtLoad()
     {
         fullNameText.Text = Program.getLoggedInUser().Name;
         emailText.Text = Program.getLoggedInUser().Email;
 
-        UserProfileModel model = userService.getUserByEmail(Program.getLoggedInUser().Email);
+        UserResource model = await _userService.getUserByEmail(Program.getLoggedInUser().Email);
 
         if (model.Gender == FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE)
         {
@@ -75,5 +76,9 @@ public partial class ProfileUserControlForm : UserControl
         }
         heightNumeric.Value = model.HeightInCentiMeter;
         wieghtNumeric.Value = model.WeightInKiloGrams;
+        birthDatePicker.Value = model.BirthDate;
+        plcHealthStatusLabel.Text = model.HeathStatus.ToString();
+        plcToBmiLable.Text = model.BodyMassIndex.ToString();
+
     }
 }

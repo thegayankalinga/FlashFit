@@ -40,6 +40,9 @@
             genderGroupBox = new GroupBox();
             weightLabel = new Label();
             heightLabel = new Label();
+            birthDatePicker = new DateTimePicker();
+            plcToBmiLable = new Label();
+            plcHealthStatusLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)wieghtNumeric).BeginInit();
             ((System.ComponentModel.ISupportInitialize)heightNumeric).BeginInit();
             genderGroupBox.SuspendLayout();
@@ -181,12 +184,40 @@
             heightLabel.TabIndex = 9;
             heightLabel.Text = "Height (CM)";
             // 
+            // birthDatePicker
+            // 
+            birthDatePicker.Location = new Point(618, 43);
+            birthDatePicker.Name = "birthDatePicker";
+            birthDatePicker.Size = new Size(200, 29);
+            birthDatePicker.TabIndex = 11;
+            // 
+            // plcToBmiLable
+            // 
+            plcToBmiLable.AutoSize = true;
+            plcToBmiLable.Location = new Point(539, 306);
+            plcToBmiLable.Name = "plcToBmiLable";
+            plcToBmiLable.Size = new Size(144, 21);
+            plcToBmiLable.TabIndex = 12;
+            plcToBmiLable.Text = "<placeholder Bmi>";
+            // 
+            // plcHealthStatusLabel
+            // 
+            plcHealthStatusLabel.AutoSize = true;
+            plcHealthStatusLabel.Location = new Point(539, 349);
+            plcHealthStatusLabel.Name = "plcHealthStatusLabel";
+            plcHealthStatusLabel.Size = new Size(160, 21);
+            plcHealthStatusLabel.TabIndex = 12;
+            plcHealthStatusLabel.Text = "<placeholder health>";
+            // 
             // ProfileUserControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             BackColor = Color.FromArgb(46, 51, 73);
+            Controls.Add(plcHealthStatusLabel);
+            Controls.Add(plcToBmiLable);
+            Controls.Add(birthDatePicker);
             Controls.Add(genderGroupBox);
             Controls.Add(heightLabel);
             Controls.Add(weightLabel);
@@ -223,5 +254,8 @@
         private GroupBox genderGroupBox;
         private Label weightLabel;
         private Label heightLabel;
+        private DateTimePicker birthDatePicker;
+        private Label plcToBmiLable;
+        private Label plcHealthStatusLabel;
     }
 }

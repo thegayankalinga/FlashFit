@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FlashFitClassLibrary.Services;
 using FlashFitClassLibrary.InitialData;
+using FlashFitClassLibrary.Resources.User;
+using FlashFitClassLibrary.Enumz;
 
 namespace FlashFitWinFormUI;
 
@@ -23,8 +25,8 @@ public partial class ReportUserControlForm : UserControl
 
 
 
-    UserService userService = new UserService();
-    PredictionService predictiveService = new PredictionService();
+    UserService _userService = new UserService();
+    PredictionService _predictiveService = new PredictionService();
 
 
     public ReportUserControlForm()
@@ -37,13 +39,17 @@ public partial class ReportUserControlForm : UserControl
     }
 
 
-    private void setUserData()
+    private async void setUserData()
     {
-        UserProfileModel userProfile = userService.getUserByEmail(email);
+        decimal bmi = await _userService.calculateAndUpdateBMI(email);
+        HealthStatusEnum healthStatus = await _predictiveService.getCurrentHealthStatus(email);
+
+
+        UserResource userProfile = await _userService.getUserByEmail(email);
         namePlac.Text = userProfile.Name;
         weightPcl.Text = $"{userProfile.WeightInKiloGrams:F2}";
-        bmiPlc.Text = $"{userService.calculateAndUpdateBMI(email):F2}";
-        healthStatusPlc.Text = predictiveService.getCurrentHealthStatus(email, userProfile.WeightInKiloGrams).ToString();
+        bmiPlc.Text = $"{bmi:F2}";
+        healthStatusPlc.Text = healthStatus.ToString();
 
 
     }

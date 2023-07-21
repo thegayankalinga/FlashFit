@@ -49,7 +49,7 @@
             mainFormPanelHeaderLabel = new Label();
             closeMainFormButton = new Button();
             workoutUserControlForm1 = new WorkoutUserControlForm();
-            cheatmealUserControlForm1 = new CheatmealUserControlForm();
+            cheatmealUserControlForm1 = new CheatmealUserControlForm(loggedInUser);
             predictionUserControlForm1 = new PredictionUserControlForm();
             profileUserControlForm1 = new ProfileUserControlForm();
             reportUserControlForm1 = new ReportUserControlForm();

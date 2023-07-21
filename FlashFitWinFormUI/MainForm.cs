@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
 
 namespace FlashFitWinFormUI;
 
 public partial class MainForm : Form
 {
+    readonly UserResource loggedInUser;
 
     //This code makes the form UI round in 4 corners 
     [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -27,6 +29,17 @@ public partial class MainForm : Form
         int nHeightEllipse
         );
 
+    public MainForm(UserResource userResource)
+    {
+        InitializeComponent();
+        Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
+        loggedInUser = userResource;
+        moveHighlighter(dashboardButton, navigationPanel);
+        userNameLabel.Text = loggedInUser.Name;
+        userEmailLabel.Text = loggedInUser.Email;
+        dashboardButton.Select();
+        dashboardCustomControl1.BringToFront();
+    }
 
     public MainForm()
     {
@@ -35,7 +48,6 @@ public partial class MainForm : Form
 
         //set the initial selection to dashbord button in the navigation panel.
         moveHighlighter(dashboardButton, navigationPanel);
-        UserProfileModel loggedInUser = Program.getLoggedInUser();
         userNameLabel.Text = loggedInUser.Name;
         userEmailLabel.Text = loggedInUser.Email;
 

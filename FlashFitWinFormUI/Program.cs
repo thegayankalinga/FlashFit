@@ -2,32 +2,28 @@ using FlashFitClassLibrary;
 using FlashFitClassLibrary.Connector;
 using FlashFitClassLibrary.InitialData;
 using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.User;
 using FlashFitClassLibrary.Services;
+using FlashFitUIClassLibrary.HttpApiProcessor;
+using FlashFitUserManagementService;
+using Refit;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Runtime;
 
 
 namespace FlashFitWinFormUI;
 
 public static class Program
 {
+
+    public static UserResource loggedInUser;
+    
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-
-    public static UserProfileModel getLoggedInUser()
-    {
-        UserProfileModel loggedInUser = new UserProfileModel();
-        loggedInUser.Name = "Gayan Kalinga";
-        loggedInUser.Email = "bg15407@gmail.com";
-        loggedInUser.Gender = FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE;
-        loggedInUser.WeightInKiloGrams = 65;
-        loggedInUser.HeightInCentiMeter = 150;
-
-        return loggedInUser;
-    }
     static void Main()
     {
         // To customize application configuration such as set high DPI settings or default font,
@@ -37,15 +33,29 @@ public static class Program
 
         //TODO: To remove with microservice implementation
         //Loading initial Data
-        TemporaryDataStore.userProfiles.Add(getLoggedInUser());
+        //TemporaryDataStore.userProfiles.Add(getLoggedInUser());
         JsonDeserializer.loadWorkoutModelsFromJson();
         JsonDeserializer.loadWorkoutRecordFromJson();
         JsonDeserializer.loadCheatmealModelsFromJson();
         JsonDeserializer.loadCheatmealRecordFromJson();
 
+        Environment.SetEnvironmentVariable("REMOTEAPIGATEWYHOST", "localhost");
+        Environment.SetEnvironmentVariable("REMOTEAPIGATEWAYPORT", "7205");
 
         Application.Run(new UserLoginForm());
         
+    }
+
+    public static UserResource getLoggedInUser()
+    {
+        if(loggedInUser == null)
+        {
+            throw new InvalidProgramException("No user Found");
+        }
+        else
+        {
+            return loggedInUser;
+        }
     }
 
 

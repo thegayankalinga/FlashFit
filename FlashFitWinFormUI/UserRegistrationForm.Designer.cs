@@ -41,8 +41,8 @@
             genderGroupBox = new GroupBox();
             maleRadioButton = new RadioButton();
             femaleRadioButton = new RadioButton();
-            dateTimePicker1 = new DateTimePicker();
-            birthDatePicker = new Label();
+            birthDateTimePicker = new DateTimePicker();
+            birthDatePickerLabel = new Label();
             weightNumeric = new NumericUpDown();
             heightLabel = new Label();
             weighLabel = new Label();
@@ -186,22 +186,22 @@
             femaleRadioButton.Text = "Female";
             femaleRadioButton.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // birthDateTimePicker
             // 
-            dateTimePicker1.Location = new Point(40, 411);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(274, 29);
-            dateTimePicker1.TabIndex = 10;
+            birthDateTimePicker.Location = new Point(40, 411);
+            birthDateTimePicker.Name = "birthDateTimePicker";
+            birthDateTimePicker.Size = new Size(274, 29);
+            birthDateTimePicker.TabIndex = 10;
             // 
-            // birthDatePicker
+            // birthDatePickerLabel
             // 
-            birthDatePicker.AutoSize = true;
-            birthDatePicker.ForeColor = SystemColors.ControlLightLight;
-            birthDatePicker.Location = new Point(40, 377);
-            birthDatePicker.Name = "birthDatePicker";
-            birthDatePicker.Size = new Size(73, 21);
-            birthDatePicker.TabIndex = 6;
-            birthDatePicker.Text = "Birthdate";
+            birthDatePickerLabel.AutoSize = true;
+            birthDatePickerLabel.ForeColor = SystemColors.ControlLightLight;
+            birthDatePickerLabel.Location = new Point(40, 377);
+            birthDatePickerLabel.Name = "birthDatePickerLabel";
+            birthDatePickerLabel.Size = new Size(73, 21);
+            birthDatePickerLabel.TabIndex = 6;
+            birthDatePickerLabel.Text = "Birthdate";
             // 
             // weightNumeric
             // 
@@ -260,6 +260,7 @@
             registerButton.TabIndex = 13;
             registerButton.Text = "Sign Up";
             registerButton.UseVisualStyleBackColor = true;
+            registerButton.Click += registerButton_Click;
             // 
             // UserRegistrationForm
             // 
@@ -267,9 +268,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(575, 659);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(birthDateTimePicker);
             Controls.Add(nameSignupText);
-            Controls.Add(birthDatePicker);
+            Controls.Add(birthDatePickerLabel);
             Controls.Add(nameSignupLabel);
             Controls.Add(passwordSignupText);
             Controls.Add(passwordSignupLabel);
@@ -308,8 +309,8 @@
         private GroupBox genderGroupBox;
         private RadioButton maleRadioButton;
         private RadioButton femaleRadioButton;
-        private DateTimePicker dateTimePicker1;
-        private Label birthDatePicker;
+        private DateTimePicker birthDateTimePicker;
+        private Label birthDatePickerLabel;
         private NumericUpDown weightNumeric;
         private Label heightLabel;
         private NumericUpDown heightNumeric;
