@@ -1,77 +1,103 @@
-﻿using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FlashFitClassLibrary.HttpApiProcessor;
+using FlashFitClassLibrary.Resources.WorkoutRecord;
+using Refit;
 
 namespace FlashFitClassLibrary.Services;
 
 public class WorkoutRecordService
 {
-    //Save
-    public bool createWorkoutRecord(WorkoutRecordModel workoutRecord)
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST") ?? "localhost";
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT") ?? "7205";
+    
+    
+    //Create workout record
+    public async Task<WorkoutRecordCreation> createWorkoutRecord(WorkoutRecordCreation workoutRecordCreation)
     {
-        if(workoutRecord != null)
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.CreateNewWorkoutRecord(workoutRecordCreation).ConfigureAwait(false);
+        WorkoutRecordCreation? workoutReocord = null;
+
+        if (response.IsSuccessStatusCode && response.Content != null)
         {
-            TemporaryDataStore.workoutRecords.Add(workoutRecord);
-            return true;
-        }else { return false; }
-    }
-
-    //Get
-    public List<WorkoutRecordModel> getWorkoutRecords() { return TemporaryDataStore.workoutRecords;}
-
-    //Get by email 
-    public List<WorkoutRecordModel> getWorkoutRecordsByEmail(string email)
-    {
-        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords.FindAll(x => x.UserEmail == email);
-
-        return list;
-    }
-
-    //get by email & date range
-    public List<WorkoutRecordModel> getWorkoutRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
-    {
-        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords.Where(x => x.UserEmail == email &&  x.WorkedoutDateTime <= to && x.WorkedoutDateTime >= from).ToList();
-        
-        return list;
-    }
-
-
-    //Get by ID
-    public WorkoutRecordModel getWorkoutRecordById(int id)
-    {
-        WorkoutRecordModel? resultOfFind = TemporaryDataStore.workoutRecords.Find(x => x.WorkoutRecordId == id);
-        if (resultOfFind != null)
-        {
-            return resultOfFind;
-        }
-        else { return new WorkoutRecordModel(); }
-    }
-    //Update
-    public bool updateWorkoutRecordById(WorkoutRecordModel workoutRecord)
-    {
-        WorkoutRecordModel? resultOfFind = TemporaryDataStore.workoutRecords.Find(x => x.WorkoutRecordId == workoutRecord.WorkoutRecordId);
-        if (resultOfFind != null)
-        {
-            //resultOfFind.Workout = workoutRecord.Workout;
-            //resultOfFind.WorkedoutDateTime = workoutRecord.WorkedoutDateTime;
-            //resultOfFind.WeightAtCompletion = workoutRecord.WeightAtCompletion;
-
-            return true;
+            return workoutReocord = response.Content;
         }
         else
         {
-            return false;
+            throw new Exception();
+
+        }
+    }
+
+    //Get workout records by email 
+    public async Task<List<WorkoutRecordResponse>> getWorkoutRecordsByEmail(string email)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetAllWorkoutRecordsByEmail(email).ConfigureAwait(false);
+
+        List<WorkoutRecordResponse>? workoutRecords = new();
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            foreach (WorkoutRecordResponse item in response.Content)
+            {
+                workoutRecords.Add(item);
+            }
+            return workoutRecords;
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
+
+    //Get workout record by ID
+    public async Task<WorkoutRecordResponse> getWorkoutRecordById(int id)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetWorkoutRecordById(id).ConfigureAwait(false);
+        WorkoutRecordResponse? workoutRecord = null;
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return workoutRecord = response.Content;
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
+
+    //Update workout record
+    public async Task<WorkoutRecordResponse> updateWorkoutRecordById(WorkoutRecordUpdate updateWorkoutRecord)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.UpdateWorkoutRecord(updateWorkoutRecord).ConfigureAwait(false);
+        WorkoutRecordResponse? workoutRecord = null;
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return workoutRecord = response.Content;
+        }
+        else
+        {
+            throw new Exception();
         }
     }
 
     //Delete
-    public bool deleteWorkoutRecord(int id)
+    public async Task<WorkoutRecordResponse> deleteWorkoutRecord(int id)
     {
-        return TemporaryDataStore.workoutRecords.Remove(getWorkoutRecordById(id));
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.DeleteWorkoutRecord(id).ConfigureAwait(false);
+        WorkoutRecordResponse? workoutRecord = null;
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return workoutRecord = response.Content;
+        }
+        else
+        {
+            throw new Exception();
+        }
     }
 }

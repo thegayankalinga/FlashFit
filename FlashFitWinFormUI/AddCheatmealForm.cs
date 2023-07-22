@@ -1,41 +1,37 @@
-﻿using FlashFitClassLibrary;
-using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
+﻿using FlashFitClassLibrary.InitialData;
+using FlashFitClassLibrary.Resources.Cheatmeal;
 using FlashFitClassLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FlashFitWinFormUI;
 
 public partial class AddCheatmealForm : Form
 {
 
-    CheatmealService cheatmealService = new CheatmealService();
+    CheatmealService _cheatmealService;
     bool editButtonClicked = false;
 
     public AddCheatmealForm()
     {
         InitializeComponent();
+        _cheatmealService = new CheatmealService();
     }
 
-    private void AddCheatmealForm_Load(object sender, EventArgs e)
+    private async void AddCheatmealForm_Load(object sender, EventArgs e)
     {
-        TemporaryDataStore.CheatmealIDCounter = TemporaryDataStore.cheatmealModels.Count + 1;
-        setupListView();
+
+        await setupListView();
     }
 
     //Utalitty Methods
-    private void setupListView()
+    private async Task setupListView()
     {
-        List<CheatmealModel> list = TemporaryDataStore.cheatmealModels;
+        List<CheatmealTypeResponse> list = await _cheatmealService.getAllCheatmeal();
+
+        if(list == null)
+        {
+            MessageBox.Show("No Cheatmeal found, lets add something");
+            return;
+        }
 
         string[] item = new string[3];
         ListViewItem listItem;
@@ -43,9 +39,9 @@ public partial class AddCheatmealForm : Form
 
         list.ForEach(i =>
         {
-            item[0] = i.CheatmealId.ToString();
-            item[1] = i.CheatmealName;
-            item[2] = i.CheatCalorieGain.ToString();
+            item[0] = i.Id.ToString();
+            item[1] = i.Name;
+            item[2] = i.CheatmealCaloryGain.ToString();
 
             listItem = new ListViewItem(item);
             cheatmealListView.Items.Add(listItem);
@@ -58,26 +54,29 @@ public partial class AddCheatmealForm : Form
         hiddenCheatmealIDText.Clear();
         caloriesGainRateNumeric.Value = 0;
     }
-    private void updateChangesToCheatmealModel()
+    private async Task updateChangesToCheatmealModel()
     {
-        CheatmealModel udpatedCheatmealModel = new CheatmealModel();
-        CheatmealModel cheatmealModel = cheatmealService.getCheatmealById(int.Parse(hiddenCheatmealIDText.Text));
+        CheatmealTypeUpdate udpatedCheatmealModel;
 
-        udpatedCheatmealModel.CheatmealId = int.Parse(hiddenCheatmealIDText.Text);
-        udpatedCheatmealModel.CheatmealName = cheatmealNameText.Text;
-        udpatedCheatmealModel.CheatCalorieGain = caloriesGainRateNumeric.Value;
+        udpatedCheatmealModel = new CheatmealTypeUpdate(
+            int.Parse(hiddenCheatmealIDText.Text),
+            cheatmealNameText.Text,
+            caloriesGainRateNumeric.Value,
+            DateTime.UtcNow
+            );
 
-        if (cheatmealModel.Equals(udpatedCheatmealModel))
+        if (udpatedCheatmealModel == null)
         {
             MessageBox.Show("No changes to update");
             return;
         }
         else
         {
-            bool result = cheatmealService.updateCheatmeal(udpatedCheatmealModel);
-            if (result)
+            CheatmealTypeResponse? result = await _cheatmealService.updateCheatmealById(udpatedCheatmealModel);
+
+            if (result != null)
             {
-                MessageBox.Show($" {cheatmealModel.CheatmealId} updated successfully");
+                MessageBox.Show($" {result.Id} updated successfully");
                 editButtonClicked = false;
             }
             else
@@ -90,14 +89,14 @@ public partial class AddCheatmealForm : Form
 
 
     //Buttons 
-    private void saveCheatmealButton_Click(object sender, EventArgs e)
+    private async void saveCheatmealButton_Click(object sender, EventArgs e)
     {
         //add edit function here
         if (editButtonClicked)
         {
-            updateChangesToCheatmealModel();
+            await updateChangesToCheatmealModel();
             clearForm();
-            setupListView();
+            await setupListView();
             return;
         }
 
@@ -108,35 +107,41 @@ public partial class AddCheatmealForm : Form
             return;
         }
 
-        CheatmealModel cheatmealModel = new CheatmealModel();
+        CheatmealTypeCreation cheatmealModel = new(
+            cheatmealNameText.Text,
+            caloriesGainRateNumeric.Value,
+            DateTime.UtcNow
+            );
 
-        cheatmealModel.CheatmealId = TemporaryDataStore.CheatmealIDCounter + 1;
-        cheatmealModel.CheatmealName = cheatmealNameText.Text;
-        cheatmealModel.CheatCalorieGain = caloriesGainRateNumeric.Value;
-
-
-        if (cheatmealService.createCheatmeal(cheatmealModel))
+        CheatmealTypeCreation? result = await _cheatmealService.createCheatmealType(cheatmealModel);
+        
+        if (result != null)
         {
-            MessageBox.Show($"Workout {cheatmealModel.CheatmealName} saved successfully");
-            TemporaryDataStore.CheatmealIDCounter += 1;
-            setupListView();
+            MessageBox.Show($"Workout {result.Name} saved successfully");
+            await setupListView();
             clearForm();
+            return;
+        }
+        else
+        {
+            MessageBox.Show($"Could not save, somthing went wrong");
             return;
         }
     }
 
-    private void deleteCheatmealButton_Click(object sender, EventArgs e)
+    private async void deleteCheatmealButton_Click(object sender, EventArgs e)
     {
         int cheatmealID;
 
         if (cheatmealListView.SelectedItems.Count > 0)
         {
             cheatmealID = int.Parse(cheatmealListView.SelectedItems[0].Text);
-
-            if (cheatmealService.deleteCheatmeal(cheatmealID))
+            CheatmealTypeResponse? result = await _cheatmealService.deletecheatmealById(cheatmealID);
+            
+            if (result != null)
             {
-                MessageBox.Show($"Cheatmeal ID {cheatmealID} is deleted successfully");
-                setupListView();
+                MessageBox.Show($"Cheatmeal ID {result.Name} is deleted successfully");
+                await setupListView();
             }
             else
             {
@@ -150,19 +155,19 @@ public partial class AddCheatmealForm : Form
         }
     }
 
-    private void editCheatmealButton_Click(object sender, EventArgs e)
+    private async void editCheatmealButton_Click(object sender, EventArgs e)
     {
         int cheatmealID;
 
         if (cheatmealListView.SelectedItems.Count > 0)
         {
             cheatmealID = int.Parse(cheatmealListView.SelectedItems[0].Text);
-            CheatmealModel cheatmealModel = cheatmealService.getCheatmealById(cheatmealID);
+            CheatmealTypeResponse? cheatmealModel = await _cheatmealService.getCheatmealById(cheatmealID);
             if (cheatmealModel != null)
             {
                 hiddenCheatmealIDText.Text = cheatmealID.ToString();
-                cheatmealNameText.Text = cheatmealModel.CheatmealName;
-                caloriesGainRateNumeric.Value = cheatmealModel.CheatCalorieGain;
+                cheatmealNameText.Text = cheatmealModel.Name;
+                caloriesGainRateNumeric.Value = cheatmealModel.CheatmealCaloryGain;
                 editButtonClicked = true;
             }
             else

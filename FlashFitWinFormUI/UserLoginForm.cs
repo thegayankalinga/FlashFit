@@ -1,18 +1,7 @@
-﻿using FlashFitClassLibrary.Exceptions;
-using FlashFitClassLibrary.Resources.User;
-using FlashFitUIClassLibrary.HttpApiProcessor;
-using FlashFitUserManagementService;
-using Refit;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using FlashFitClassLibrary.Resources.User;
+using FlashFitClassLibrary.Services;
+using FlashFitWinFormUI.Services;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FlashFitWinFormUI;
 
@@ -20,14 +9,13 @@ namespace FlashFitWinFormUI;
 public partial class UserLoginForm : Form
 {
 
-    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST");
-    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT");
     //This is not the correct way to do this 
-    private static UserResource? loggedInUser;
-    private static bool validUser = false;
+    private static UserResource? user;
+    private readonly UserService _userService;
     public UserLoginForm()
     {
         InitializeComponent();
+        _userService = new UserService();
     }
 
     private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -39,57 +27,45 @@ public partial class UserLoginForm : Form
 
     private async void loginButton_ClickAsync(object sender, EventArgs e)
     {
+
+        if (ValidatorService.ValidateTextField(emailAddressTextbox) == false)
+        {
+            MessageBox.Show("Email field cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            emailAddressTextbox.Focus();
+            return;
+        }
+
+
         string? email = emailAddressTextbox.Text;
+
+        if (ValidatorService.ValidateTextField(passwordTextbox) == false)
+        {
+            MessageBox.Show("Password field cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            passwordTextbox.Focus();
+            return;
+        }
+
         string? password = passwordTextbox.Text;
 
-        if(email != null && password != null )
-        {
-            await ValidateUser(email, password);
-            if(validUser && loggedInUser != null)
-            {
-                Program.loggedInUser = loggedInUser;
-                Form homeScreen = new MainForm(loggedInUser);
-                this.Hide();
-                homeScreen.ShowDialog();
+        user = await _userService.ValidateUser(email, password);
 
-            }
-            else
-            {
-                MessageBox.Show($"Please login or register to continue {validUser}");
-            }
+        if (user != null)
+        {
+            Program.loggedInUser = user;
+            MainForm homeScreen = new MainForm();
+            //MessageBox.Show("Done");
 
-            
-        }
-        else if(email == null)
-        {
-            MessageBox.Show("Pls recheck your email");
-            emailAddressTextbox.Focus();
-        }else if(password == null)
-        {
-            MessageBox.Show("Password cannot be empty");
-            passwordTextbox.Focus();
+            this.Hide();
+            homeScreen.ShowDialog();
+
         }
         else
         {
-            MessageBox.Show("Pls enter details to login");
+            MessageBox.Show($"Please login or register to continue");
         }
-        
-    }
 
-    private async Task ValidateUser(string email, string password)
-    {
-        var data = RestService.For<IUserDataProcessor>($"https://{_host}:{_port}");
-        LoginResource loginResource = new LoginResource(email, password);
-        try
-        {
-
-            loggedInUser = await data.LoginUser(loginResource);
-            validUser = true;
-        }
-        catch
-        {
-            validUser = false;
-        }
 
     }
+
+
 }

@@ -47,9 +47,8 @@
             dashboardCustomControl1 = new DashboardCustomControl();
             panel3 = new Panel();
             mainFormPanelHeaderLabel = new Label();
-            closeMainFormButton = new Button();
             workoutUserControlForm1 = new WorkoutUserControlForm();
-            cheatmealUserControlForm1 = new CheatmealUserControlForm(loggedInUser);
+            cheatmealUserControlForm1 = new CheatmealUserControlForm();
             predictionUserControlForm1 = new PredictionUserControlForm();
             profileUserControlForm1 = new ProfileUserControlForm();
             reportUserControlForm1 = new ReportUserControlForm();
@@ -288,6 +287,8 @@
             // 
             // dashboardCustomControl1
             // 
+            dashboardCustomControl1.BackColor = Color.FromArgb(46, 51, 73);
+            dashboardCustomControl1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             dashboardCustomControl1.Location = new Point(183, 35);
             dashboardCustomControl1.Margin = new Padding(4);
             dashboardCustomControl1.Name = "dashboardCustomControl1";
@@ -298,10 +299,9 @@
             // 
             panel3.BackColor = Color.DarkSlateBlue;
             panel3.Controls.Add(mainFormPanelHeaderLabel);
-            panel3.Controls.Add(closeMainFormButton);
             panel3.Location = new Point(183, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1029, 36);
+            panel3.Size = new Size(1029, 48);
             panel3.TabIndex = 3;
             // 
             // mainFormPanelHeaderLabel
@@ -314,19 +314,6 @@
             mainFormPanelHeaderLabel.Size = new Size(109, 25);
             mainFormPanelHeaderLabel.TabIndex = 1;
             mainFormPanelHeaderLabel.Text = "Dashboard";
-            // 
-            // closeMainFormButton
-            // 
-            closeMainFormButton.Dock = DockStyle.Right;
-            closeMainFormButton.FlatAppearance.BorderSize = 0;
-            closeMainFormButton.FlatStyle = FlatStyle.Flat;
-            closeMainFormButton.Image = Properties.Resources.close__2_;
-            closeMainFormButton.Location = new Point(986, 0);
-            closeMainFormButton.Name = "closeMainFormButton";
-            closeMainFormButton.Size = new Size(43, 36);
-            closeMainFormButton.TabIndex = 0;
-            closeMainFormButton.UseVisualStyleBackColor = true;
-            closeMainFormButton.Click += closeMainFormButton_Click;
             // 
             // workoutUserControlForm1
             // 
@@ -359,10 +346,9 @@
             predictionUserControlForm1.Size = new Size(1029, 627);
             predictionUserControlForm1.TabIndex = 7;
             // 
-
-
-            // predictionUserControlForm1
+            // profileUserControlForm1
             // 
+            profileUserControlForm1.AutoScroll = true;
             profileUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
             profileUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             profileUserControlForm1.Location = new Point(183, 35);
@@ -370,12 +356,13 @@
             profileUserControlForm1.Name = "profileUserControlForm1";
             profileUserControlForm1.Size = new Size(1029, 627);
             profileUserControlForm1.TabIndex = 10;
-
-
+            // 
             // reportUserControlForm1
             // 
+            reportUserControlForm1.BackColor = Color.FromArgb(46, 51, 73);
+            reportUserControlForm1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             reportUserControlForm1.Location = new Point(183, 35);
-            reportUserControlForm1.Margin = new Padding(4, 4, 4, 4);
+            reportUserControlForm1.Margin = new Padding(4);
             reportUserControlForm1.Name = "reportUserControlForm1";
             reportUserControlForm1.Size = new Size(1029, 627);
             reportUserControlForm1.TabIndex = 8;
@@ -399,8 +386,8 @@
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
+            MaximizeBox = false;
             Name = "MainForm";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "FlashFit";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -428,7 +415,6 @@
         private Panel navigationPanel;
         private DashboardCustomControl dashboardCustomControl1;
         private Panel panel3;
-        private Button closeMainFormButton;
         private WorkoutUserControlForm workoutUserControlForm1;
         private CheatmealUserControlForm cheatmealUserControlForm1;
 

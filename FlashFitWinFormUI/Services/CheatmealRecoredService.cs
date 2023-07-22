@@ -1,72 +1,124 @@
-﻿using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FlashFitClassLibrary.HttpApiProcessor;
+using FlashFitClassLibrary.Resources.CheatmealRecord;
+using Refit;
 
 namespace FlashFitClassLibrary.Services;
 
 public class CheatmealRecoredService
 {
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST") ?? "localhost";
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT") ?? "7205";
     //create
-    public bool createCheatmealRecord(CheatmealRecordModel model)
+    public async Task<CheatmealRecordCreation?> createCheatmealRecord(CheatmealRecordCreation model)
     {
-        if(model != null)
-        {
-            TemporaryDataStore.cheatmealRecords.Add(model);
-            return true;
-        }else { return false; }
-    }
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.CreateNewChetmealRecord(model).ConfigureAwait(false);
 
-    //get
-    public List<CheatmealRecordModel> getCheatmealRecords()
-    {
-        return TemporaryDataStore.cheatmealRecords;
-    }
 
-    //get by id
-    public CheatmealRecordModel getCheatmealRecordById(int id)
-    {
-        CheatmealRecordModel? result = TemporaryDataStore.cheatmealRecords.Find(x => x.CheatmealRecordID == id);
-        if(result != null)
+        if (response.IsSuccessStatusCode && response.Content != null)
         {
-            return result;
+            return new CheatmealRecordCreation(
+                response.Content.CheatmealId,
+                response.Content.UserEmail,
+                response.Content.WeightAtRecordTime,
+                response.Content.CheatmealRecordedDateTime,
+                response.Content.CheatmealAddedDateTime
+                );
         }
         else
         {
-            return new CheatmealRecordModel();
+            return null;
+
         }
     }
 
-    //get by email & date range
-    public List<CheatmealRecordModel> getCheatmealRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
+    //get all record by email
+    public async Task<List<CheatmealRecordResponse>> getCheatmealRcordsByEmail(string email)
     {
-        List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail == email && x.CheatmealAddedDateTime <= to && x.CheatmealAddedDateTime >= from).ToList();
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetAllChetmealRecordsByEmail(email).ConfigureAwait(false);
 
-        return list;
+        List<CheatmealRecordResponse>? records = new();
+
+        if (response.IsSuccessStatusCode)
+        {
+            foreach (CheatmealRecordResponse item in response.Content)
+            {
+                records.Add(item);
+            }
+            return records;
+        }
+        else
+        {
+            return records;
+        }
+    }
+
+    //get by id
+    public async Task<CheatmealRecordResponse?> getCheatmealRecordById(int id)
+    {
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetChetmealRecordById(id).ConfigureAwait(false);
+
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new CheatmealRecordResponse(
+                response.Content.CheatmealRecordId,
+                response.Content.Cheatmeal,
+                response.Content.UserEmail,
+                response.Content.CheatmealAddedDateTime,
+                response.Content.WeightAtRecordTime
+                );
+        }
+        else
+        {
+            return null;
+        }
     }
 
     //update
-    public bool updateCheatmealRecord(CheatmealRecordModel cheatmealRecord)
+    public async Task<CheatmealRecordResponse?> updateCheatmealRecord(CheatmealReocrdUpdate cheatmealRecord)
     {
-        CheatmealRecordModel? result = TemporaryDataStore.cheatmealRecords.Find(x => x.CheatmealRecordID == cheatmealRecord.CheatmealRecordID);
-        if(result != null)
-        {
-            result.Cheatmeal = cheatmealRecord.Cheatmeal;
-            result.CheatmealAddedDateTime = cheatmealRecord.CheatmealAddedDateTime;
-            result.WeightAtMealRecordTime = cheatmealRecord.WeightAtMealRecordTime;
-            result.CheatmealAddedDateTime = cheatmealRecord.CheatmealAddedDateTime;
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.UpdateChetmealRecord(cheatmealRecord).ConfigureAwait(false);
 
-            return true;
-        }else { return false; }
+        if (response.IsSuccessStatusCode)
+        {
+            return new CheatmealRecordResponse(
+                response.Content.CheatmealRecordId,
+                response.Content.Cheatmeal,
+                response.Content.UserEmail,
+                response.Content.CheatmealAddedDateTime, 
+                response.Content.WeightAtRecordTime
+                );
+        }
+        else
+        {
+            return null;
+        }
     }
 
     //delete
-    public bool deleteCheatmealRecord(int id)
+    public async Task<CheatmealRecordResponse?> deleteCheatmealRecord(int id)
     {
-        return TemporaryDataStore.cheatmealRecords.Remove(getCheatmealRecordById(id));
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.DeleteChetmealRecord(id).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return new CheatmealRecordResponse(
+                response.Content.CheatmealRecordId,
+                response.Content.Cheatmeal,
+                response.Content.UserEmail,
+                response.Content.CheatmealAddedDateTime,
+                response.Content.WeightAtRecordTime
+                );
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

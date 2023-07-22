@@ -1,62 +1,57 @@
-﻿using FlashFitClassLibrary.Models;
-using FlashFitClassLibrary;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FlashFitClassLibrary.Services;
-using FlashFitClassLibrary.InitialData;
+﻿using FlashFitClassLibrary.Enumz;
+using FlashFitClassLibrary.Resources.CheatmealRecord;
+using FlashFitClassLibrary.Resources.Report;
 using FlashFitClassLibrary.Resources.User;
-using FlashFitClassLibrary.Enumz;
+using FlashFitClassLibrary.Resources.WorkoutRecord;
+using FlashFitClassLibrary.Services;
+using FlashFitWinFormUI.Services;
 
 namespace FlashFitWinFormUI;
 
 public partial class ReportUserControlForm : UserControl
 {
 
-    WorkoutRecordService workoutRecordService = new WorkoutRecordService();
-    CheatmealRecoredService cheatmealRecoredService = new CheatmealRecoredService();
-    string email = Program.getLoggedInUser().Email;
+    private readonly ReportService _reportService;
 
-
-
-    UserService _userService = new UserService();
-    PredictionService _predictiveService = new PredictionService();
+    private readonly UserService _userService;
 
 
     public ReportUserControlForm()
     {
         InitializeComponent();
-        setUserData();
+        _reportService = new ReportService();
+        _userService = new UserService();
+
         toDatePicker.MaxDate = DateTime.Now;
         fromDatePicker.MinDate = DateTime.Now.AddDays(-120);
         toDatePicker.MinDate = DateTime.Now.AddDays(-119);
     }
 
 
-    private async void setUserData()
+    private async Task setUserData()
     {
-        decimal bmi = await _userService.calculateAndUpdateBMI(email);
-        HealthStatusEnum healthStatus = await _predictiveService.getCurrentHealthStatus(email);
+        UserResource user = await _userService.getUserByEmail(Program.getLoggedInUser().Email);
+
+        decimal bmi = user.BodyMassIndex;
+        HealthStatusEnum healthStatus = (HealthStatusEnum)Enum.Parse(typeof(HealthStatusEnum), user.HeathStatus);
 
 
-        UserResource userProfile = await _userService.getUserByEmail(email);
-        namePlac.Text = userProfile.Name;
-        weightPcl.Text = $"{userProfile.WeightInKiloGrams:F2}";
-        bmiPlc.Text = $"{bmi:F2}";
+
+        namePlac.Text = user.Name;
+        weightPcl.Text = $"{user.WeightInKiloGrams:F2}";
+        bmiPlc.Text = $"{user.BodyMassIndex:F2}";
         healthStatusPlc.Text = healthStatus.ToString();
 
 
     }
 
-    private void setupWorkoutListView(List<WorkoutRecordModel> list)
+    private void setupWorkoutListView(List<WorkoutRecordResponse> list)
     {
 
+        if (list.Count == 0)
+        {
+            MessageBox.Show("No workout record found");
+        }
 
         string[] item = new string[3];
         ListViewItem listItem;
@@ -64,7 +59,7 @@ public partial class ReportUserControlForm : UserControl
 
         foreach (var i in list)
         {
-            item[0] = i.WorkedoutDateTime.ToShortDateString();
+            item[0] = i.WorkoutDateTime.ToShortDateString();
             item[1] = i.Workout.WorkoutName;
             item[2] = i.WeightAtCompletion.ToString();
 
@@ -73,9 +68,14 @@ public partial class ReportUserControlForm : UserControl
         }
     }
 
-    private void setupCheatmealListView(List<CheatmealRecordModel> list)
+    private void setupCheatmealListView(List<CheatmealRecordResponse> list)
     {
-        string[] item = new string[3];
+
+        if (list.Count == 0)
+        {
+            MessageBox.Show("No Cheatmeal record found");
+        }
+            string[] item = new string[3];
         ListViewItem listItem;
         reportListView.Items.Clear();
 
@@ -84,7 +84,7 @@ public partial class ReportUserControlForm : UserControl
 
             item[0] = x.CheatmealAddedDateTime.ToShortDateString();
             item[1] = x.Cheatmeal.CheatmealName;
-            item[2] = x.WeightAtMealRecordTime.ToString();
+            item[2] = x.WeightAtRecordTime.ToString();
 
             listItem = new ListViewItem(item);
             reportListView.Items.Add(listItem);
@@ -94,7 +94,7 @@ public partial class ReportUserControlForm : UserControl
 
     }
 
-    private void getAllRecordButton_Click(object sender, EventArgs e)
+    private async void getAllRecordButton_Click(object sender, EventArgs e)
     {
 
 
@@ -106,17 +106,17 @@ public partial class ReportUserControlForm : UserControl
         }
 
 
-        string selectedReportType = reportTypeComboBox.SelectedItem.ToString();
+        string? selectedReportType = reportTypeComboBox.SelectedItem.ToString();
 
         if (selectedReportType == "Cheatmeal")
         {
-            List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords;
+            List<CheatmealRecordResponse> list = await _reportService.getAllCheatmealsByEmail(Program.getLoggedInUser().Email);
             setupCheatmealListView(list);
 
         }
         else if (selectedReportType == "Workout")
         {
-            List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords;
+            List<WorkoutRecordResponse> list = await _reportService.getAllWorkoutssByEmail(Program.getLoggedInUser().Email);
             setupWorkoutListView(list);
         }
         else
@@ -126,7 +126,7 @@ public partial class ReportUserControlForm : UserControl
         }
     }
 
-    private void filterByDateButton_Click(object sender, EventArgs e)
+    private async void filterByDateButton_Click(object sender, EventArgs e)
     {
         if (reportTypeComboBox.SelectedItem == null)
         {
@@ -140,21 +140,29 @@ public partial class ReportUserControlForm : UserControl
         if (((int)(toDate - fromDate).TotalDays) <= 0)
         {
             MessageBox.Show("Select a Valid Date Range");
+            fromDatePicker.Focus();
+            return;
         }
 
 
 
-        string selectedReportType = reportTypeComboBox.SelectedItem.ToString();
+        string? selectedReportType = reportTypeComboBox.SelectedItem.ToString();
+
+        ReportRequest reportRequest = new ReportRequest(
+            Program.getLoggedInUser().Email,
+            fromDate,
+            toDate
+            );
 
         if (selectedReportType == "Cheatmeal")
         {
-            List<CheatmealRecordModel> list = cheatmealRecoredService.getCheatmealRecordsByEmailAndDateRange(email, fromDate, toDate);
+            List<CheatmealRecordResponse> list = await _reportService.getAllCheatmealsByEmailAndDate(reportRequest);
             setupCheatmealListView(list);
 
         }
         else if (selectedReportType == "Workout")
         {
-            List<WorkoutRecordModel> list = workoutRecordService.getWorkoutRecordsByEmailAndDateRange(email, fromDate, toDate);
+            List<WorkoutRecordResponse> list = await _reportService.getAllWorkoutssByEmailAndDate(reportRequest);
             setupWorkoutListView(list);
         }
         else
@@ -162,5 +170,10 @@ public partial class ReportUserControlForm : UserControl
             MessageBox.Show("Select Report Type");
             reportTypeComboBox.Focus();
         }
+    }
+
+    private async void ReportUserControlForm_Load(object sender, EventArgs e)
+    {
+        await setUserData();
     }
 }

@@ -1,22 +1,16 @@
 ﻿using FlashFitClassLibrary.InitialData;
 using FlashFitClassLibrary.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace FlashFitClassLibrary.Connector;
 
 public class JsonDeserializer
 {
     //Add initial WorkoutTypes 
-   
-    
-    
+
+
+
     public static void loadWorkoutModelsFromJson()
     {
         var incoming = new List<WorkoutModel>();
@@ -41,16 +35,16 @@ public class JsonDeserializer
     {
         string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialData\InitialDataCheatmeals.json";
         var incoming = new List<CheatmealModel>();
-        using(StreamReader reader = new StreamReader(filePath))
+        using (StreamReader reader = new StreamReader(filePath))
         {
             string json = reader.ReadToEnd();
             incoming = JsonConvert.DeserializeObject<List<CheatmealModel>>(json);
         }
-        if(incoming != null && incoming.Count > 0)
+        if (incoming != null && incoming.Count > 0)
         {
-            foreach(CheatmealModel model in incoming)
+            foreach (CheatmealModel model in incoming)
             {
-               
+
                 TemporaryDataStore.cheatmealModels.Add(model);
             }
         }
@@ -69,31 +63,31 @@ public class JsonDeserializer
         {
             string json = reader.ReadToEnd();
             //incoming = JsonConvert.DeserializeObject<List<WorkoutRecordModel>>(json);
-           incoming = System.Text.Json.JsonSerializer.Deserialize<List<WorkoutRecordModel>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-      
+            incoming = System.Text.Json.JsonSerializer.Deserialize<List<WorkoutRecordModel>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
         }
 
         if (incoming != null && incoming.Count > 0)
         {
-            
+
             foreach (WorkoutRecordModel model in incoming)
             {
                 WorkoutRecordModel workoutRecord = new WorkoutRecordModel();
                 WorkoutModel workoutModel = new WorkoutModel();
 
-                
-                    //workoutModel.WorkoutID = model.Workout.WorkoutID;
-                    //workoutModel.WorkoutName = model.Workout.WorkoutName;
-                    //workoutModel.WorkoutType = model.Workout.WorkoutType;
-                    //workoutModel.CaloryBurnRate = model.Workout.CaloryBurnRate;
-              
-               
-                    //workoutRecord.WorkoutRecordId = model.WorkoutRecordId;
-                    //workoutRecord.Workout = workoutModel;
-                    //workoutRecord.UserEmail = model.UserEmail;
-                    //workoutRecord.WorkedoutDateTime = model.WorkedoutDateTime;
-                    //workoutRecord.WeightAtCompletion = model.WeightAtCompletion;
-         
+
+                //workoutModel.WorkoutID = model.Workout.WorkoutID;
+                //workoutModel.WorkoutName = model.Workout.WorkoutName;
+                //workoutModel.WorkoutType = model.Workout.WorkoutType;
+                //workoutModel.CaloryBurnRate = model.Workout.CaloryBurnRate;
+
+
+                //workoutRecord.WorkoutRecordId = model.WorkoutRecordId;
+                //workoutRecord.Workout = workoutModel;
+                //workoutRecord.UserEmail = model.UserEmail;
+                //workoutRecord.WorkedoutDateTime = model.WorkedoutDateTime;
+                //workoutRecord.WeightAtCompletion = model.WeightAtCompletion;
+
                 TemporaryDataStore.workoutRecords.Add(workoutRecord);
 
             }
@@ -108,7 +102,7 @@ public class JsonDeserializer
         string filePath = @"D:\Developer\c_sharp\FlashFit\FlashFitClassLibrary\InitialData\InitialDataCheatmealRecords.json";
         using (StreamReader reader = new StreamReader(filePath))
         {
-            
+
             string json = reader.ReadToEnd();
             //incoming = JsonConvert.DeserializeObject<List<WorkoutRecordModel>>(json);
             incoming = System.Text.Json.JsonSerializer.Deserialize<List<CheatmealRecordModel>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });

@@ -1,55 +1,68 @@
 ﻿
 using FlashFitClassLibrary.Enumz;
-using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
 using FlashFitClassLibrary.Resources.User;
 using FlashFitClassLibrary.Services;
-
+using FlashFitWinFormUI.Services;
 
 namespace FlashFitWinFormUI;
 
 public partial class ProfileUserControlForm : UserControl
 {
 
-    readonly UserService _userService = new UserService();
+    readonly UserService _userService;
     public ProfileUserControlForm()
     {
         InitializeComponent();
+        _userService = new UserService();
 
     }
 
     private async void userProfileSaveButton_Click(object sender, EventArgs e)
     {
-
-
-        //UserProfileModel user = TemporaryDataStore.userProfiles.Find(x => x.Email == emailText.Text);
-
+        if(ValidatorService.ValidateTextField(fullNameText) == false)
+        {
+            MessageBox.Show("Name cannot be empty");
+        }
         string name = fullNameText.Text;
+
         string email = emailText.Text;
         DateTime brithDate = birthDatePicker.Value;
         GenderTypeEnum gender = maleRadioButton.Checked ? GenderTypeEnum.MALE : GenderTypeEnum.FEMALE;
+
+        if(wieghtNumeric.Value <= 0)
+        {
+            MessageBox.Show("Cannot be 0");
+        }
+
         decimal weight = wieghtNumeric.Value;
+
+        if(heightNumeric.Value <= 0)
+        {
+            MessageBox.Show("Cannot be 0 or less");
+        }
         decimal height = heightNumeric.Value;
-        decimal bmi = 0; //TODO: Update the BMI
-        HealthStatusEnum healthStatus = HealthStatusEnum.None; //TODO: Update the Health Status
-
-        UserResource modelToBeUpdated = new(email, name, gender, brithDate, weight, height, bmi, healthStatus);
 
 
-        UserResource updatedValue = await _userService.updateUser(modelToBeUpdated);
+
+        //(HealthStatusEnum)Enum.Parse(typeof(HealthStatusEnum), user.HeathStatus)
+
+        UserResource modelToBeUpdated = new(email, name, gender.ToString(), brithDate, weight, height, 0, "NONE");
+
+
+        UserResource? updatedValue = await _userService.updateUser(modelToBeUpdated);
+
         if (updatedValue == null)
         {
-            MessageBox.Show("User not found to update");
+            MessageBox.Show("Not updated, Something went wrong");
         }
         else
         {
-            MessageBox.Show($"User {modelToBeUpdated.Name} updated successfully");
+            
+            plcToBmiLable.Text = updatedValue.BodyMassIndex.ToString();
+            plcHealthStatusLabel.Text = updatedValue.HeathStatus.ToString();
+            plcToBmiLable.Text = updatedValue.BodyMassIndex.ToString();
+            MessageBox.Show($"User {updatedValue.Name} updated successfully");
         }
-
-        //loadListView();
-
-
-
     }
 
     private void ProfileUserControlForm_Load(object sender, EventArgs e)
@@ -57,14 +70,23 @@ public partial class ProfileUserControlForm : UserControl
         setUserDataAtLoad();
     }
 
-    private async void setUserDataAtLoad()
+    private void setUserDataAtLoad()
     {
         fullNameText.Text = Program.getLoggedInUser().Name;
         emailText.Text = Program.getLoggedInUser().Email;
 
-        UserResource model = await _userService.getUserByEmail(Program.getLoggedInUser().Email);
+        GenderTypeEnum gender;
 
-        if (model.Gender == FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE)
+        if (Program.getLoggedInUser().Gender.Equals("MALE"))
+        {
+            gender = GenderTypeEnum.MALE;
+        }
+        else
+        {
+            gender = GenderTypeEnum.FEMALE;
+        }
+
+        if (gender == FlashFitClassLibrary.Enumz.GenderTypeEnum.MALE)
         {
             maleRadioButton.Checked = true;
 
@@ -74,11 +96,11 @@ public partial class ProfileUserControlForm : UserControl
             femaleRadioButton.Checked = true;
 
         }
-        heightNumeric.Value = model.HeightInCentiMeter;
-        wieghtNumeric.Value = model.WeightInKiloGrams;
-        birthDatePicker.Value = model.BirthDate;
-        plcHealthStatusLabel.Text = model.HeathStatus.ToString();
-        plcToBmiLable.Text = model.BodyMassIndex.ToString();
+        heightNumeric.Value = Program.getLoggedInUser().HeightInCentiMeter;
+        wieghtNumeric.Value = Program.getLoggedInUser().WeightInKiloGrams;
+        birthDatePicker.Value = Program.getLoggedInUser().BirthDate;
+        plcHealthStatusLabel.Text = Program.getLoggedInUser().HeathStatus.ToString();
+        plcToBmiLable.Text = Program.getLoggedInUser().BodyMassIndex.ToString();
 
     }
 }

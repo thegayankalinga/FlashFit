@@ -1,80 +1,118 @@
-﻿using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FlashFitClassLibrary.HttpApiProcessor;
+using FlashFitClassLibrary.Resources.Cheatmeal;
+using Refit;
 
 namespace FlashFitClassLibrary.Services;
 
 public class CheatmealService
 {
 
-    //create
-    public bool createCheatmeal(CheatmealModel model)
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST") ?? "localhost";
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT") ?? "7205";
+
+    //TODO: Save cheatmeal type
+    public async Task<CheatmealTypeCreation?> createCheatmealType(CheatmealTypeCreation toCreate)
     {
-        if(model != null)
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.CreateNewCheatmealType(toCreate).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
         {
-            TemporaryDataStore.cheatmealModels.Add(model);
-            return true;
+            return new CheatmealTypeCreation(
+                response.Content.Name,
+                response.Content.CheatmealCaloryGain,
+                response.Content.DateCreated
+                );
         }
         else
         {
-            return false;
+            return null;
         }
-        
+
     }
 
-    //get 
-    public List<CheatmealModel> getAllCheatmeals()
+    //TODO: Get All cheatmeal types 
+    public async Task<List<CheatmealTypeResponse>> getAllCheatmeal()
     {
-        return TemporaryDataStore.cheatmealModels;
-    }
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetAllCheatmealTypes().ConfigureAwait(false);
+        List<CheatmealTypeResponse>? records = new();
 
-    //get by id
-    public CheatmealModel getCheatmealById(int id)
-    {
-        CheatmealModel? resultOfFind = TemporaryDataStore.cheatmealModels.Find(x => x.CheatmealId == id);
-        if(resultOfFind != null)
+        if (response.Content != null)
         {
-            return resultOfFind;
+            foreach (CheatmealTypeResponse item in response.Content)
+            {
+                records.Add(item);
+            }
+            return records;
         }
         else
         {
-            return new CheatmealModel();
+            return records;
+        }
+
+    }
+
+    //Get cheatmeal by ID
+    public async Task<CheatmealTypeResponse?> getCheatmealById(int id)
+    {
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetCheatmealTypeById(id).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new CheatmealTypeResponse(
+                response.Content.Id,
+                response.Content.Name,
+                response.Content.CheatmealCaloryGain);
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
+
+    //TODO: Update cheatmeal
+    public async Task<CheatmealTypeResponse?> updateCheatmealById(CheatmealTypeUpdate updateModel)
+    {
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.UpdateCheatmealType(updateModel).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new CheatmealTypeResponse(
+                response.Content.Id,
+                response.Content.Name,
+                response.Content.CheatmealCaloryGain
+                );
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    //TODO: Delete cheatmeal type 
+    public async Task<CheatmealTypeResponse?> deletecheatmealById(int id)
+    {
+        var data = RestService.For<ICheatmealDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.DeleteCheatmealById(id).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new CheatmealTypeResponse(
+                response.Content.Id,
+                response.Content.Name,
+                response.Content.CheatmealCaloryGain);
+
+        }
+        else
+        {
+            return null;
         }
     }
 
-    //update
-    public bool updateCheatmeal(CheatmealModel cheatmeal)
-    {
-        CheatmealModel? resultOfFind = TemporaryDataStore.cheatmealModels.Find(x => x.CheatmealId == cheatmeal.CheatmealId);
-        if(resultOfFind != null)
-        {
-            resultOfFind.CheatmealName = cheatmeal.CheatmealName;
-            resultOfFind.CheatCalorieGain = cheatmeal.CheatCalorieGain;
-            return true;
-        }else { return false; }
-    }
-
-    //delete
-    public bool deleteCheatmeal(int id)
-    {
-        return TemporaryDataStore.cheatmealModels.Remove(getCheatmealById(id));
-    }
-
-    public List<CheatmealRecordModel> getCheatmealRecordsByEmailAndDateRange(string email, DateTime from, DateTime to)
-    {
-        List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail == email && x.CheatmealAddedDateTime <= to && x.CheatmealAddedDateTime >= from).ToList();
-
-        return list;
-    }
-    
-    public List<CheatmealRecordModel> GetCheatmealRecordModelsByEmail(string email)
-    {
-        List<CheatmealRecordModel> lsit = TemporaryDataStore.cheatmealRecords.Where(x => x.UserEmail.Contains(email)).ToList();
-        return lsit;
-    }
 }

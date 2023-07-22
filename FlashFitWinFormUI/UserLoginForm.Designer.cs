@@ -105,7 +105,8 @@
             emailAddressTextbox.Location = new Point(51, 175);
             emailAddressTextbox.Name = "emailAddressTextbox";
             emailAddressTextbox.Size = new Size(258, 29);
-            emailAddressTextbox.TabIndex = 5;
+            emailAddressTextbox.TabIndex = 1;
+            emailAddressTextbox.Text = "bg15407@gmail.com";
             // 
             // passwordLabel
             // 
@@ -124,7 +125,8 @@
             passwordTextbox.Name = "passwordTextbox";
             passwordTextbox.PasswordChar = '*';
             passwordTextbox.Size = new Size(258, 29);
-            passwordTextbox.TabIndex = 5;
+            passwordTextbox.TabIndex = 2;
+            passwordTextbox.Text = "test";
             // 
             // loginButton
             // 
@@ -133,7 +135,7 @@
             loginButton.Location = new Point(49, 357);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(260, 35);
-            loginButton.TabIndex = 6;
+            loginButton.TabIndex = 3;
             loginButton.Text = "Login";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_ClickAsync;
@@ -158,6 +160,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
+            MaximizeBox = false;
             Name = "UserLoginForm";
             Text = "UserLoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

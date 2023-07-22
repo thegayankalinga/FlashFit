@@ -1,5 +1,4 @@
 ﻿using FlashFitClassLibrary.Enumz;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +10,7 @@ namespace FlashFitUserManagementService
     /// </summary>
     public class UserModel
     {
-        
+
         [Key]
         public string Email { get; set; }
         [Required]
@@ -39,6 +38,6 @@ namespace FlashFitUserManagementService
         public HealthStatusEnum HealthStatus { get; set; }
 
         public DateTime DateCreated { get; set; }
-        public DateTime? DateUpdated { get; set; }  
+        public DateTime? DateUpdated { get; set; }
     }
 }

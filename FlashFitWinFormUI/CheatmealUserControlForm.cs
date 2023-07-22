@@ -1,60 +1,48 @@
-﻿using FlashFitClassLibrary;
-using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
-using FlashFitClassLibrary.Resources.User;
+﻿using FlashFitClassLibrary.Resources.Cheatmeal;
+using FlashFitClassLibrary.Resources.CheatmealRecord;
 using FlashFitClassLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FlashFitWinFormUI;
 public partial class CheatmealUserControlForm : UserControl
 {
 
-    CheatmealService service = new CheatmealService();
-    UserService userService = new UserService();
-    CheatmealRecoredService cheatmealRecoredService = new CheatmealRecoredService();
+    private readonly CheatmealService _cheatmealService;
+    private readonly CheatmealRecoredService _cheatmealRecoredService;
     bool editButtonClicked = false;
-    private readonly UserResource loggedInUser;
 
 
-    public CheatmealUserControlForm(UserResource userResource)
-    {
-        InitializeComponent();
-        loggedInUser = userResource;
-        selectCheatmealComboBox.ResetText();
-        selectCheatmealComboBox.Items.AddRange(generateComboBoxValues().ToArray());
-        cheatmealDateTimePicker.Value = DateTime.Now;
-    }
     public CheatmealUserControlForm()
     {
         InitializeComponent();
-        
+        _cheatmealService = new();
+        _cheatmealRecoredService = new();
+
         selectCheatmealComboBox.ResetText();
-        selectCheatmealComboBox.Items.AddRange(generateComboBoxValues().ToArray());
+
         cheatmealDateTimePicker.Value = DateTime.Now;
     }
 
-    private void setupListView()
+    private async Task setupListView()
     {
-        List<CheatmealRecordModel> list = TemporaryDataStore.cheatmealRecords;
+        List<CheatmealRecordResponse> list = await _cheatmealRecoredService.getCheatmealRcordsByEmail(Program.getLoggedInUser().Email);
+
+        if (list.Count <= 0)
+        {
+            MessageBox.Show("No records found");
+            return;
+        }
+
         string[] item = new string[5];
         ListViewItem listItem;
         cheatmealRecordListView.Items.Clear();
 
         foreach (var x in list)
         {
-            item[0] = x.CheatmealRecordID.ToString();
+            item[0] = x.CheatmealRecordId.ToString();
             item[1] = x.Cheatmeal.CheatmealName;
             item[2] = x.CheatmealAddedDateTime.ToString();
             item[3] = x.Cheatmeal.CheatCalorieGain.ToString();
-            item[4] = x.WeightAtMealRecordTime.ToString();
+            item[4] = x.WeightAtRecordTime.ToString();
 
             listItem = new ListViewItem(item);
             cheatmealRecordListView.Items.Add(listItem);
@@ -72,68 +60,75 @@ public partial class CheatmealUserControlForm : UserControl
         weightAtCheatmealNumeric.Value = 0;
         selectCheatmealComboBox.Focus();
     }
-    private void updateChangestoCheatmealRecord()
+    private async Task updateChangestoCheatmealRecord()
     {
-        CheatmealRecordModel updatedRecordModel = new CheatmealRecordModel();
-        CheatmealModel cheatmealModel = new CheatmealModel();
+        CheatmealReocrdUpdate updatedRecordModel;
+        CheatmealTypeResponse? cheatmealModel;
 
-
-        CheatmealRecordModel cheatmealRecordModel = cheatmealRecoredService.getCheatmealRecordById(int.Parse(hiddenCheatmealRecordIDText.Text));
-        if (cheatmealRecordModel != null)
+        if (selectCheatmealComboBox.SelectedItem == null)
         {
-            if (selectCheatmealComboBox.SelectedItem == null)
-            {
-                MessageBox.Show("Reselect the Workout");
-                selectCheatmealComboBox.Focus();
-                selectCheatmealComboBox.DroppedDown = true;
-                return;
-            }
-
-            int cheatmealID = int.Parse(selectCheatmealComboBox.SelectedItem.ToString().Substring(0, 1));
-            cheatmealModel = service.getCheatmealById(cheatmealID);
-
-            updatedRecordModel.CheatmealRecordID = int.Parse(hiddenCheatmealRecordIDText.Text);
-            updatedRecordModel.Cheatmeal = cheatmealModel;
-            updatedRecordModel.CheatmealAddedDateTime = cheatmealDateTimePicker.Value;
-            updatedRecordModel.UserEmail = loggedInUser.Email;
-            updatedRecordModel.WeightAtMealRecordTime = weightAtCheatmealNumeric.Value;
-
-            if (cheatmealRecordModel.Equals(updatedRecordModel))
-            {
-                MessageBox.Show("No changes to update");
-                return;
-            }
-            else
-            {
-                bool result = cheatmealRecoredService.updateCheatmealRecord(updatedRecordModel);
-                if (result)
-                {
-                    MessageBox.Show($" Cheatmeal Record ID {cheatmealRecordModel.CheatmealRecordID} updated successfully");
-                    editButtonClicked = false;
-                    clearForm();
-                }
-                else
-                {
-                    MessageBox.Show("Something went wrong, try later");
-                }
-            }
-        }
-        else
-        {
-            MessageBox.Show("Pls select the Cheatmeal");
+            MessageBox.Show("Reselect the Workout");
             selectCheatmealComboBox.Focus();
+            selectCheatmealComboBox.DroppedDown = true;
             return;
         }
 
+        int cheatmealID = int.Parse(selectCheatmealComboBox.SelectedItem.ToString().Substring(0, 1));
+        if (cheatmealID == 0)
+        {
+            MessageBox.Show("Invalid Cheatmeal Type ID");
+            return;
+
+        }
+        cheatmealModel = await _cheatmealService.getCheatmealById(cheatmealID);
+
+        if (cheatmealModel == null)
+        {
+            MessageBox.Show("Could not found valid Cheatmeal type");
+            return;
+        }
+
+        updatedRecordModel = new CheatmealReocrdUpdate(
+            int.Parse(hiddenCheatmealRecordIDText.Text),
+            cheatmealModel.Id,
+            Program.getLoggedInUser().Email,
+            cheatmealDateTimePicker.Value,
+            weightAtCheatmealNumeric.Value,
+            DateTime.UtcNow
+
+            );
+
+        if (updatedRecordModel == null)
+        {
+            MessageBox.Show("No changes to update");
+            return;
+        }
+        else
+        {
+            CheatmealRecordResponse? result = await _cheatmealRecoredService.updateCheatmealRecord(updatedRecordModel);
+            if (result != null)
+            {
+                MessageBox.Show($" Cheatmeal Record ID {result.CheatmealRecordId} updated successfully");
+                editButtonClicked = false;
+                clearForm();
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong, try later");
+            }
+        }
     }
-    private List<string> generateComboBoxValues()
+
+    private async Task<List<string>> generateComboBoxValues()
     {
         List<string> comboBoxLoadList = new List<string>();
         comboBoxLoadList.Add("0 - Select");
 
-        TemporaryDataStore.cheatmealModels.ForEach(model =>
+        List<CheatmealTypeResponse> typeList = await _cheatmealService.getAllCheatmeal();
+
+        typeList.ForEach(model =>
         {
-            string combinedValue = $"{model.CheatmealId} - {model.CheatmealName}";
+            string combinedValue = $"{model.Id} - {model.Name}";
             comboBoxLoadList.Add(combinedValue);
         });
         return comboBoxLoadList;
@@ -147,24 +142,26 @@ public partial class CheatmealUserControlForm : UserControl
         addCheatmealForm.ShowDialog();
     }
 
-    private void CheatmealUserControlForm_Load(object sender, EventArgs e)
+    private async void CheatmealUserControlForm_Load(object sender, EventArgs e)
     {
-        TemporaryDataStore.CheatmealRecordIdCounter = TemporaryDataStore.cheatmealRecords.Count + 1;
-        setupListView();
+        await setupListView();
+
+        selectCheatmealComboBox.Items.AddRange((await generateComboBoxValues()).ToArray());
         selectCheatmealComboBox.SelectedText = "0 - Select";
     }
 
-    private void workoutRecordDeleteButton_Click(object sender, EventArgs e)
+    private async void workoutRecordDeleteButton_Click(object sender, EventArgs e)
     {
         int cheatmealID;
 
         if (cheatmealRecordListView.SelectedItems.Count > 0)
         {
             cheatmealID = int.Parse(cheatmealRecordListView.SelectedItems[0].Text);
-            if (cheatmealRecoredService.deleteCheatmealRecord(cheatmealID))
+            CheatmealRecordResponse? recordResponse = await _cheatmealRecoredService.deleteCheatmealRecord(cheatmealID);
+            if (recordResponse != null)
             {
-                MessageBox.Show($"Cheatmeal Record ID {cheatmealID} is deleted successfully");
-                setupListView();
+                MessageBox.Show($"Cheatmeal Record ID {recordResponse} is deleted successfully");
+                await setupListView();
                 return;
             }
             else
@@ -181,23 +178,23 @@ public partial class CheatmealUserControlForm : UserControl
         }
     }
 
-    private void workoutRecordEditButton_Click(object sender, EventArgs e)
+    private async void workoutRecordEditButton_Click(object sender, EventArgs e)
     {
         int cheatmealID;
 
         if (cheatmealRecordListView.SelectedItems.Count > 0)
         {
             cheatmealID = int.Parse(cheatmealRecordListView.SelectedItems[0].Text);
-            CheatmealRecordModel model = cheatmealRecoredService.getCheatmealRecordById(cheatmealID);
+            CheatmealRecordResponse? model = await _cheatmealRecoredService.getCheatmealRecordById(cheatmealID);
 
             if (model != null)
             {
                 string combinedText = $"{model.Cheatmeal.CheatmealId} - {model.Cheatmeal.CheatmealName}";
-                hiddenCheatmealRecordIDText.Text = model.CheatmealRecordID.ToString();
+                hiddenCheatmealRecordIDText.Text = model.CheatmealRecordId.ToString();
                 selectCheatmealComboBox.ResetText();
                 selectCheatmealComboBox.SelectedText = combinedText;
                 cheatmealDateTimePicker.Value = model.CheatmealAddedDateTime;
-                weightAtCheatmealNumeric.Value = model.WeightAtMealRecordTime;
+                weightAtCheatmealNumeric.Value = model.WeightAtRecordTime;
                 editButtonClicked = true;
                 selectCheatmealComboBox.Focus();
                 selectCheatmealComboBox.DroppedDown = true;
@@ -213,17 +210,17 @@ public partial class CheatmealUserControlForm : UserControl
         }
     }
 
-    private void saveCheatmealRecordButton_Click(object sender, EventArgs e)
+    private async void saveCheatmealRecordButton_Click(object sender, EventArgs e)
     {
         if (editButtonClicked)
         {
-            updateChangestoCheatmealRecord();
-            setupListView();
+            await updateChangestoCheatmealRecord();
+            await setupListView();
             return;
         }
 
-        CheatmealRecordModel cheatmealRecordModel = new CheatmealRecordModel();
-        CheatmealModel cheatmealModel = new CheatmealModel();
+        CheatmealRecordCreation cheatmealRecordModel;
+        CheatmealTypeResponse? cheatmealModel;
         int cheatmealID;
 
         int selectedIndex = selectCheatmealComboBox.SelectedIndex;
@@ -231,7 +228,21 @@ public partial class CheatmealUserControlForm : UserControl
         if (selectedIndex != -1)
         {
             cheatmealID = int.Parse(selectCheatmealComboBox.SelectedItem.ToString().Substring(0, 1));
-            cheatmealModel = service.getCheatmealById(cheatmealID);
+
+            if (cheatmealID < 0)
+            {
+                MessageBox.Show("Pls select a valid cheatmeael type");
+                selectCheatmealComboBox.Focus();
+                return;
+            }
+
+            cheatmealModel = await _cheatmealService.getCheatmealById(cheatmealID);
+
+            if (cheatmealModel == null)
+            {
+                MessageBox.Show("Could not find the cheatmeal type, aborting reocrd creation");
+                return;
+            }
         }
         else
         {
@@ -250,20 +261,32 @@ public partial class CheatmealUserControlForm : UserControl
 
         if (cheatmealModel != null)
         {
+            cheatmealRecordModel = new CheatmealRecordCreation(
+                cheatmealModel.Id,
+                Program.getLoggedInUser().Email,
+                weightAtCheatmealNumeric.Value,
+                cheatmealDateTimePicker.Value,
+                DateTime.UtcNow
 
-            cheatmealRecordModel.CheatmealRecordID = TemporaryDataStore.CheatmealRecordIdCounter + 1;
-            cheatmealRecordModel.Cheatmeal = cheatmealModel;
-            cheatmealRecordModel.UserEmail = loggedInUser.Email;
-            cheatmealRecordModel.WeightAtMealRecordTime = weightAtCheatmealNumeric.Value;
-            cheatmealRecordModel.CheatmealAddedDateTime = cheatmealDateTimePicker.Value;
+                );
 
-            userService.updateUserWeight(cheatmealRecordModel.WeightAtMealRecordTime, cheatmealRecordModel.UserEmail);
-            TemporaryDataStore.cheatmealRecords.Add(cheatmealRecordModel);
-            MessageBox.Show($"Your workout recorded successfully");
-            TemporaryDataStore.CheatmealRecordIdCounter += 1;
-            clearForm();
-            setupListView();
-            return;
+
+            CheatmealRecordCreation? result = await _cheatmealRecoredService.createCheatmealRecord(cheatmealRecordModel);
+
+            if (result != null)
+            {
+                MessageBox.Show($"Your workout record saved successfully");
+                clearForm();
+                await setupListView();
+                return;
+
+
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong");
+                return;
+            }
 
         }
         else

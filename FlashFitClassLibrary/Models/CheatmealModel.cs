@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace FlashFitClassLibrary.Models;
 
@@ -26,7 +21,7 @@ public class CheatmealModel
     public CheatmealModel()
     {
     }
-    
+
     [JsonConstructor]
     public CheatmealModel(int cheatmealId, string cheatmealName, decimal cheatCalorieGain)
     {

@@ -43,6 +43,7 @@
             birthDatePicker = new DateTimePicker();
             plcToBmiLable = new Label();
             plcHealthStatusLabel = new Label();
+            birthdateLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)wieghtNumeric).BeginInit();
             ((System.ComponentModel.ISupportInitialize)heightNumeric).BeginInit();
             genderGroupBox.SuspendLayout();
@@ -54,7 +55,7 @@
             userProfileSaveButton.FlatStyle = FlatStyle.Flat;
             userProfileSaveButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             userProfileSaveButton.ForeColor = SystemColors.ButtonHighlight;
-            userProfileSaveButton.Location = new Point(167, 447);
+            userProfileSaveButton.Location = new Point(167, 442);
             userProfileSaveButton.Margin = new Padding(4);
             userProfileSaveButton.Name = "userProfileSaveButton";
             userProfileSaveButton.Size = new Size(154, 48);
@@ -97,6 +98,7 @@
             // 
             // emailText
             // 
+            emailText.BackColor = SystemColors.InactiveBorder;
             emailText.Enabled = false;
             emailText.Location = new Point(167, 98);
             emailText.Margin = new Padding(4);
@@ -106,7 +108,7 @@
             // 
             // wieghtNumeric
             // 
-            wieghtNumeric.Location = new Point(167, 274);
+            wieghtNumeric.Location = new Point(167, 325);
             wieghtNumeric.Margin = new Padding(4);
             wieghtNumeric.Maximum = new decimal(new int[] { 700, 0, 0, 0 });
             wieghtNumeric.Name = "wieghtNumeric";
@@ -117,7 +119,7 @@
             // 
             // heightNumeric
             // 
-            heightNumeric.Location = new Point(167, 329);
+            heightNumeric.Location = new Point(167, 365);
             heightNumeric.Margin = new Padding(4);
             heightNumeric.Maximum = new decimal(new int[] { 300, 0, 0, 0 });
             heightNumeric.Name = "heightNumeric";
@@ -153,11 +155,11 @@
             genderGroupBox.Controls.Add(maleRadioButton);
             genderGroupBox.Controls.Add(femaleRadioButton);
             genderGroupBox.ForeColor = SystemColors.ButtonFace;
-            genderGroupBox.Location = new Point(167, 155);
+            genderGroupBox.Location = new Point(167, 208);
             genderGroupBox.Margin = new Padding(4);
             genderGroupBox.Name = "genderGroupBox";
             genderGroupBox.Padding = new Padding(4);
-            genderGroupBox.Size = new Size(197, 90);
+            genderGroupBox.Size = new Size(197, 78);
             genderGroupBox.TabIndex = 10;
             genderGroupBox.TabStop = false;
             genderGroupBox.Text = "Gender";
@@ -166,7 +168,7 @@
             // 
             weightLabel.AutoSize = true;
             weightLabel.ForeColor = SystemColors.ButtonFace;
-            weightLabel.Location = new Point(40, 277);
+            weightLabel.Location = new Point(40, 328);
             weightLabel.Margin = new Padding(4, 0, 4, 0);
             weightLabel.Name = "weightLabel";
             weightLabel.Size = new Size(92, 21);
@@ -177,7 +179,7 @@
             // 
             heightLabel.AutoSize = true;
             heightLabel.ForeColor = SystemColors.ButtonFace;
-            heightLabel.Location = new Point(40, 339);
+            heightLabel.Location = new Point(40, 375);
             heightLabel.Margin = new Padding(4, 0, 4, 0);
             heightLabel.Name = "heightLabel";
             heightLabel.Size = new Size(94, 21);
@@ -186,15 +188,16 @@
             // 
             // birthDatePicker
             // 
-            birthDatePicker.Location = new Point(618, 43);
+            birthDatePicker.Location = new Point(167, 151);
             birthDatePicker.Name = "birthDatePicker";
-            birthDatePicker.Size = new Size(200, 29);
+            birthDatePicker.Size = new Size(358, 29);
             birthDatePicker.TabIndex = 11;
             // 
             // plcToBmiLable
             // 
             plcToBmiLable.AutoSize = true;
-            plcToBmiLable.Location = new Point(539, 306);
+            plcToBmiLable.ForeColor = SystemColors.Info;
+            plcToBmiLable.Location = new Point(600, 45);
             plcToBmiLable.Name = "plcToBmiLable";
             plcToBmiLable.Size = new Size(144, 21);
             plcToBmiLable.TabIndex = 12;
@@ -203,11 +206,23 @@
             // plcHealthStatusLabel
             // 
             plcHealthStatusLabel.AutoSize = true;
-            plcHealthStatusLabel.Location = new Point(539, 349);
+            plcHealthStatusLabel.ForeColor = SystemColors.Info;
+            plcHealthStatusLabel.Location = new Point(600, 101);
             plcHealthStatusLabel.Name = "plcHealthStatusLabel";
             plcHealthStatusLabel.Size = new Size(160, 21);
             plcHealthStatusLabel.TabIndex = 12;
             plcHealthStatusLabel.Text = "<placeholder health>";
+            // 
+            // birthdateLabel
+            // 
+            birthdateLabel.AutoSize = true;
+            birthdateLabel.ForeColor = SystemColors.ButtonFace;
+            birthdateLabel.Location = new Point(40, 157);
+            birthdateLabel.Margin = new Padding(4, 0, 4, 0);
+            birthdateLabel.Name = "birthdateLabel";
+            birthdateLabel.Size = new Size(73, 21);
+            birthdateLabel.TabIndex = 9;
+            birthdateLabel.Text = "Birthdate";
             // 
             // ProfileUserControlForm
             // 
@@ -221,6 +236,7 @@
             Controls.Add(genderGroupBox);
             Controls.Add(heightLabel);
             Controls.Add(weightLabel);
+            Controls.Add(birthdateLabel);
             Controls.Add(emailLabel);
             Controls.Add(fullNameLabel);
             Controls.Add(heightNumeric);
@@ -257,5 +273,6 @@
         private DateTimePicker birthDatePicker;
         private Label plcToBmiLable;
         private Label plcHealthStatusLabel;
+        private Label birthdateLabel;
     }
 }

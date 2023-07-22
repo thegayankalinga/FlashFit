@@ -1,9 +1,4 @@
 ﻿using FlashFitClassLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashFitClassLibrary.Resources.CheatmealRecord
 {
@@ -11,7 +6,7 @@ namespace FlashFitClassLibrary.Resources.CheatmealRecord
         int CheatmealRecordId,
         CheatmealModel Cheatmeal,
         string UserEmail,
-        DateTime CheatmealRecordedDateTime,
+        DateTime CheatmealAddedDateTime,
         decimal WeightAtRecordTime
 
         )

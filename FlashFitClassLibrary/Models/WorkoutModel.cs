@@ -1,5 +1,4 @@
-﻿using FlashFitClassLibrary.Enumz;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +12,7 @@ namespace FlashFitClassLibrary.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WorkoutID { get; set; }
         [Required]
-        public string WorkoutName { get; set;}
+        public string WorkoutName { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         [EnumDataType(typeof(WorkoutTypeEnum))]

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            NumericUpDown heightNumeric;
+            heightNumeric = new NumericUpDown();
             signupHeaderLabel = new Label();
             hasAccountLabel = new Label();
             loginLinkedLabel = new LinkLabel();
@@ -48,7 +48,6 @@
             weighLabel = new Label();
             groupBox1 = new GroupBox();
             registerButton = new Button();
-            heightNumeric = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)heightNumeric).BeginInit();
             genderGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)weightNumeric).BeginInit();
@@ -61,7 +60,7 @@
             heightNumeric.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             heightNumeric.Name = "heightNumeric";
             heightNumeric.Size = new Size(120, 29);
-            heightNumeric.TabIndex = 11;
+            heightNumeric.TabIndex = 7;
             heightNumeric.TextAlign = HorizontalAlignment.Right;
             // 
             // signupHeaderLabel
@@ -104,7 +103,7 @@
             emailSignupTextbox.Location = new Point(40, 160);
             emailSignupTextbox.Name = "emailSignupTextbox";
             emailSignupTextbox.Size = new Size(274, 29);
-            emailSignupTextbox.TabIndex = 7;
+            emailSignupTextbox.TabIndex = 1;
             // 
             // emailSignupLabel
             // 
@@ -130,9 +129,9 @@
             // 
             passwordSignupText.Location = new Point(40, 240);
             passwordSignupText.Name = "passwordSignupText";
-            passwordSignupText.PasswordChar = '#';
+            passwordSignupText.PasswordChar = '*';
             passwordSignupText.Size = new Size(274, 29);
-            passwordSignupText.TabIndex = 7;
+            passwordSignupText.TabIndex = 2;
             // 
             // nameSignupLabel
             // 
@@ -148,9 +147,8 @@
             // 
             nameSignupText.Location = new Point(40, 325);
             nameSignupText.Name = "nameSignupText";
-            nameSignupText.PasswordChar = '#';
             nameSignupText.Size = new Size(274, 29);
-            nameSignupText.TabIndex = 7;
+            nameSignupText.TabIndex = 3;
             // 
             // genderGroupBox
             // 
@@ -160,7 +158,7 @@
             genderGroupBox.Location = new Point(346, 127);
             genderGroupBox.Name = "genderGroupBox";
             genderGroupBox.Size = new Size(183, 100);
-            genderGroupBox.TabIndex = 8;
+            genderGroupBox.TabIndex = 5;
             genderGroupBox.TabStop = false;
             genderGroupBox.Text = "Gender Selection";
             // 
@@ -191,7 +189,7 @@
             birthDateTimePicker.Location = new Point(40, 411);
             birthDateTimePicker.Name = "birthDateTimePicker";
             birthDateTimePicker.Size = new Size(274, 29);
-            birthDateTimePicker.TabIndex = 10;
+            birthDateTimePicker.TabIndex = 4;
             // 
             // birthDatePickerLabel
             // 
@@ -209,7 +207,7 @@
             weightNumeric.Maximum = new decimal(new int[] { 1500, 0, 0, 0 });
             weightNumeric.Name = "weightNumeric";
             weightNumeric.Size = new Size(120, 29);
-            weightNumeric.TabIndex = 11;
+            weightNumeric.TabIndex = 6;
             weightNumeric.TextAlign = HorizontalAlignment.Right;
             // 
             // heightLabel

@@ -1,65 +1,53 @@
-﻿
-
-
-using FlashFitClassLibrary.Models;
-using FlashFitClassLibrary;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+﻿using FlashFitClassLibrary.Resources.Workout;
+using FlashFitClassLibrary.Resources.WorkoutRecord;
 using FlashFitClassLibrary.Services;
-using Microsoft.VisualBasic;
-using FlashFitClassLibrary.InitialData;
 
 namespace FlashFitWinFormUI;
 
 public partial class WorkoutUserControlForm : UserControl
 {
-    WorkoutService workoutService = new WorkoutService();
-    UserService userService = new UserService();
-    WorkoutRecordService workoutRecordService = new WorkoutRecordService();
-    bool editButtonClicked = false;
+    private readonly WorkoutService _workoutService;
+    private readonly UserService _userService;
+    private readonly WorkoutRecordService _workoutRecordService;
+
+    private bool editButtonClicked = false;
 
 
     public WorkoutUserControlForm()
     {
         InitializeComponent();
-       
+        _workoutRecordService = new WorkoutRecordService();
+        _userService = new UserService();
+        _workoutService = new WorkoutService();
+
+
         selectWorkoutComboBox.ResetText();
-        selectWorkoutComboBox.Items.AddRange(generateComboBoxValues().ToArray());
         workedoutDateTimePicker.Value = DateTime.Now;
     }
 
 
 
+    //Open up the Add form button
     private void addWorkoutFormButton_Click(object sender, EventArgs e)
     {
         AddWorkoutForm addWorkoutForm = new AddWorkoutForm();
         addWorkoutForm.ShowDialog();
     }
 
-
-    private void saveWorkoutRecordButton_Click(object sender, EventArgs e)
+    //Create or Update Button for new or existing record
+    private async void saveWorkoutRecordButton_Click(object sender, EventArgs e)
     {
-
+        //Use Edit button saving options
         if (editButtonClicked)
         {
 
-            updateChangestoWorkoutRecord();
-            setupListView();
+            await updateChangestoWorkoutRecord();
+            await setupListView();
             return;
         }
 
 
-
-        WorkoutRecordModel workoutRecordModel = new WorkoutRecordModel();
-        WorkoutModel? workoutModel = new WorkoutModel();
+        WorkoutTypeResponse? workoutModel;
         int workoutID;
 
         int selectedIndex = selectWorkoutComboBox.SelectedIndex;
@@ -67,11 +55,11 @@ public partial class WorkoutUserControlForm : UserControl
         if (selectedIndex != -1)
         {
             workoutID = int.Parse(selectWorkoutComboBox.SelectedItem.ToString().Substring(0, 1));
-            workoutModel = workoutService.getWorkoutById(workoutID);
+            workoutModel = await _workoutService.getWorkoutById(workoutID);
         }
         else
         {
-            MessageBox.Show("Pls select the Workout");
+            MessageBox.Show("Pls select the Workout type");
             selectWorkoutComboBox.Focus();
             return;
         }
@@ -85,19 +73,29 @@ public partial class WorkoutUserControlForm : UserControl
 
         if (workoutModel != null)
         {
-            workoutRecordModel.WorkoutRecordId = TemporaryDataStore.WorkoutRecordIDCounter + 1;
-            workoutRecordModel.Workout = workoutModel;
-            workoutRecordModel.UserEmail = Program.getLoggedInUser().Email;
-            workoutRecordModel.WorkedoutDateTime = workedoutDateTimePicker.Value;
-            workoutRecordModel.WeightAtCompletion = weightAtWorkoutNumeric.Value;
+            WorkoutRecordCreation newRecord = new(
+                workoutModel.workoutId,
+                Program.getLoggedInUser().Email,
+                workedoutDateTimePicker.Value,
+                weightAtWorkoutNumeric.Value,
+                DateTime.UtcNow
+                );
 
-            userService.updateUserWeight(workoutRecordModel.WeightAtCompletion, workoutRecordModel.UserEmail);
-            TemporaryDataStore.workoutRecords.Add(workoutRecordModel);
-            MessageBox.Show($"Your workout marked successfully");
-            TemporaryDataStore.CheatmealRecordIdCounter += 1;
-            clearForm();
-            setupListView();
-            return;
+
+            WorkoutRecordCreation createdRecord = await _workoutRecordService.createWorkoutRecord(newRecord);
+
+            if (createdRecord != null)
+            {
+                MessageBox.Show($"Your workout marked successfully");
+                clearForm();
+                await setupListView();
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong");
+                return;
+            }
         }
         else
         {
@@ -107,22 +105,28 @@ public partial class WorkoutUserControlForm : UserControl
 
     }
 
-    private List<string> generateComboBoxValues()
+    //Load the combobox values
+    private async Task<List<string>> generateComboBoxValues()
     {
         List<string> comboBoxLoadList = new List<string>();
         comboBoxLoadList.Add("0 - Select");
-        TemporaryDataStore.workoutModels.ForEach(model =>
-        {
-            string combinedValue = $"{model.WorkoutID} - {model.WorkoutName}";
 
-            comboBoxLoadList.Add(combinedValue);
-        });
+        List<WorkoutTypeResponse>? value = await _workoutService.getAllWorkouts().ConfigureAwait(false);
+
+
+        value.ForEach(model =>
+      {
+          string combinedValue = $"{model.workoutId} - {model.WorkoutName}";
+
+          comboBoxLoadList.Add(combinedValue);
+      });
         return comboBoxLoadList;
     }
 
-    private void setupListView()
+    //Setup the List View
+    private async Task setupListView()
     {
-        List<WorkoutRecordModel> list = TemporaryDataStore.workoutRecords;
+        List<WorkoutRecordResponse> list = await _workoutRecordService.getWorkoutRecordsByEmail(Program.getLoggedInUser().Email);
 
         string[] item = new string[5];
         ListViewItem listItem;
@@ -132,7 +136,7 @@ public partial class WorkoutUserControlForm : UserControl
         {
             item[0] = i.WorkoutRecordId.ToString();
             item[1] = i.Workout.WorkoutName;
-            item[2] = i.WorkedoutDateTime.ToShortDateString();
+            item[2] = i.WorkoutDateTime.ToShortDateString();
             item[3] = i.Workout.CaloryBurnRate.ToString();
             item[4] = i.WeightAtCompletion.ToString();
 
@@ -141,22 +145,25 @@ public partial class WorkoutUserControlForm : UserControl
         }
     }
 
-    private void WorkoutUserControlForm_Load(object sender, EventArgs e)
+    //Form load setup initial values
+    private async void WorkoutUserControlForm_Load(object sender, EventArgs e)
     {
-        TemporaryDataStore.WorkoutRecordIDCounter = TemporaryDataStore.workoutRecords.Count + 1;
-        setupListView();
+        await setupListView();
+        selectWorkoutComboBox.Items.AddRange(generateComboBoxValues().Result.ToArray());
         selectWorkoutComboBox.SelectedText = "0 - Select";
 
     }
 
-    private void workoutRecordEditButton_Click(object sender, EventArgs e)
+
+    //Set the record for Edit 
+    private async void workoutRecordEditButton_Click(object sender, EventArgs e)
     {
         int workoutRecordID;
 
         if (workoutRecordListView.SelectedItems.Count > 0)
         {
             workoutRecordID = int.Parse(workoutRecordListView.SelectedItems[0].Text);
-            WorkoutRecordModel workoutRecordModel = workoutRecordService.getWorkoutRecordById(workoutRecordID);
+            WorkoutRecordResponse workoutRecordModel = await _workoutRecordService.getWorkoutRecordById(workoutRecordID);
 
             if (workoutRecordModel != null)
             {
@@ -164,7 +171,7 @@ public partial class WorkoutUserControlForm : UserControl
                 hiddenRecordIDText.Text = workoutRecordModel.WorkoutRecordId.ToString();
                 selectWorkoutComboBox.ResetText();
                 selectWorkoutComboBox.SelectedText = combinedValue;
-                workedoutDateTimePicker.Value = workoutRecordModel.WorkedoutDateTime;
+                workedoutDateTimePicker.Value = workoutRecordModel.WorkoutDateTime;
                 weightAtWorkoutNumeric.Value = workoutRecordModel.WeightAtCompletion;
                 editButtonClicked = true;
                 selectWorkoutComboBox.Focus();
@@ -181,6 +188,7 @@ public partial class WorkoutUserControlForm : UserControl
         }
     }
 
+    //Clear the Form
     private void clearForm()
     {
         hiddenRecordIDText.Clear();
@@ -191,15 +199,16 @@ public partial class WorkoutUserControlForm : UserControl
         selectWorkoutComboBox.Focus();
     }
 
-    private void updateChangestoWorkoutRecord()
+    //Update the selected workout record
+    private async Task updateChangestoWorkoutRecord()
     {
-        WorkoutRecordModel updatedWorkoutRecord = new WorkoutRecordModel();
-        WorkoutModel workoutModel = new WorkoutModel();
+
+        WorkoutTypeResponse workoutModel;
 
         //int selectedIndex = selectWorkoutComboBox.SelectedIndex;
 
 
-        WorkoutRecordModel workoutRecord = workoutRecordService.getWorkoutRecordById(int.Parse(hiddenRecordIDText.Text));
+        WorkoutRecordResponse workoutRecord = await _workoutRecordService.getWorkoutRecordById(int.Parse(hiddenRecordIDText.Text));
 
         if (workoutRecord != null)
         {
@@ -212,13 +221,19 @@ public partial class WorkoutUserControlForm : UserControl
             }
 
             int workoutID = int.Parse(selectWorkoutComboBox.SelectedItem.ToString().Substring(0, 1));
-            workoutModel = workoutService.getWorkoutById(workoutID);
+            workoutModel = await _workoutService.getWorkoutById(workoutID);
 
-            updatedWorkoutRecord.WorkoutRecordId = int.Parse(hiddenRecordIDText.Text);
-            updatedWorkoutRecord.Workout = workoutModel;
-            updatedWorkoutRecord.WorkedoutDateTime = workedoutDateTimePicker.Value;
-            updatedWorkoutRecord.UserEmail = Program.getLoggedInUser().Email;
-            updatedWorkoutRecord.WeightAtCompletion = weightAtWorkoutNumeric.Value;
+            int recordID = int.Parse(hiddenRecordIDText.Text);
+
+            WorkoutRecordUpdate updatedWorkoutRecord = new(
+                recordID,
+                workoutModel.workoutId,
+                Program.getLoggedInUser().Email,
+                workedoutDateTimePicker.Value,
+                weightAtWorkoutNumeric.Value,
+                DateTime.UtcNow
+                );
+
 
             if (workoutRecord.Equals(updatedWorkoutRecord))
             {
@@ -227,8 +242,8 @@ public partial class WorkoutUserControlForm : UserControl
             }
             else
             {
-                bool result = workoutRecordService.updateWorkoutRecordById(updatedWorkoutRecord);
-                if (result)
+                WorkoutRecordResponse result = await _workoutRecordService.updateWorkoutRecordById(updatedWorkoutRecord);
+                if (result != null)
                 {
                     MessageBox.Show($" Workout Record ID {workoutRecord.WorkoutRecordId} updated successfully");
                     editButtonClicked = false;
@@ -247,22 +262,24 @@ public partial class WorkoutUserControlForm : UserControl
             return;
         }
 
-
-
     }
 
-    private void workoutRecordDeleteButton_Click(object sender, EventArgs e)
+
+    //Delete Workout Record
+    private async void workoutRecordDeleteButton_Click(object sender, EventArgs e)
     {
         int workoutRecordID;
 
         if (workoutRecordListView.SelectedItems.Count > 0)
         {
             workoutRecordID = int.Parse(workoutRecordListView.SelectedItems[0].Text);
+            WorkoutRecordResponse recordResponse = await _workoutRecordService.deleteWorkoutRecord(workoutRecordID);
 
-            if (workoutRecordService.deleteWorkoutRecord(workoutRecordID))
+
+            if (recordResponse != null)
             {
                 MessageBox.Show($"Workout Record ID {workoutRecordID} is deleted successfully");
-                setupListView();
+                await setupListView();
                 return;
             }
             else

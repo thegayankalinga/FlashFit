@@ -1,74 +1,126 @@
-﻿using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FlashFitClassLibrary.HttpApiProcessor;
+using FlashFitClassLibrary.Resources.User;
+using FlashFitClassLibrary.Resources.Workout;
+using FlashFitClassLibrary.HttpApiProcessor;
+using Refit;
 
-namespace FlashFitClassLibrary.Services
+namespace FlashFitClassLibrary.Services;
+
+public class WorkoutService
 {
-    public class WorkoutService
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST") ?? "localhost";
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT") ?? "7205";
+
+    //TODO: Save workout type
+    public async Task<WorkoutTypeCreation?> createWorkout(WorkoutTypeCreation workoutTypeCreation)
     {
-        //TODO: Save workout
-        public bool createWorkout(WorkoutModel workoutModel)
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.CreateNewWorkoutType(workoutTypeCreation).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
         {
-            if (workoutModel != null) { 
-                TemporaryDataStore.workoutModels.Add(workoutModel);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-           
+            return new WorkoutTypeCreation(
+                response.Content.WorkoutName,
+                response.Content.WorkoutType,
+                response.Content.CaloryBurnRate,
+                response.Content.DateCreated
+                );
         }
-
-        //TODO: Get workouts 
-        public List<WorkoutModel> getAllWorkouts()
+        else
         {
-            return TemporaryDataStore.workoutModels;
-        }
-
-        //Get by ID
-        public WorkoutModel getWorkoutById(int id)
-        {
-            WorkoutModel? resultOfFind = TemporaryDataStore.workoutModels.Find(x => x.WorkoutID == id);
-
-            if (resultOfFind != null)
-            {
-                return resultOfFind;
-            }
-            else
-            {
-                return new WorkoutModel();
-            }
-        }
-
-        //TODO: Update workout
-        public bool updateWorkoutById(WorkoutModel workoutModel)
-        {
-            WorkoutModel? resultOfFind = TemporaryDataStore.workoutModels.Find(x => x.WorkoutID == workoutModel.WorkoutID);
-            if (resultOfFind != null)
-            {
-                resultOfFind.WorkoutName = workoutModel.WorkoutName;
-                resultOfFind.WorkoutType = workoutModel.WorkoutType;
-                resultOfFind.CaloryBurnRate = workoutModel.CaloryBurnRate;
-
-                return true;
-            }else
-            {
-                return false;
-            }
-        }
-
-        //TODO: Delete workout 
-        public bool deleteWorkoutById(int id)
-        {
-            return TemporaryDataStore.workoutModels.Remove(getWorkoutById(id));
+            return null;
         }
 
     }
+
+    //TODO: Get All workouts 
+    public async Task<List<WorkoutTypeResponse>?> getAllWorkouts()
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetAllWorkoutTypes().ConfigureAwait(false);
+        List<WorkoutTypeResponse>? workoutTypes = new();
+
+
+        if (response.Content != null)
+        {
+            foreach (WorkoutTypeResponse item in response.Content)
+            {
+                workoutTypes.Add(item);
+            }
+            return workoutTypes;
+    }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    //Get by ID
+    public async Task<WorkoutTypeResponse?> getWorkoutById(int id)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.GetWorkoutTypeById(id).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new WorkoutTypeResponse(
+                response.Content.workoutId,
+                response.Content.WorkoutName,
+                response.Content.WorkoutType,
+                response.Content.CaloryBurnRate
+                );
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
+
+    //TODO: Update workout
+    public async Task<WorkoutTypeResponse?> updateWorkoutById(WorkoutTypeUpdate updateModel)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.UpdateWorkoutType(updateModel).ConfigureAwait(false);
+ 
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new WorkoutTypeResponse(
+               response.Content.workoutId,
+               response.Content.WorkoutName,
+               response.Content.WorkoutType,
+               response.Content.CaloryBurnRate
+               );
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    //TODO: Delete workout 
+    public async Task<WorkoutTypeResponse?> deleteWorkoutById(int id)
+    {
+        var data = RestService.For<IWorkoutDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.DeleteWorkoutById(id).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode && response.Content != null)
+        {
+            return new WorkoutTypeResponse(
+               response.Content.workoutId,
+               response.Content.WorkoutName,
+               response.Content.WorkoutType,
+               response.Content.CaloryBurnRate
+               );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

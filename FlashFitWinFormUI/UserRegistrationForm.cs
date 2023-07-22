@@ -1,15 +1,8 @@
 ﻿using FlashFitClassLibrary.Enumz;
+using FlashFitClassLibrary.Exceptions;
 using FlashFitClassLibrary.Resources.User;
 using FlashFitClassLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using FlashFitWinFormUI.Services;
 
 namespace FlashFitWinFormUI;
 
@@ -24,7 +17,7 @@ public partial class UserRegistrationForm : Form
 
     private void loginLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        
+
         this.Hide();
         loginForm.Show();
         this.Close();
@@ -33,31 +26,52 @@ public partial class UserRegistrationForm : Form
 
     private async void registerButton_Click(object sender, EventArgs e)
     {
+        ValidatorService.ValidateTextField(emailSignupTextbox);
         string email = emailSignupTextbox.Text;
+        if (ValidatorService.IsValidEmail(email) == false)
+        {
+            MessageBox.Show("Invalid Email, please re-check");
+            emailSignupTextbox.Focus();
+        }
+
+        ValidatorService.ValidateTextField(passwordSignupText);
         string password = passwordSignupText.Text;
+
+        ValidatorService.ValidateTextField(nameSignupText);
         string name = nameSignupText.Text;
+
         DateTime birthdate = birthDateTimePicker.Value;
         GenderTypeEnum gender = maleRadioButton.Checked ? GenderTypeEnum.MALE : GenderTypeEnum.FEMALE;
         decimal weight = weightNumeric.Value;
         decimal height = heightNumeric.Value;
 
-        RegisterResource registerUserData = new RegisterResource(email, password, name, gender, birthdate, weight, height, 0, 0);
+        RegisterResource registerUserData = new RegisterResource(email, password, name, gender.ToString(), birthdate, weight, height, 0, "NONE");
+
+ 
 
         try
         {
             UserResource userData = await _userService.createUser(registerUserData);
-            if(userData != null)
+
+            if (userData != null)
             {
+                MessageBox.Show("Successfully Added, click ok to Go to Login Screen", "Successfull", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Hide();
                 loginForm.Show();
                 this.Close();
             }
             else
             {
-                MessageBox.Show($"Something went wrong, Try again later");
+                MessageBox.Show("Something went wrong");
             }
 
-        }catch (Exception ex)
+
+        }
+        catch (ExistinUserFoundException em)
+        {
+            MessageBox.Show($" Pls Login {em.Message}");
+        }
+        catch (Exception ex)
         {
             MessageBox.Show($"Something went wrong {ex.Message}");
         }

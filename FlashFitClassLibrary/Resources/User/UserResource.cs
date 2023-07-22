@@ -5,12 +5,12 @@ namespace FlashFitClassLibrary.Resources.User
     public sealed record UserResource(
         string Email,
         string Name,
-        GenderTypeEnum Gender,
+        string Gender,
         DateTime BirthDate,
         decimal WeightInKiloGrams,
         decimal HeightInCentiMeter,
         decimal BodyMassIndex,
-        HealthStatusEnum HeathStatus
+        string HeathStatus
         )
     {
     }

@@ -1,45 +1,36 @@
 ﻿using FlashFitClassLibrary;
-using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
+using FlashFitClassLibrary.Resources.Workout;
 using FlashFitClassLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FlashFitWinFormUI;
 
 public partial class AddWorkoutForm : Form
 {
-    WorkoutService workoutService = new WorkoutService();
+    private readonly WorkoutService _workoutService;
     bool editButtonClicked = false;
+
     public AddWorkoutForm()
     {
         InitializeComponent();
+        _workoutService = new WorkoutService();
 
     }
 
-    private void AddWorkoutForm_Load(object sender, EventArgs e)
+    private async void AddWorkoutForm_Load(object sender, EventArgs e)
     {
         workoutTypeComboBox.DataSource = Enum.GetValues(typeof(WorkoutTypeEnum));
-        TemporaryDataStore.WorkoutIDCounter = TemporaryDataStore.workoutModels.Count + 1;
-        setupListView();
+        await setupListView();
 
     }
 
-    private void saveWorkoutButton_Click(object sender, EventArgs e)
+    private async void saveWorkoutButton_Click(object sender, EventArgs e)
     {
 
         if (editButtonClicked)
         {
-            updateChangesToWorkoutModel();
+            await updateChangesToWorkoutModel();
             clearForm();
-            setupListView();
+            await setupListView();
             return;
         }
 
@@ -56,49 +47,53 @@ public partial class AddWorkoutForm : Form
             return;
         }
 
-        WorkoutModel model = new WorkoutModel();
+        WorkoutTypeCreation model = new WorkoutTypeCreation(
+             workoutNameText.Text,
+             (WorkoutTypeEnum)workoutTypeComboBox.SelectedItem,
+             caloriesBurnRateNumeric.Value,
+             DateTime.UtcNow
+             );
 
-        model.WorkoutID = TemporaryDataStore.WorkoutIDCounter + 1;
-        model.WorkoutName = workoutNameText.Text;
-        model.WorkoutType = (WorkoutTypeEnum)workoutTypeComboBox.SelectedItem;
-        model.CaloryBurnRate = caloriesBurnRateNumeric.Value;
+        WorkoutTypeCreation? createdWorkout = await _workoutService.createWorkout(model);
 
-        WorkoutService workoutService = new WorkoutService();
-        if (workoutService.createWorkout(model))
+        if (createdWorkout != null)
         {
             MessageBox.Show($"Workout {model.WorkoutName} saved successfully");
-            TemporaryDataStore.WorkoutIDCounter += 1;
-            setupListView();
+            await setupListView();
             clearForm();
             return;
         }
 
-       
+
 
     }
 
-    private void setupListView()
+    private async Task setupListView()
     {
-        List<WorkoutModel> list = TemporaryDataStore.workoutModels;
+        List<WorkoutTypeResponse>? list = await _workoutService.getAllWorkouts();
 
         string[] item = new string[4];
         ListViewItem listItem;
         workoutListView.Items.Clear();
 
-        foreach (var i in list)
+        if(list != null)
         {
-            item[0] = i.WorkoutID.ToString();
-            item[1] = i.WorkoutName;
-            item[2] = i.WorkoutType.ToString();
-            item[3] = i.CaloryBurnRate.ToString();
+            foreach (var i in list)
+            {
+                item[0] = i.workoutId.ToString();
+                item[1] = i.WorkoutName;
+                item[2] = i.WorkoutType.ToString();
+                item[3] = i.CaloryBurnRate.ToString();
 
 
-            listItem = new ListViewItem(item);
-            workoutListView.Items.Add(listItem);
+                listItem = new ListViewItem(item);
+                workoutListView.Items.Add(listItem);
+            }
         }
+ 
     }
 
-    private void deleteWorkoutButton_Click(object sender, EventArgs e)
+    private async void deleteWorkoutButton_Click(object sender, EventArgs e)
     {
         int workoutID;
 
@@ -112,10 +107,11 @@ public partial class AddWorkoutForm : Form
             return;
         }
 
-        if (workoutService.deleteWorkoutById(workoutID))
+        WorkoutTypeResponse? workoutTypeResponse = await _workoutService.deleteWorkoutById(workoutID);
+        if (workoutTypeResponse != null)
         {
             MessageBox.Show($"Workout ID {workoutID} is deleted successfully");
-            setupListView();
+            await setupListView();
         }
         else
         {
@@ -138,7 +134,7 @@ public partial class AddWorkoutForm : Form
         if (workoutListView.SelectedItems.Count > 0)
         {
             workoutID = int.Parse(workoutListView.SelectedItems[0].Text);
-            WorkoutModel workoutModel = workoutService.getWorkoutById(workoutID);
+            WorkoutTypeResponse workoutModel = _workoutService.getWorkoutById(workoutID).Result;
             if (workoutModel != null)
             {
                 hiddenWorkoutIDText.Text = workoutID.ToString();
@@ -159,27 +155,28 @@ public partial class AddWorkoutForm : Form
 
     }
 
-    private void updateChangesToWorkoutModel()
+    private async Task updateChangesToWorkoutModel()
     {
-        WorkoutModel updatedWorkoutModel = new WorkoutModel();
-        WorkoutModel workoutModel = workoutService.getWorkoutById(int.Parse(hiddenWorkoutIDText.Text));
 
-        updatedWorkoutModel.WorkoutID = int.Parse(hiddenWorkoutIDText.Text);
-        updatedWorkoutModel.WorkoutName = workoutNameText.Text;
-        updatedWorkoutModel.WorkoutType = (WorkoutTypeEnum)workoutTypeComboBox.SelectedItem;
-        updatedWorkoutModel.CaloryBurnRate = caloriesBurnRateNumeric.Value;
+        WorkoutTypeUpdate updatedWorkoutModel = new(
+            int.Parse(hiddenWorkoutIDText.Text),
+            workoutNameText.Text,
+            (WorkoutTypeEnum)workoutTypeComboBox.SelectedItem,
+            caloriesBurnRateNumeric.Value,
+            DateTime.UtcNow
+            );
 
-        if (workoutModel.Equals(updatedWorkoutModel))
+        if (updatedWorkoutModel == null)
         {
             MessageBox.Show("No changes to update");
             return;
         }
         else
         {
-            bool result = workoutService.updateWorkoutById(updatedWorkoutModel);
-            if (result)
+            WorkoutTypeResponse? result = await _workoutService.updateWorkoutById(updatedWorkoutModel);
+            if (result != null)
             {
-                MessageBox.Show($" {workoutModel.WorkoutID} updated successfully");
+                MessageBox.Show($" {updatedWorkoutModel.workoutId} updated successfully");
                 editButtonClicked = false;
             }
             else

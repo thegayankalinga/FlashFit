@@ -37,6 +37,7 @@
             placeholderForHealthStatusLabel = new Label();
             groupBox1 = new GroupBox();
             calculateButton = new Button();
+            plcSuggestionLabel = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -59,6 +60,7 @@
             // 
             // predictedWeigtText
             // 
+            predictedWeigtText.BackColor = SystemColors.InactiveBorder;
             predictedWeigtText.Enabled = false;
             predictedWeigtText.ForeColor = SystemColors.ControlText;
             predictedWeigtText.Location = new Point(234, 320);
@@ -79,6 +81,7 @@
             // 
             // predictedBMIText
             // 
+            predictedBMIText.BackColor = SystemColors.InactiveBorder;
             predictedBMIText.Enabled = false;
             predictedBMIText.ForeColor = SystemColors.ControlText;
             predictedBMIText.Location = new Point(234, 378);
@@ -101,7 +104,7 @@
             // 
             placeholderForHealthStatusLabel.AutoSize = true;
             placeholderForHealthStatusLabel.ForeColor = SystemColors.HighlightText;
-            placeholderForHealthStatusLabel.Location = new Point(12, 430);
+            placeholderForHealthStatusLabel.Location = new Point(23, 429);
             placeholderForHealthStatusLabel.Name = "placeholderForHealthStatusLabel";
             placeholderForHealthStatusLabel.Size = new Size(298, 21);
             placeholderForHealthStatusLabel.TabIndex = 3;
@@ -137,11 +140,23 @@
             calculateButton.UseVisualStyleBackColor = true;
             calculateButton.Click += calculateButton_Click;
             // 
+            // plcSuggestionLabel
+            // 
+            plcSuggestionLabel.AutoSize = true;
+            plcSuggestionLabel.ForeColor = SystemColors.Info;
+            plcSuggestionLabel.Location = new Point(450, 60);
+            plcSuggestionLabel.Name = "plcSuggestionLabel";
+            plcSuggestionLabel.Size = new Size(242, 21);
+            plcSuggestionLabel.TabIndex = 5;
+            plcSuggestionLabel.Text = "<placeholder for suggestiontext>";
+            plcSuggestionLabel.Visible = false;
+            // 
             // PredictionUserControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
+            Controls.Add(plcSuggestionLabel);
             Controls.Add(groupBox1);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(4);
@@ -150,6 +165,7 @@
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -163,5 +179,6 @@
         private Label placeholderForHealthStatusLabel;
         private GroupBox groupBox1;
         private Button calculateButton;
+        private Label plcSuggestionLabel;
     }
 }

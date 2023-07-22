@@ -1,87 +1,36 @@
-﻿using FlashFitClassLibrary.Enumz;
-using FlashFitClassLibrary.Models;
-using FlashFitClassLibrary.Resources.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
+﻿using FlashFitClassLibrary.HttpApiProcessor;
+using FlashFitClassLibrary.Resources.Prediction;
+using Refit;
 
 namespace FlashFitClassLibrary.Services;
 
 public class PredictionService
 {
-    WorkoutRecordService workoutRecordService = new WorkoutRecordService();
-    CheatmealService cheatmealService = new CheatmealService(); 
+    private readonly string _host = Environment.GetEnvironmentVariable("REMOTEAPIGATEWYHOST") ?? "localhost";
+    private readonly string _port = Environment.GetEnvironmentVariable("REMOTEAPIGATEWAYPORT") ?? "7205";
 
-    public decimal weightPredication(string userEmail, string to, decimal currentWeight)
+    public async Task<PredictionResponse?> predictHealthStatus(string userEmail, DateTime toDate)
     {
-        decimal predictedWeight = 0;
-        int noOfDays = 0;
-        decimal sumOfWeights = 0;
-        decimal averageWeight = 0;
-        DateTime fromDate = DateTime.Now;
-        DateTime toDate = DateTime.Parse(to);
-        int noOfDaysPredictionIsRequiredFor = (int)(toDate - fromDate).TotalDays;
+    
+        PredictionRequest predictionRequest = new PredictionRequest(userEmail, toDate);
 
-        if(noOfDaysPredictionIsRequiredFor == 0)
+        var data = RestService.For<IUtilityServiceDataProcessor>($"https://{_host}:{_port}");
+        var response = await data.PredictHealthStatus(predictionRequest).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode)
         {
-            noOfDaysPredictionIsRequiredFor = 1;
-        }
-
-        //Get the daily average weight per each day as one day can have multiple weight records
-        List<decimal> weightsForGivenPeriod = new List<decimal>();
-
-        //Get the history
-        foreach (WorkoutRecordModel wrm in workoutRecordService.getWorkoutRecordsByEmail(userEmail)){
-            weightsForGivenPeriod.Add(wrm.WeightAtCompletion);
-        }
-
-        foreach(CheatmealRecordModel crm in cheatmealService.GetCheatmealRecordModelsByEmail(userEmail)){
-            weightsForGivenPeriod.Add(crm.WeightAtMealRecordTime);
-        }
-
-        //get the average for the day & add all averages to a list
-        if(weightsForGivenPeriod.Count > 0) {
-            decimal diff = weightsForGivenPeriod.Max() - weightsForGivenPeriod.Min();
-
-            //noOfDays = weightsForGivenPeriod.Count;
-
-            averageWeight = diff / noOfDaysPredictionIsRequiredFor;
-            
-            predictedWeight = noOfDaysPredictionIsRequiredFor * averageWeight;
-            predictedWeight = predictedWeight + currentWeight; 
-
-            return predictedWeight;
+            return new PredictionResponse(
+                response.Content.WeightPredicted,
+                response.Content.BmiPredicted,
+                response.Content.HealthStatusPredicted,
+                response.Content.Suggestion
+                
+                );
         }
         else
         {
-            return -1;
-        }
-        
-    }
-
-    public async Task<HealthStatusEnum> getCurrentHealthStatus(string userEmail)
-    {
-        UserService _userService = new UserService();
-        UserResource userProfile = await _userService.getUserByEmail(userEmail);
-        double bmi = (double)userProfile.BodyMassIndex;
-
-        if(bmi <= 18.5)
-        {
-            return HealthStatusEnum.Underweight;
-        }else if(bmi > 18.5 && bmi <= 24.9)
-        {
-            return HealthStatusEnum.Normalweight;
-        }else if(bmi > 25 && bmi <= 29.9)
-        {
-            return HealthStatusEnum.Overweight;
-        }else if(bmi >= 30)
-        {
-            return HealthStatusEnum.Obesity;
+            return null;
         }
 
-        return HealthStatusEnum.None;
     }
 }

@@ -1,51 +1,53 @@
-﻿using FlashFitClassLibrary.Enumz;
+﻿using FlashFitClassLibrary.Resources.Prediction;
+using FlashFitClassLibrary.Resources.User;
 using FlashFitClassLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FlashFitWinFormUI
 {
     public partial class PredictionUserControlForm : UserControl
     {
 
-        PredictionService predictionService = new PredictionService();
-        UserService userService = new UserService();
+        PredictionService _predictionService;
+        UserService _userService;
         public PredictionUserControlForm()
         {
             InitializeComponent();
+            _predictionService = new PredictionService();
+            _userService = new UserService();
         }
 
-        private void calculateButton_Click(object sender, EventArgs e)
+        private async void calculateButton_Click(object sender, EventArgs e)
         {
-            string email = Program.getLoggedInUser().Email;
-            decimal currentWeight = userService.getUserByEmail(email).WeightInKiloGrams;
-            string toDate = predictedToDateCalender.SelectionStart.ToString();
-            decimal weight = predictionService.weightPredication(email, toDate, currentWeight);
-            decimal bmi = userService.calculateAndUpdateBMI(email, weight);
+            UserResource userData = await _userService.getUserByEmail(Program.getLoggedInUser().Email);
 
-            DateTime current = DateTime.Now;
-            DateTime futureDate = DateTime.Parse(toDate);
+            string email = userData.Email;
+            decimal currentWeight = userData.WeightInKiloGrams;
+            DateTime toDate = predictedToDateCalender.SelectionStart;
 
-            ;
-            if (((int)(futureDate - current).TotalDays) <= 0)
+            if (((int)(toDate - DateTime.UtcNow).TotalDays) <= 0)
             {
                 MessageBox.Show("Pls select a Future Date");
-                weight = currentWeight;
             }
-            {
 
+
+            PredictionResponse? prediction = await _predictionService.predictHealthStatus(email, toDate);
+
+            if(prediction == null)
+            {
+                MessageBox.Show("No prediction for you keep working");
+                return;
             }
-            predictedWeigtText.Text = $"{weight:F2}";
-            predictedBMIText.Text = $"{userService.calculateAndUpdateBMI(email, weight):F2}";
-            placeholderForHealthStatusLabel.Visible = true;
-            placeholderForHealthStatusLabel.Text = predictionService.getCurrentHealthStatus(email, bmi).ToString();
+            else
+            {
+                predictedWeigtText.Text = $"{prediction.WeightPredicted:F2}";
+                predictedBMIText.Text = $"{prediction.BmiPredicted:F2}";
+                placeholderForHealthStatusLabel.Visible = true;
+                placeholderForHealthStatusLabel.Text = prediction.HealthStatusPredicted.ToString();
+                plcSuggestionLabel.Visible = true;
+                plcSuggestionLabel.Text = prediction.Suggestion;
+            }
+
+
 
         }
     }

@@ -6,12 +6,12 @@ namespace FlashFitClassLibrary.Resources.User
         string Email,
         string Password,
         string Name,
-        GenderTypeEnum Gender,
+        string Gender,
         DateTime BirthDate,
         decimal WeightInKiloGrams,
         decimal HeightInCentiMeter,
         decimal BodyMassIndex,
-        HealthStatusEnum HeathStatus
+        string HeathStatus
         )
     {
 

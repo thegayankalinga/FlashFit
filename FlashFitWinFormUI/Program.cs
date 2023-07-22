@@ -1,16 +1,5 @@
-using FlashFitClassLibrary;
 using FlashFitClassLibrary.Connector;
-using FlashFitClassLibrary.InitialData;
-using FlashFitClassLibrary.Models;
 using FlashFitClassLibrary.Resources.User;
-using FlashFitClassLibrary.Services;
-using FlashFitUIClassLibrary.HttpApiProcessor;
-using FlashFitUserManagementService;
-using Refit;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Runtime;
 
 
 namespace FlashFitWinFormUI;
@@ -19,7 +8,7 @@ public static class Program
 {
 
     public static UserResource loggedInUser;
-    
+
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
@@ -43,12 +32,12 @@ public static class Program
         Environment.SetEnvironmentVariable("REMOTEAPIGATEWAYPORT", "7205");
 
         Application.Run(new UserLoginForm());
-        
+
     }
 
     public static UserResource getLoggedInUser()
     {
-        if(loggedInUser == null)
+        if (loggedInUser == null)
         {
             throw new InvalidProgramException("No user Found");
         }

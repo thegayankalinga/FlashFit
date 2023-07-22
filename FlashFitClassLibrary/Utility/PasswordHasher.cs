@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashFitClassLibrary.Utility
 {
@@ -18,7 +14,7 @@ namespace FlashFitClassLibrary.Utility
             var byteValue = Encoding.UTF8.GetBytes(passwordSaltPepper);
             var byteHash = sha256.ComputeHash(byteValue);
             var hash = Convert.ToBase64String(byteHash);
-            return ComputeHash(hash, salt, pepper, iteration -1);
+            return ComputeHash(hash, salt, pepper, iteration - 1);
 
         }
 
